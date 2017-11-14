@@ -1,11 +1,11 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Penjualan
+    Pembelian
   </h1>
   <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Penjualan</a></li>
-    <li class="active">Penjualan</li>
+    <li><a href="#"><i class="fa fa-dashboard"></i> Pembelian</a></li>
+    <li class="active">Pembelian</li>
   </ol>
 </section>
 
@@ -48,13 +48,13 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="customer" class="col-xs-4 control-label">Customer</label>
+                  <label for="supplier" class="col-xs-4 control-label">Supplier</label>
 
                   <div class="col-xs-6">
-                    <select class="form-control select2" id="idCustomer" name="customer">
+                    <select class="form-control select2" id="idSupplier" name="supplier">
                       <option></option>
-                      <?php foreach ($pelanggan as $key => $value) { ?>
-                      <option value="<?php echo $value['KodePelanggan'] ?>"><?php echo $value['Nama']; ?></option>
+                      <?php foreach ($supplier as $key => $value) { ?>
+                      <option value="<?php echo $value['KodeSupplier'] ?>"><?php echo $value['Nama']; ?></option>
                       <?php } ?>
                     </select>
                   </div>
@@ -201,9 +201,7 @@
               </div>
             </div>
 
-            <!-- Ini tak comment soalnya di mockup gk ada bank, kalo mau pake tinggal uncomment doang -->
-
-            <!-- <div class="form-group">
+            <div class="form-group">
               <label for="noRek" class="col-xs-4 control-label bank">No Rekening Bank</label>
 
               <div class="col-xs-6">
@@ -216,17 +214,6 @@
 
               <div class="col-xs-6">
                 <input type="text" class="form-control" id="idNamaBank" name="namaBank" disabled="">
-              </div>
-            </div> -->
-
-            <div class="form-group">
-              <label for="ppn" class="col-xs-4 control-label">PPN</label>
-              
-              <div class="col-xs-4">
-                <div class="input-group">
-                  <input type="number" min="0" class="form-control" id="idPPN" name="ppn" placeholder="">
-                  <span class="input-group-addon">%</span>
-                </div>
               </div>
             </div>
           </form>

@@ -180,8 +180,8 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
         <li class="active treeview menu-open">
-          <li><a href="<?php echo site_url('Penjualan/index') ?>"><i class="fa fa-circle-o text-aqua"></i> <span>Penjualan</span></a></li>
-          <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Pembelian</span></a></li>
+          <li><a href="<?php echo site_url('Penjualan') ?>"><i class="fa fa-circle-o text-aqua"></i> <span>Penjualan</span></a></li>
+          <li><a href="<?php echo site_url('Pembelian') ?>"><i class="fa fa-circle-o text-aqua"></i> <span>Pembelian</span></a></li>
         </li>
       </ul>
     </section>
