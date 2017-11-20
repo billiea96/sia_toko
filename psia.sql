@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2017 at 02:07 PM
+-- Generation Time: Nov 20, 2017 at 02:31 PM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 7.0.4
 
@@ -515,6 +515,112 @@ INSERT INTO `supplier` (`KodeSupplier`, `Nama`) VALUES
 (2, 'UD ''BERSIH SELALU'''),
 (3, 'UD ''MAKMUR BAHAGIA'''),
 (4, 'UD ''SUKSES SEJATI''');
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `vbukubesar`
+--
+CREATE TABLE `vbukubesar` (
+`NoAkun` char(3)
+,`NamaAkun` varchar(100)
+,`Tanggal` date
+,`Keterangan` text
+,`NominalDebet` mediumtext
+,`NominalKredit` mediumtext
+,`NoBukti` varchar(45)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `vlabarugi`
+--
+CREATE TABLE `vlabarugi` (
+`NoAkun` char(3)
+,`NamaAkun` varchar(100)
+,`SaldoAkhir` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `vlaporanjurnal`
+--
+CREATE TABLE `vlaporanjurnal` (
+`Tanggal` date
+,`Keterangan` text
+,`NamaAkun` varchar(100)
+,`Debet` mediumtext
+,`Kredit` mediumtext
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `vperubahanekuitas`
+--
+CREATE TABLE `vperubahanekuitas` (
+`NoAkun` char(3)
+,`NamaAkun` varchar(100)
+,`SaldoAkhir` mediumtext
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `vsaldoakhir`
+--
+CREATE TABLE `vsaldoakhir` (
+`NoAkun` char(3)
+,`NamaAkun` varchar(100)
+,`SaldoAkhir` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vbukubesar`
+--
+DROP TABLE IF EXISTS `vbukubesar`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vbukubesar`  AS  select `ja`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `NamaAkun`,`j`.`Tanggal` AS `Tanggal`,`j`.`Keterangan` AS `Keterangan`,`ja`.`NominalDebet` AS `NominalDebet`,`ja`.`NominalKredit` AS `NominalKredit`,`j`.`NoBukti` AS `NoBukti` from (((`jurnal_has_akun` `ja` join `akun` `a` on((`ja`.`NoAkun` = `a`.`NoAkun`))) join `periode_has_akun` `p` on((`p`.`NoAkun` = `a`.`NoAkun`))) join `jurnal` `j` on((`ja`.`IDJurnal` = `j`.`IDJurnal`))) order by `ja`.`NoAkun` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vlabarugi`
+--
+DROP TABLE IF EXISTS `vlabarugi`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vlabarugi`  AS  select `v`.`NoAkun` AS `NoAkun`,`v`.`NamaAkun` AS `NamaAkun`,`v`.`SaldoAkhir` AS `SaldoAkhir` from (`vsaldoakhir` `v` join `akun_has_laporan` `l` on((`v`.`NoAkun` = `l`.`NoAkun`))) where (`l`.`IDLaporan` = 'LR') ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vlaporanjurnal`
+--
+DROP TABLE IF EXISTS `vlaporanjurnal`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vlaporanjurnal`  AS  select `j`.`Tanggal` AS `Tanggal`,`j`.`Keterangan` AS `Keterangan`,`a`.`Nama` AS `NamaAkun`,`ja`.`NominalDebet` AS `Debet`,`ja`.`NominalKredit` AS `Kredit` from ((`jurnal` `j` join `jurnal_has_akun` `ja` on((`j`.`IDJurnal` = `ja`.`IDJurnal`))) join `akun` `a` on((`ja`.`NoAkun` = `a`.`NoAkun`))) order by `j`.`IDJurnal`,`ja`.`Urutan` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vperubahanekuitas`
+--
+DROP TABLE IF EXISTS `vperubahanekuitas`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vperubahanekuitas`  AS  select `v`.`NoAkun` AS `NoAkun`,`v`.`NamaAkun` AS `NamaAkun`,`v`.`SaldoAkhir` AS `SaldoAkhir` from (`vsaldoakhir` `v` join `akun_has_laporan` `l` on((`v`.`NoAkun` = `l`.`NoAkun`))) where (`l`.`IDLaporan` = 'PE') union (select `a`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `Nama`,`p`.`SaldoAwal` AS `SaldoAkhir` from (`akun` `a` join `periode_has_akun` `p` on((`a`.`NoAkun` = `p`.`NoAkun`))) where (`a`.`NoAkun` = '000')) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vsaldoakhir`
+--
+DROP TABLE IF EXISTS `vsaldoakhir`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vsaldoakhir`  AS  select `a`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `NamaAkun`,(`p`.`SaldoAwal` + ifnull(((sum(`ja`.`NominalDebet`) - sum(`ja`.`NominalKredit`)) * `a`.`SaldoNormal`),0)) AS `SaldoAkhir` from ((`akun` `a` left join `jurnal_has_akun` `ja` on((`ja`.`NoAkun` = `a`.`NoAkun`))) join `periode_has_akun` `p` on((`p`.`NoAkun` = `a`.`NoAkun`))) group by `ja`.`NoAkun`,`a`.`Nama`,`p`.`SaldoAwal` order by `a`.`NoAkun` ;
 
 --
 -- Indexes for dumped tables
