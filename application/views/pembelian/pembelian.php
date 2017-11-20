@@ -21,14 +21,14 @@
         </div>
         <div class="box-body">
           <?php echo validation_errors(); ?>
-          <form class="form-horizontal" id="#" action="#">
+          <form class="form-horizontal">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="noNota" class="col-xs-4 control-label">No Nota</label>
 
                   <div class="col-xs-6">
-                    <input type="text" class="form-control" id="noNota" name="nota" placeholder="">
+                    <input type="text" class="form-control" id="noNota" name="nota" required="">
                   </div>
                 </div>
 
@@ -37,7 +37,7 @@
 
                   <div class="col-xs-6">
                     <div class="input-group date">
-                      <input type="text" class="form-control pull-right" id="idTgl" name="tgl">
+                      <input type="text" class="form-control pull-right" id="idTgl" name="tgl" required="">
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
@@ -51,7 +51,7 @@
                   <label for="supplier" class="col-xs-4 control-label">Supplier</label>
 
                   <div class="col-xs-6">
-                    <select class="form-control select2" id="idSupplier" name="supplier">
+                    <select class="form-control select2" id="idSupplier" name="supplier" required="">
                       <option></option>
                       <?php foreach ($supplier as $key => $value) { ?>
                       <option value="<?php echo $value['KodeSupplier'] ?>"><?php echo $value['Nama']; ?></option>
@@ -67,12 +67,12 @@
 
           <form>
             <div class="row" style="padding-left: 100px; padding-right: 100px;">
-              <div class="col-xs-2"></div>
+              <div class="col-xs-1"></div>
               <div class="col-xs-4">
                 <div class="form-group">
                   <center><label>Nama Barang</label></center>
 
-                  <select class="form-control select2" id="idBarang" name="barang">
+                  <select class="form-control select2" id="idBarang" name="barang" required="">
                     <option></option>
                     <?php foreach ($barang as $key => $value) { ?>
                     <option value="<?php echo $value['KodeBarang'] ?>"><?php echo $value['Nama']; ?></option>
@@ -80,11 +80,11 @@
                   </select>
                 </div>
               </div>
-              <div class="col-xs-1">
+              <div class="col-xs-2">
                 <div class="form-group">
                   <center><label>Jumlah</label></center>
 
-                  <input type="number" min="0" class="form-control" id="idJumlah" name="jumlah" placeholder="">
+                  <input type="number" min="0" class="form-control" id="idJumlah" name="jumlah" required>
                 </div>
               </div>
               <div class="col-xs-3">
@@ -93,13 +93,13 @@
 
                   <div class="input-group">
                     <span class="input-group-addon">Rp.</span>
-                    <input type="number" min="0" class="form-control" id="idHarga" name="harga" placeholder="">
+                    <input type="number" min="0" class="form-control" id="idHarga" name="harga" required>
                   </div>
                 </div>
               </div>
               <div class="col-xs-2">
                 <div style="height: 20px; margin-bottom: 5px;"></div>
-                <button type="submit" class="btn btn-info" style="width: 100px">+</button>
+                <button id="tambahBarang" class="btn btn-info" style="width: 100px">+</button>
               </div>
             </div>
           </form>
@@ -125,8 +125,8 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body table-responsive no-padding">
-          <table class="table table-hover table-bordered">
-            <tbody>
+          <table class="table table-hover table-bordered" id="tableBarang">
+            <thead>
               <tr>
                 <th>No</th>
                 <th>Kode Barang</th>
@@ -136,30 +136,17 @@
                 <th>Sub Total</th>
                 <th>Action</th>
               </tr>
-              <tr>
-                <td>1</td>
-                <td>AAA-111</td>
-                <td>Pensil</td>
-                <td>10 pcs</td>
-                <td>Rp.-00</td>
-                <td>Rp.-00</td>
-                <td>Edit/Hapus</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>AAA-222</td>
-                <td>Buku</td>
-                <td>12 pcs</td>
-                <td>Rp.-00</td>
-                <td>Rp.-00</td>
-                <td>Edit/Hapus</td>
-              </tr>
+            </thead>
+            <tbody>
             </tbody>
-            <tr>
-              <td colspan="5" align="right">Total</td>
-              <td colspan="2" align="center">Rp.-00</td>
-            </tr>
           </table>
+          <div class="col-md-7">
+            <label class="pull-right">Total</label>
+          </div>
+          <div class="col-md-5">
+            <label>Rp.</label>
+            <label id="totalHarga"></label>
+          </div>
         </div>
         <!-- /.box-body -->
       </div>
@@ -323,6 +310,7 @@
 </section>
 <!-- /.content -->
 <script>
+
   $('#idJPembayaran').change(function(){
     if($(this).val() == "K"){
       $('#idJT').removeAttr('disabled');
@@ -338,15 +326,34 @@
     }
   });
 
-
   $('#idKirim').click(function(){
     if($("#idKirim").is(':checked'))
       $('#idBiayaKirim').removeAttr('disabled');
   else
       $('#idBiayaKirim').attr('disabled', 'disabled');
   })
-  
-  
+  var count = 0;
+  var total = 0;
+  var list = [];
+  $('#tambahBarang').click(function(e){
+    e.preventDefault()
+    list[count] = [$('#idBarang').val(), $('#idJumlah').val(), $('#idHarga').val(), ($('#idHarga').val()*$('#idJumlah').val())]
+    count+=1;
+    $('#tableBarang tbody').append(
+        '<tr>'+
+        '<td>'+count+'</td>'+
+        '<td>Gk Tau kode dapet dari mana</td>'+
+        '<td>'+$('#idBarang').val()+'</td>'+
+        '<td>'+$('#idJumlah').val()+'</td>'+
+        '<td>'+$('#idHarga').val()+'</td>'+
+        '<td data-sub='+($('#idHarga').val()*$('#idJumlah').val())+'>'+($('#idHarga').val()*$('#idJumlah').val())+'</td>'+
+        '<td>Edit/Hapus</td>'+
+        '</tr>'
+      )
+    total +=($('#idHarga').val()*$('#idJumlah').val())
+    console.log(total.toString())
+    $('#totalHarga').html(total.toLocaleString(['ban', 'id']))
+  })
 </script>
 
 <script>
