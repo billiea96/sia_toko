@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2017 at 02:41 PM
+-- Generation Time: Nov 20, 2017 at 02:07 PM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 7.0.4
 
@@ -74,6 +74,42 @@ CREATE TABLE `akun_has_laporan` (
   `NoAkun` char(3) NOT NULL,
   `IDLaporan` char(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `akun_has_laporan`
+--
+
+INSERT INTO `akun_has_laporan` (`NoAkun`, `IDLaporan`) VALUES
+('101', 'AK'),
+('101', 'NR'),
+('102', 'AK'),
+('102', 'NR'),
+('103', 'AK'),
+('103', 'NR'),
+('104', 'NR'),
+('105', 'NR'),
+('106', 'NR'),
+('107', 'NR'),
+('108', 'NR'),
+('109', 'NR'),
+('110', 'NR'),
+('201', 'NR'),
+('202', 'NR'),
+('203', 'NR'),
+('204', 'NR'),
+('301', 'NR'),
+('301', 'PE'),
+('302', 'PE'),
+('401', 'LR'),
+('402', 'LR'),
+('403', 'LR'),
+('501', 'LR'),
+('506', 'LR'),
+('507', 'LR'),
+('508', 'LR'),
+('509', 'LR'),
+('515', 'LR'),
+('520', 'LR');
 
 -- --------------------------------------------------------
 
@@ -179,7 +215,7 @@ INSERT INTO `jurnal` (`IDJurnal`, `Tanggal`, `Keterangan`, `NoBukti`, `JenisJurn
 CREATE TABLE `jurnal_has_akun` (
   `IDJurnal` int(11) NOT NULL,
   `NoAkun` char(3) NOT NULL,
-  `Urutan` smallint(6) DEFAULT NULL,
+  `Urutan` smallint(6) NOT NULL,
   `NominalDebet` mediumtext,
   `NominalKredit` mediumtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -190,39 +226,39 @@ CREATE TABLE `jurnal_has_akun` (
 
 INSERT INTO `jurnal_has_akun` (`IDJurnal`, `NoAkun`, `Urutan`, `NominalDebet`, `NominalKredit`) VALUES
 (1, '101', 2, '0', '12000000'),
+(1, '106', 1, '12000000', '0'),
 (2, '101', 1, '800000', '0'),
+(2, '106', 4, '0', '400000'),
 (2, '401', 2, '0', '800000'),
 (2, '501', 3, '400000', '0'),
 (3, '107', 1, '20000000', '0'),
 (3, '201', 2, '0', '20000000'),
 (4, '104', 1, '5500000', '0'),
+(4, '106', 6, '0', '2500000'),
 (4, '107', 5, '0', '1000000'),
 (4, '204', 3, '0', '500000'),
 (4, '401', 2, '0', '5000000'),
 (4, '501', 4, '3500000', '0'),
 (5, '102', 2, '0', '4500000'),
 (5, '107', 1, '4500000', '0'),
-(6, '107', 1, '45000000', '0'),
 (6, '103', 2, '0', '45000000'),
-(6, '107', 3, '200000', '0'),
 (6, '103', 4, '0', '200000'),
-(7, '201', 1, '20000000', '0'),
+(6, '107', 1, '45000000', '0'),
+(6, '107', 3, '200000', '0'),
 (7, '101', 2, '0', '19600000'),
 (7, '107', 3, '0', '400000'),
+(7, '201', 1, '20000000', '0'),
 (8, '101', 1, '5445000', '0'),
 (8, '104', 2, '0', '5500000'),
 (8, '402', 3, '55000', '0'),
-(9, '106', 1, '750000', '0'),
 (9, '103', 2, '0', '750000'),
+(9, '106', 1, '750000', '0'),
 (10, '105', 1, '4950000', '0'),
+(10, '106', 4, '0', '1626923'),
 (10, '401', 2, '0', '4950000'),
 (10, '501', 3, '1626923', '0'),
-(10, '106', 4, '0', '1626923'),
 (11, '101', 1, '4950000', '0'),
-(11, '105', 2, '0', '4950000'),
-(1, '106', 1, '12000000', '0'),
-(2, '106', 4, '0', '400000'),
-(4, '106', 6, '0', '2500000');
+(11, '105', 2, '0', '4950000');
 
 -- --------------------------------------------------------
 
@@ -234,6 +270,16 @@ CREATE TABLE `laporan` (
   `IDLaporan` char(2) NOT NULL,
   `Nama` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `laporan`
+--
+
+INSERT INTO `laporan` (`IDLaporan`, `Nama`) VALUES
+('AK', 'Arus KAs'),
+('LR', 'Laporan Laba Rugi'),
+('NR', 'Laporan Neraca'),
+('PE', 'Laporan Perubahan Ekuitas');
 
 -- --------------------------------------------------------
 
@@ -470,72 +516,6 @@ INSERT INTO `supplier` (`KodeSupplier`, `Nama`) VALUES
 (3, 'UD ''MAKMUR BAHAGIA'''),
 (4, 'UD ''SUKSES SEJATI''');
 
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `vbukubesar`
---
-CREATE TABLE `vbukubesar` (
-`NoAkun` char(3)
-,`NamaAkun` varchar(100)
-,`Tanggal` date
-,`Keterangan` text
-,`NominalDebet` mediumtext
-,`NominalKredit` mediumtext
-,`NoBukti` varchar(45)
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `vlaporanjurnal`
---
-CREATE TABLE `vlaporanjurnal` (
-`Tanggal` date
-,`Keterangan` text
-,`NamaAkun` varchar(100)
-,`Debet` mediumtext
-,`Kredit` mediumtext
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `vsaldoakhir`
---
-CREATE TABLE `vsaldoakhir` (
-`NoAkun` char(3)
-,`NamaAkun` varchar(100)
-,`SaldoAkhir` double
-);
-
--- --------------------------------------------------------
-
---
--- Structure for view `vbukubesar`
---
-DROP TABLE IF EXISTS `vbukubesar`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vbukubesar`  AS  select `ja`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `NamaAkun`,`j`.`Tanggal` AS `Tanggal`,`j`.`Keterangan` AS `Keterangan`,`ja`.`NominalDebet` AS `NominalDebet`,`ja`.`NominalKredit` AS `NominalKredit`,`j`.`NoBukti` AS `NoBukti` from (((`jurnal_has_akun` `ja` join `akun` `a` on((`ja`.`NoAkun` = `a`.`NoAkun`))) join `periode_has_akun` `p` on((`p`.`NoAkun` = `a`.`NoAkun`))) join `jurnal` `j` on((`ja`.`IDJurnal` = `j`.`IDJurnal`))) order by `ja`.`NoAkun` ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `vlaporanjurnal`
---
-DROP TABLE IF EXISTS `vlaporanjurnal`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vlaporanjurnal`  AS  select `j`.`Tanggal` AS `Tanggal`,`j`.`Keterangan` AS `Keterangan`,`a`.`Nama` AS `NamaAkun`,`ja`.`NominalDebet` AS `Debet`,`ja`.`NominalKredit` AS `Kredit` from ((`jurnal` `j` join `jurnal_has_akun` `ja` on((`j`.`IDJurnal` = `ja`.`IDJurnal`))) join `akun` `a` on((`ja`.`NoAkun` = `a`.`NoAkun`))) order by `j`.`IDJurnal`,`ja`.`Urutan` ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `vsaldoakhir`
---
-DROP TABLE IF EXISTS `vsaldoakhir`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vsaldoakhir`  AS  select `ja`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `NamaAkun`,(`p`.`SaldoAwal` + ((sum(`ja`.`NominalDebet`) - sum(`ja`.`NominalKredit`)) * `a`.`SaldoNormal`)) AS `SaldoAkhir` from ((`jurnal_has_akun` `ja` join `akun` `a` on((`ja`.`NoAkun` = `a`.`NoAkun`))) join `periode_has_akun` `p` on((`p`.`NoAkun` = `a`.`NoAkun`))) group by `ja`.`NoAkun`,`a`.`Nama`,`p`.`SaldoAwal` order by `ja`.`NoAkun` ;
-
 --
 -- Indexes for dumped tables
 --
@@ -584,6 +564,7 @@ ALTER TABLE `jurnal`
 -- Indexes for table `jurnal_has_akun`
 --
 ALTER TABLE `jurnal_has_akun`
+  ADD PRIMARY KEY (`IDJurnal`,`NoAkun`,`Urutan`),
   ADD KEY `fk_Jurnal_has_Akun_Akun1_idx` (`NoAkun`),
   ADD KEY `fk_Jurnal_has_Akun_Jurnal1_idx` (`IDJurnal`);
 
