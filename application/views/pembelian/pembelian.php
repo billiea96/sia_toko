@@ -21,14 +21,15 @@
         </div>
         <div class="box-body">
           <?php echo validation_errors(); ?>
-          <form class="form-horizontal">
+          <form class="form-horizontal" id="form_pembelian" action="<?php echo site_url('Pembelian/create_nota'); ?>" method="POST">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="noNota" class="col-xs-4 control-label">No Nota</label>
 
                   <div class="col-xs-6">
-                    <input type="text" class="form-control" id="noNota" name="nota" required="">
+                    <input type="text" class="form-control" value="" disabled>
+                    <input type="hidden" name="NoNotaBeli" value="">
                   </div>
                 </div>
 
@@ -37,7 +38,7 @@
 
                   <div class="col-xs-6">
                     <div class="input-group date">
-                      <input type="text" class="form-control pull-right" id="idTgl" name="tgl" required="">
+                      <input type="text" class="form-control pull-right" id="idTgl" name="tgl">
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
@@ -48,10 +49,10 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="supplier" class="col-xs-4 control-label">Supplier</label>
+                  <label for="supplier" class="col-xs-4 control-label">supplier</label>
 
                   <div class="col-xs-6">
-                    <select class="form-control select2" id="idSupplier" name="supplier" required="">
+                    <select class="form-control select2" id="idCustomer" name="customer">
                       <option></option>
                       <?php foreach ($supplier as $key => $value) { ?>
                       <option value="<?php echo $value['KodeSupplier'] ?>"><?php echo $value['Nama']; ?></option>
@@ -67,12 +68,12 @@
 
           <form>
             <div class="row" style="padding-left: 100px; padding-right: 100px;">
-              <div class="col-xs-1"></div>
+              <div class="col-xs-2"></div>
               <div class="col-xs-4">
                 <div class="form-group">
                   <center><label>Nama Barang</label></center>
 
-                  <select class="form-control select2" id="idBarang" name="barang" required="">
+                  <select class="form-control select2" id="idBarang" name="barang">
                     <option></option>
                     <?php foreach ($barang as $key => $value) { ?>
                     <option value="<?php echo $value['KodeBarang'] ?>"><?php echo $value['Nama']; ?></option>
@@ -84,9 +85,10 @@
                 <div class="form-group">
                   <center><label>Jumlah</label></center>
 
-                  <input type="number" min="0" class="form-control" id="idJumlah" name="jumlah" required>
+                  <input type="number" min="1" class="form-control" id="idJumlah" name="jumlah" placeholder="">
                 </div>
               </div>
+
               <div class="col-xs-3">
                 <div class="form-group">
                   <center><label>Harga</label></center>
@@ -99,15 +101,7 @@
               </div>
               <div class="col-xs-2">
                 <div style="height: 20px; margin-bottom: 5px;"></div>
-                <button id="tambahBarang" class="btn btn-info" style="width: 100px">+</button>
-              </div>
-            </div>
-          </form>
-          <form>
-            <div class="row" style="padding-left: 100px; padding-right: 100px;">
-              <div class="col-xs-10"></div>
-              <div class="col-xs-2">
-                <button type="submit" class="btn btn-danger" style="width: 100px">Clear</button>
+                <span onclick="add_cart()" class="btn btn-info" style="width: 100px">+</span>
               </div>
             </div>
           </form>
@@ -125,11 +119,13 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body table-responsive no-padding">
-          <table class="table table-hover table-bordered" id="tableBarang">
+          <table class="table table-hover table-bordered">
+            <div align="right" class="col-xs-11 col-sm-offset-1">
+              <button id="clear" class="btn btn-warning" style="width: 100px">Clear</button>
+            </div>
             <thead>
               <tr>
                 <th>No</th>
-                <th>Kode Barang</th>
                 <th>Nama</th>
                 <th>Jumlah</th>
                 <th>Harga</th>
@@ -137,16 +133,9 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-            </tbody>
+            <tbody id="tbody">
+            </tbody>            
           </table>
-          <div class="col-md-7">
-            <label class="pull-right">Total</label>
-          </div>
-          <div class="col-md-5">
-            <label>Rp.</label>
-            <label id="totalHarga"></label>
-          </div>
         </div>
         <!-- /.box-body -->
       </div>
@@ -155,7 +144,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-6">
+     <div class="col-md-6">
       <div class="box box-info">
         <div class="box-header">
           <h3 class="box-title"></h3>
@@ -163,44 +152,36 @@
         <div class="box-body">
           <form class="form-horizontal">
             <div class="form-group">
-              <label for="jPembayaran" class="col-xs-4 control-label">Jenis Pembayaran</label>
-
-              <div class="col-xs-6">
-                <select class="form-control select2" id="idJPembayaran" name="jPembayaran">
-                  <option value="T">Tunai</option>
-                  <option value="TR">Transfer</option>
-                  <option value="K">Kredit</option>
-                  <option value="C">Cek</option>
-                </select>
+              <div class="col-xs-2"></div>
+              <div class="checkbox col-xs-6">
+                <label>
+                  <input form="form_pembelian" type="checkbox" id="idKirim">
+                  <input form="form_pembelian" type="hidden" id="idStatusKirim" name="kirim" value="false">
+                  <b>Barang Dikirim</b>
+                </label>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="jt" class="col-xs-4 control-label">Tanggal Jatuh Tempo</label>
+              <label for="biayaKirim" class="col-xs-4 control-label">Biaya Kirim</label>
 
               <div class="col-xs-6">
-                <div class="input-group date">
-                  <input type="text" class="form-control pull-right" id="idJT" name="jt" disabled="">
-                  <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                  </div>
+                <div class="input-group">
+                  <span class="input-group-addon">Rp.</span>
+                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idBiayaKirim" name="biayaKirim" disabled="">
                 </div>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="noRek" class="col-xs-4 control-label bank">No Rekening Bank</label>
+              <label for="fob" class="col-xs-4 control-label">Jenis Pengiriman</label>
 
               <div class="col-xs-6">
-                <input type="text" class="form-control" id="idNoRek" name="noRek" disabled="">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="namaBank" class="col-xs-4 control-label bank">Bank</label>
-
-              <div class="col-xs-6">
-                <input type="text" class="form-control" id="idNamaBank" name="namaBank" disabled="">
+                <select form="form_pembelian" class="form-control select2" id="idFOB" name="fob">
+                  <option value=""></option>
+                  <option value="FOB Shipping Point">FOB Shipping Point</option>
+                  <option value="FOB Destination Point">FOB Destination Point</option>
+                </select>
               </div>
             </div>
           </form>
@@ -216,46 +197,91 @@
         <div class="box-body">
           <form class="form-horizontal">
             <div class="form-group">
-              <div class="col-xs-2"></div>
-              <div class="checkbox col-xs-6">
-                <label>
-                  <input type="checkbox" id="idKirim" name="kirim">
-                  <b>Barang Dikirim</b>
-                </label>
+              <label for="jPembayaran" class="col-xs-4 control-label">Jenis Pembayaran</label>
+
+              <div class="col-xs-6">
+                <select form="form_pembelian" class="form-control select2" id="idJPembayaran" name="jPembayaran">
+                  <option value="T">Tunai</option>
+                  <option value="TR">Transfer</option>
+                  <option value="K">Kredit</option>
+                  <option value="C">Cek</option>
+                </select>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="biayaKirim" class="col-xs-4 control-label">Biaya Kirim</label>
+              <label for="jt" class="col-xs-4 control-label">Tanggal Jatuh Tempo</label>
 
               <div class="col-xs-6">
-                <div class="input-group">
-                  <span class="input-group-addon">Rp.</span>
-                  <input type="number" min="0" class="form-control" id="idBiayaKirim" name="biayaKirim" disabled="">
+                <div class="input-group date">
+                  <input form="form_pembelian" type="text" class="form-control pull-right" id="idJT" name="jt" disabled="">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <!-- Ini tak comment soalnya di mockup gk ada bank, kalo mau pake tinggal uncomment doang -->
+
+            <!-- <div class="form-group">
+              <label for="noRek" class="col-xs-4 control-label bank">No Rekening Bank</label>
+
+              <div class="col-xs-6">
+                <input type="text" class="form-control" id="idNoRek" name="noRek" disabled="">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="namaBank" class="col-xs-4 control-label bank">Bank</label>
+
+              <div class="col-xs-6">
+                <input type="text" class="form-control" id="idNamaBank" name="namaBank" disabled="">
+              </div>
+            </div> -->
 
             <div class="form-group">
               <label for="discPelunasan" class="col-xs-4 control-label">Diskon Pelunasan</label>
               
               <div class="col-xs-4">
                 <div class="input-group">
-                  <input type="number" min="0" class="form-control" id="idDiscPelunasan" name="discPelunasan" placeholder="">
+                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idDiscPelunasan" name="discPelunasan" disabled="" placeholder="">
                   <span class="input-group-addon">%</span>
                 </div>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="batasPelunasan" class="col-xs-4 control-label">Batas Pelunasan</label>
+              <label for="batasPelunasan" class="col-xs-4 control-label">Batas Diskon Pelunasan</label>
 
               <div class="col-xs-6">
                 <div class="input-group date">
-                  <input type="text" class="form-control pull-right" id="idBatasPelunasan" name="batasPelunasan">
+                  <input form="form_pembelian" type="text" class="form-control pull-right" id="idBatasPelunasan" disabled="" name="batasPelunasan">
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="disc" class="col-xs-4 control-label">Diskon</label>
+              
+              <div class="col-xs-4">
+                <div class="input-group">
+                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idDisc" name="disc" placeholder="">
+                  <span class="input-group-addon">%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="ppn" class="col-xs-4 control-label">PPN</label>
+              
+              <div class="col-xs-4">
+                <div class="input-group">
+                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idPPN" name="ppn" placeholder="">
+                  <span class="input-group-addon">%</span>
                 </div>
               </div>
             </div>
@@ -275,12 +301,25 @@
         <div class="box-body">
           <form class="form-horizontal">
             <div class="form-group">
+              <label for="bank" class="col-xs-4 control-label">Bank</label>
+
+              <div class="col-xs-6">
+                <select form="form_pembelian" class="form-control select2" id="idBank" name="bank">
+                  <option value=""></option>
+                  <?php foreach ($bank as $key => $value) { ?>
+                    <option value="<?php echo $value['IdBank']; ?>"><?php echo $value['Nama']; ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
               <label for="bayar" class="col-xs-4 control-label">Bayar</label>
 
               <div class="col-xs-6">
                 <div class="input-group">
                   <span class="input-group-addon">Rp.</span>
-                  <input type="number" min="0" class="form-control" id="idBayar" name="bayar" placeholder="">
+                  <input form="form_pembelian" type="number" min="0" onchange="hitungKembalian(this.value)" class="form-control" id="idBayar" name="bayar" placeholder="">
                 </div>
               </div>
             </div>
@@ -291,7 +330,7 @@
               <div class="col-xs-6">
                 <div class="input-group">
                   <span class="input-group-addon">Rp.</span>
-                  <input type="number" min="0" class="form-control" id="idKembalian" name="kembalian" disabled="">
+                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idDisplayKembalian"  disabled="">
                 </div>
               </div>
             </div>
@@ -303,19 +342,22 @@
 
   <div class="row">
     
-    <button type="submit" class="btn btn-success pull-right margin" style="width: 200px">Simpan</button>
+    <button form="form_pembelian" type="submit" class="btn btn-success pull-right margin" style="width: 200px">Simpan</button>
     
   </div>
   <!-- /.row -->
 </section>
 <!-- /.content -->
 <script>
-
   $('#idJPembayaran').change(function(){
     if($(this).val() == "K"){
       $('#idJT').removeAttr('disabled');
+      $('#idDiscPelunasan').removeAttr('disabled');
+      $('#idBatasPelunasan').removeAttr('disabled');
     }else{
-      $('#idJT').attr('disabled', 'disabled')  
+      $('#idJT').attr('disabled', 'disabled');  
+      $('#idDiscPelunasan').attr('disabled', 'disabled');
+      $('#idBatasPelunasan').attr('disabled', 'disabled');
     }
     if($(this).val() == "TR"){
       $('#idNoRek').removeAttr('disabled');
@@ -326,34 +368,83 @@
     }
   });
 
+
   $('#idKirim').click(function(){
-    if($("#idKirim").is(':checked'))
+    if($("#idKirim").is(':checked')){
+      document.getElementById('idStatusKirim').value = 'false';
       $('#idBiayaKirim').removeAttr('disabled');
-  else
+      /*$('#idFOB').removeAttr('disabled');*/
+    }
+    else
       $('#idBiayaKirim').attr('disabled', 'disabled');
-  })
-  var count = 0;
-  var total = 0;
-  var list = [];
-  $('#tambahBarang').click(function(e){
-    e.preventDefault()
-    list[count] = [$('#idBarang').val(), $('#idJumlah').val(), $('#idHarga').val(), ($('#idHarga').val()*$('#idJumlah').val())]
-    count+=1;
-    $('#tableBarang tbody').append(
-        '<tr>'+
-        '<td>'+count+'</td>'+
-        '<td>Gk Tau kode dapet dari mana</td>'+
-        '<td>'+$('#idBarang').val()+'</td>'+
-        '<td>'+$('#idJumlah').val()+'</td>'+
-        '<td>'+$('#idHarga').val()+'</td>'+
-        '<td data-sub='+($('#idHarga').val()*$('#idJumlah').val())+'>'+($('#idHarga').val()*$('#idJumlah').val())+'</td>'+
-        '<td>Edit/Hapus</td>'+
-        '</tr>'
-      )
-    total +=($('#idHarga').val()*$('#idJumlah').val())
-    console.log(total.toString())
-    $('#totalHarga').html(total.toLocaleString(['ban', 'id']))
-  })
+      document.getElementById('idStatusKirim').value = 'true';
+      /*$('#idFOB').attr('disabled', 'disabled');*/
+    });
+
+  function add_cart(){
+    var id_barang = document.getElementById('idBarang').value;
+    var jumlah = document.getElementById('idJumlah').value;    
+    var harga = document.getElementById('idHarga').value;
+
+    $.ajax({
+      url:"<?php echo site_url('Pembelian/add_cart'); ?>",
+      method:'POST',
+      data:{'id_barang':id_barang,'jumlah':jumlah,'harga':harga},
+      success:function(data){
+        alert('Barang ditambahkan dalam keranjang');
+        $('#tbody').html(data);
+      },
+      error:function(){
+        alert('Gagal tambah barang ke keranjang');
+      }
+    });
+
+  }
+
+  $('#tbody').load('<?php echo site_url('Pembelian/load') ?>');
+
+  $(document).on('click','.hapus-barang',function(){
+    var row_id = $(this).attr("id");
+    if(confirm("Ingin hapus barang ini?")){
+      $.ajax({
+        url:'<?php echo site_url("Pembelian/remove") ?>',
+        method:'POST',
+        data:{'row_id':row_id},
+        success:function(data){
+          alert('Barang berhasil dihapus');
+          $('#tbody').html(data);
+        },
+        error:function(){
+          alert('Gagal menghapus barang');
+        }
+      });
+    } 
+    else{
+      return false;
+    }
+  });
+
+  $(document).on('click','#clear',function(){
+    if(confirm('Ingin menghapus semua barang dikeranjang?')){
+      $.ajax({
+        url:'<?php echo site_url('Pembelian/clear_cart'); ?>',
+        success:function(data){
+          alert('Semua barang dalam keranjang dihapus');
+          $('#tbody').html(data);
+        },
+        error:function(){
+          alert('Gagal menghapus semua barang dalam keranjang');
+        }
+      });
+    }
+    else{
+      return false;
+    }
+  });
+  
+  function hitungKembalian(value){
+
+  }
 </script>
 
 <script>
