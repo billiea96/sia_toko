@@ -33,11 +33,22 @@ class PelunasanHutang extends CI_Controller {
     }
 	public function index()
 	{
+		$data['NoNotaBeli'] = $this->NotaBeli_model->get_nota();
+		$data['barang'] = $this->Barang_model->get_barang();
+		$data['supplier'] = $this->Supplier_model->get_supplier();
+		$data['bank'] = $this->Bank_model->get_bank();
 
 		$this->load->view('layout/header');
-		$this->load->view('pelunasan/pelunasanBeli');
+		$this->load->view('pelunasan/pelunasanBeli', $data);
 		$this->load->view('layout/footer');
 	}
+
+	public function detail_nota(){
+		$NotaBeli = $this->NotaBeli_model->get_nota($_POST['noNota']);
+		
+		echo json_encode(array('diskon'=>$NotaBeli['Diskon'], 'total'=>$NotaBeli['Total']));
+	}
+
 	public function create_nota(){
 		$NoNotaBeli = $this->input->post('NoNotaBeli');
 		$tgl = $this->input->post('tgl');

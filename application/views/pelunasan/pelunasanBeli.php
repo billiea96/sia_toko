@@ -28,8 +28,12 @@
                   <label for="noNota" class="col-xs-5 control-label">No Nota</label>
 
                   <div class="col-xs-2">
-                    <input type="text" class="form-control"  disabled>
-                    <input type="hidden" name="NoNotaJual">
+                    <select class="form-control select2" id="idNoNota" name="noNota">
+                      <option></option>
+                      <?php foreach ($NoNotaBeli as $key => $value) { ?>
+                      <option value="<?php echo $value['NoNotaBeli'] ?>"><?php echo $value['NoNotaBeli']; ?></option>
+                      <?php } ?>
+                    </select>
                   </div>
                 </div>
 
@@ -70,7 +74,7 @@
               <div class="form-group">
                   <label for="namaPemilik" class="col-xs-5 control-label">Nama Pemilik Rekening</label>
 
-                  <div class="col-xs-2">
+                  <div class="col-xs-3">
                     <input type="text" class="form-control" id="idNamaPemilik"  disabled>
                     <input type="hidden" name="namaPemilik">
                   </div>
@@ -90,7 +94,7 @@
             	<div class="form-group">
               		<label for="discPelunasan" class="col-xs-5 control-label">Diskon Pelunasan</label>
               
-              		<div class="col-xs-3">
+              		<div class="col-xs-2">
                 		<div class="input-group">
                   		<input form="form_pelunasanJual" type="number" min="0" class="form-control" id="idDiscPelunasan" name="discPelunasan" disabled="" placeholder="">
                   		<span class="input-group-addon">%</span>
@@ -146,12 +150,32 @@ $('#idJPembayaran').change(function(){
       $('#idNoRek').attr('disabled', 'disabled');
       $('#idNamaPemilik').attr('disabled', 'disabled');
     }
-  });
+});
+
+$('#idNoNota').change(function(){
+  $.ajax({
+    url: '<?php echo site_url('PelunasanHutang/detail_nota'); ?>',
+    method: 'POST',
+    dataType: 'json',
+    data: {'noNota': $(this).val()},
+    success:function(data){
+      alert(data.total)
+      $('#idDisplayNominal').val(data.total);
+      $('#idDiscPelunasan').val(data.diskon);
+    }
+  })
+})
+
 $(function () {
     // Date picker
     $('#idTgl').datepicker({
       format: 'yyyy-m-d',
       autoclose: true
     })
+  })
+$(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
   })
 </script>

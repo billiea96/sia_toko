@@ -23,7 +23,7 @@ class PelunasanPiutang extends CI_Controller {
         $this->load->model('Barang_model');
         $this->load->model('Supplier_model');
         $this->load->model('Bank_model');
-        $this->load->model('NotaBeli_model');
+        $this->load->model('NotaJual_model');
         $this->load->model('Pembelian_model');
         $this->load->helper('url_helper');
         $this->load->helper('form');
@@ -33,11 +33,22 @@ class PelunasanPiutang extends CI_Controller {
     }
 	public function index()
 	{
+        $data['NoNotaJual'] = $this->NotaJual_model->pembayaran_kredit();
+		$data['barang'] = $this->Barang_model->get_barang();
+		$data['supplier'] = $this->Supplier_model->get_supplier();
+		$data['bank'] = $this->Bank_model->get_bank();
 
 		$this->load->view('layout/header');
-		$this->load->view('pelunasan/pelunasanJual');
+		$this->load->view('pelunasan/pelunasanJual', $data);
 		$this->load->view('layout/footer');
 	}
+
+	public function detail_nota(){
+		$NotaJual = $this->NotaJual_model->get_nota($_POST['noNota']);
+		
+		echo json_encode(array('diskon'=>$NotaJual['DiskonPelunasan'], 'total'=>$NotaJual['Total']));
+	}
+
 	public function create_nota(){
 		$NoNotaBeli = $this->input->post('NoNotaBeli');
 		$tgl = $this->input->post('tgl');

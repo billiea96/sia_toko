@@ -25,4 +25,9 @@ class NotaJual_model extends CI_Model {
         $query = $this->db->get('nota_jual');
         return $query->row_array();
     }
+
+    public function pembayaran_kredit(){
+        $query = $this->db->query('SELECT * FROM nota_jual WHERE JenisPembayaran = "K"');
+        return $query->result_array();
+    }
 }
