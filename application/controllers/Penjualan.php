@@ -60,15 +60,9 @@ class Penjualan extends CI_Controller {
 		$tgl = $this->input->post('tgl');
 		$customer = $this->input->post('customer');
 
-		$temp = explode('/', $tgl);
-
-		$hari = $temp[1];
-		$bulan = $temp[0];
-		$tahun = $temp[2];			
-
 		$dataNotaJual = array(
 			'NoNotaJual' => $NoNotaJual,
-			'Tanggal' => $tahun.'-'.$bulan.'-'.$hari,
+			'Tanggal' => $tgl,
 			'KodePelanggan' => $customer,
 			'StatusKirim' => 1,
 		);

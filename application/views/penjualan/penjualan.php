@@ -433,18 +433,21 @@
   $(function () {
     // Date picker
     $('#idTgl').datepicker({
+      format: 'yyyy-m-d',
       autoclose: true
     })
   })
   $(function () {
     // Date picker
     $('#idJT').datepicker({
+      format: 'yyyy-m-d',
       autoclose: true
     })
   })
   $(function () {
     // Date picker
     $('#idBatasPelunasan').datepicker({
+      format: 'yyyy-m-d',
       autoclose: true
     })
   })

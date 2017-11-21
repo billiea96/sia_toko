@@ -23,6 +23,8 @@ class Pembelian extends CI_Controller {
         $this->load->model('Barang_model');
         $this->load->model('Supplier_model');
         $this->load->model('Bank_model');
+        $this->load->model('NotaBeli_model');
+        $this->load->model('Pembelian_model');
         $this->load->helper('url_helper');
         $this->load->helper('form');
     	$this->load->library('form_validation');
@@ -31,6 +33,20 @@ class Pembelian extends CI_Controller {
     }
 	public function index()
 	{
+		$angka = '';
+        if($this->NotaBeli_model->get_last_nota()) {
+            $temp = $this->NotaBeli_model->get_last_nota();
+            $angka = intval(substr($temp['NoNotaBeli'], 7, 4)) + 1;
+            $tempAngka = '';
+            for($i = 0; $i < (4 - strlen($angka)); $i++) {
+                $tempAngka .= '0';
+            }
+            $angka = $tempAngka.$angka;
+        } else {
+            $angka = '0001';
+        }
+
+        $data['NoNotaBeli'] = date('Y').'/NB'.$angka;
 		$data['barang'] = $this->Barang_model->get_barang();
 		$data['supplier'] = $this->Supplier_model->get_supplier();
 		$data['bank'] = $this->Bank_model->get_bank();
@@ -40,6 +56,78 @@ class Pembelian extends CI_Controller {
 		$this->load->view('layout/header');
 		$this->load->view('pembelian/pembelian',$data);
 		$this->load->view('layout/footer');
+	}
+	public function create_nota(){
+		$NoNotaBeli = $this->input->post('NoNotaBeli');
+		$tgl = $this->input->post('tgl');
+		$customer = $this->input->post('supplier');		
+
+		$dataNotaBeli = array(
+			'NoNotaBeli' => $NoNotaBeli,
+			'Tanggal' => $tgl,
+			'KodeSupplier' => $customer,
+			'StatusKirim' => 1,
+		);
+
+		//Jika ada pengiriman
+		if($this->input->post('kirim')=='true'){
+			$biayaKirim = $this->input->post('biayaKirim');
+			$fob = $this->input->post('fob');
+
+			$dataNotaBeli['OngkosKirim'] = $biayaKirim;
+			$dataNotaBeli['FOB'] = $fob;
+		}
+
+		if($this->input->post('jPembayaran')=='K'){
+			$jenisPembayaran = $this->input->post('jPembayaran');
+			$tanggalJatuhTempo = $this->input->post('jt');
+			$discPelunasan = $this->input->post('discPelunasan');
+			$batasPelunasan = $this->input->post('batasPelunasan');
+
+			$dataNotaBeli['JenisPembayaran'] = $jenisPembayaran;
+			$dataNotaBeli['DiskonPelunasan'] = $discPelunasan;
+			$dataNotaBeli['TanggalBatasDiskon'] = $batasPelunasan;
+			$dataNotaBeli['TanggalJatuhTempo'] = $tanggalJatuhTempo;
+		}
+		else{
+			$jenisPembayaran = $this->input->post('jPembayaran');
+
+			$dataNotaBeli['JenisPembayaran'] = $jenisPembayaran;
+		}
+		if($this->input->post('disc')!=''){
+			$disc = $this->input->post('disc');
+
+			$dataNotaBeli['Diskon'] = $disc;
+		}
+		if($this->input->post('bank')!=''){
+			$bank = $this->input->post('bank');
+
+			$dataNotaBeli['bank'] = $bank;
+		}
+
+		$total = $this->input->post('total');
+		$bayar = $this->input->post('bayar');
+
+		$dataNotaBeli['Total'] = $total;
+		$dataNotaBeli['Bayar'] = $bayar;
+
+
+		if($this->NotaBeli_model->add_nota_beli($dataNotaBeli)){
+			//Untuk mengisi data pada table pembelian
+			foreach($this->cart->contents() as $item){
+				$datapembelian = array(
+					'NoNotaBeli' => $NoNotaBeli,
+					'KodeBarang' => $item['id'],
+					'Harga' => $item['price'],
+					'Jumlah' => $item['qty'],
+				);
+
+				$this->Pembelian_model->add_pembelian($datapembelian);
+			}
+			header("Location: ".site_url('Pembelian/index'));
+		}
+		echo $dataNotaBeli['Tanggal'];
+
 	}
 
 	//untuk mengisi keranjang belanja
@@ -80,7 +168,7 @@ class Pembelian extends CI_Controller {
 				<td colspan="4">Total</td>
 				<td colspan="2" align="center">Rp. '.$this->cart->total().'</td>
 			</tr>
-			<input type="hidden" form="form_penjualan" id="idTotal" name="total" value="'.$this->cart->total().'">
+			<input type="hidden" form="form_pembelian" id="idTotal" name="total" value="'.$this->cart->total().'">
 		';
 
 		if($count==0)

@@ -28,8 +28,8 @@
                   <label for="noNota" class="col-xs-4 control-label">No Nota</label>
 
                   <div class="col-xs-6">
-                    <input type="text" class="form-control" value="" disabled>
-                    <input type="hidden" name="NoNotaBeli" value="">
+                    <input type="text" class="form-control" value="<?php echo $NoNotaBeli; ?>" disabled>
+                    <input type="hidden" name="NoNotaBeli" value="<?php echo $NoNotaBeli; ?>">
                   </div>
                 </div>
 
@@ -52,7 +52,7 @@
                   <label for="supplier" class="col-xs-4 control-label">supplier</label>
 
                   <div class="col-xs-6">
-                    <select class="form-control select2" id="idCustomer" name="customer">
+                    <select class="form-control select2" id="idSupplier" name="supplier">
                       <option></option>
                       <?php foreach ($supplier as $key => $value) { ?>
                       <option value="<?php echo $value['KodeSupplier'] ?>"><?php echo $value['Nama']; ?></option>
@@ -68,7 +68,7 @@
 
           <form>
             <div class="row" style="padding-left: 100px; padding-right: 100px;">
-              <div class="col-xs-2"></div>
+              <div class="col-xs-1"></div>
               <div class="col-xs-4">
                 <div class="form-group">
                   <center><label>Nama Barang</label></center>
@@ -276,13 +276,15 @@
             </div>
 
             <div class="form-group">
-              <label for="ppn" class="col-xs-4 control-label">PPN</label>
-              
-              <div class="col-xs-4">
-                <div class="input-group">
-                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idPPN" name="ppn" placeholder="">
-                  <span class="input-group-addon">%</span>
-                </div>
+              <label for="bank" class="col-xs-4 control-label">Bank</label>
+
+              <div class="col-xs-6">
+                <select form="form_pembelian" class="form-control select2" id="idBank" name="bank">
+                  <option value=""></option>
+                  <?php foreach ($bank as $key => $value) { ?>
+                    <option value="<?php echo $value['IdBank']; ?>"><?php echo $value['Nama']; ?></option>
+                  <?php } ?>
+                </select>
               </div>
             </div>
           </form>
@@ -300,19 +302,6 @@
         </div>
         <div class="box-body">
           <form class="form-horizontal">
-            <div class="form-group">
-              <label for="bank" class="col-xs-4 control-label">Bank</label>
-
-              <div class="col-xs-6">
-                <select form="form_pembelian" class="form-control select2" id="idBank" name="bank">
-                  <option value=""></option>
-                  <?php foreach ($bank as $key => $value) { ?>
-                    <option value="<?php echo $value['IdBank']; ?>"><?php echo $value['Nama']; ?></option>
-                  <?php } ?>
-                </select>
-              </div>
-            </div>
-
             <div class="form-group">
               <label for="bayar" class="col-xs-4 control-label">Bayar</label>
 
@@ -458,18 +447,21 @@
   $(function () {
     // Date picker
     $('#idTgl').datepicker({
+      format: 'yyyy-m-d',
       autoclose: true
     })
   })
   $(function () {
     // Date picker
     $('#idJT').datepicker({
+      format: 'yyyy-m-d',
       autoclose: true
     })
   })
   $(function () {
     // Date picker
     $('#idBatasPelunasan').datepicker({
+      format: 'yyyy-m-d',
       autoclose: true
     })
   })
