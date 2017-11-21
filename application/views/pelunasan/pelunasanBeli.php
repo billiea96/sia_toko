@@ -21,7 +21,7 @@
         </div>
         <div class="box-body">
           <?php echo validation_errors(); ?>
-          <form class="form-horizontal" id="form_pelunasanJual" action="<?php echo site_url('Penjualan/create_nota'); ?>" method="POST">
+          <form class="form-horizontal" id="form_pelunasanJual" action="<?php echo site_url('PelunasanHutang/simpan'); ?>" method="POST">
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
@@ -63,11 +63,23 @@
             	</div>
 
               <div class="form-group">
+                  <label for="bank" class="col-xs-5 control-label">Bank</label>
+
+                  <div class="col-xs-2">
+                    <select class="form-control select2" id="idBank" name="bank" disabled="">
+                      <option></option>
+                      <?php foreach ($bank as $key => $value) { ?>
+                      <option value="<?php echo $value['IdBank'] ?>"><?php echo $value['Nama']; ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                </div>
+
+              <div class="form-group">
                   <label for="noRek" class="col-xs-5 control-label">No Rekening</label>
 
                   <div class="col-xs-2">
-                    <input type="text" class="form-control" id="idNoRek" disabled>
-                    <input type="hidden" name="noRek">
+                    <input type="text" class="form-control" id="idNoRek" name="noRek" disabled>
                   </div>
               </div>
 
@@ -75,8 +87,7 @@
                   <label for="namaPemilik" class="col-xs-5 control-label">Nama Pemilik Rekening</label>
 
                   <div class="col-xs-3">
-                    <input type="text" class="form-control" id="idNamaPemilik"  disabled>
-                    <input type="hidden" name="namaPemilik">
+                    <input type="text" class="form-control" id="idNamaPemilik" name="namaPemilik" disabled>
                   </div>
               </div>
 
@@ -87,6 +98,7 @@
                 		<div class="input-group">
                   		<span class="input-group-addon">Rp.</span>
                   		<input form="form_pelunasanJual" type="number" min="0" class="form-control" id="idDisplayNominal"  disabled="">
+                      <input type="hidden" id="nominal" name="nominal">
                 		</div>
               		</div>
             	</div>
@@ -96,7 +108,8 @@
               
               		<div class="col-xs-2">
                 		<div class="input-group">
-                  		<input form="form_pelunasanJual" type="number" min="0" class="form-control" id="idDiscPelunasan" name="discPelunasan" disabled="" placeholder="">
+                  		<input form="form_pelunasanJual" type="number" min="0" class="form-control" id="idDiscPelunasan" disabled="" placeholder="">
+                      <input type="hidden" id="discPelunasan" name="discPelunasan">
                   		<span class="input-group-addon">%</span>
                 		</div>
               		</div>
@@ -109,6 +122,7 @@
                 		<div class="input-group">
                   		<span class="input-group-addon">Rp.</span>
                   		<input form="form_pelunasanJual" type="number" min="0" class="form-control" id="idDisplayTotalBayar"  disabled="">
+                      <input type="hidden" id="totalBayar" name="totalBayar">
                 		</div>
               		</div>
             	</div>
@@ -119,7 +133,7 @@
               		<div class="col-xs-3">
                 		<div class="input-group">
                   		<span class="input-group-addon">Rp.</span>
-                  		<input form="form_penjualan" type="number" min="0" onchange="hitungKembalian(this.value)" class="form-control" id="idBayar" name="bayar" placeholder="">
+                  		<input form="form_penjualan" type="number" min="0" class="form-control" id="idBayar" name="bayar" placeholder="">
                 		</div>
               		</div>
             	</div>
@@ -146,12 +160,43 @@ $('#idJPembayaran').change(function(){
     if($(this).val() == "TR"){
       $('#idNoRek').removeAttr('disabled');
       $('#idNamaPemilik').removeAttr('disabled');
+      $('#idBank').removeAttr('disabled');
+
     }else{
       $('#idNoRek').attr('disabled', 'disabled');
       $('#idNamaPemilik').attr('disabled', 'disabled');
+      $('#idBank').attr('disabled', 'disabled');
     }
 });
 
+
+
+$('#idTgl').change(function(){
+  var sekarang = $(this).val();
+  $.ajax({
+    url: '<?php echo site_url('PelunasanHutang/detail_nota'); ?>',
+    method: 'POST',
+    dataType: 'json',
+    data: {'noNota': $('#idNoNota').val()},
+    success:function(data){
+      if(new Date(sekarang) <= new Date(data.tgl)){
+        $('#idDiscPelunasan').val(data.diskon);
+        $('#idDisplayTotalBayar').val(data.totalBayar);
+        
+        $('#discPelunasan').val(data.diskon);
+        $('#totalBayar').val(data.totalBayar);
+        $('#idBayar').val(data.totalBayar);
+      }else{
+        $('#idDiscPelunasan').val(0);
+        $('#idDisplayTotalBayar').val(data.total);
+
+        $('#discPelunasan').val(0);
+        $('#totalBayar').val(data.total);
+        $('#idBayar').val(data.total);
+      }
+    }
+  })
+});
 $('#idNoNota').change(function(){
   $.ajax({
     url: '<?php echo site_url('PelunasanHutang/detail_nota'); ?>',
@@ -159,9 +204,14 @@ $('#idNoNota').change(function(){
     dataType: 'json',
     data: {'noNota': $(this).val()},
     success:function(data){
-      alert(data.total)
       $('#idDisplayNominal').val(data.total);
       $('#idDiscPelunasan').val(data.diskon);
+      $('#idDisplayTotalBayar').val(data.totalBayar);
+
+      $('#nominal').val(data.total);
+      $('#discPelunasan').val(data.diskon);
+      $('#totalBayar').val(data.totalBayar);
+      $('#idBayar').val(data.totalBayar);
     }
   })
 })

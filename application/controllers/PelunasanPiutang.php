@@ -25,6 +25,7 @@ class PelunasanPiutang extends CI_Controller {
         $this->load->model('Bank_model');
         $this->load->model('NotaJual_model');
         $this->load->model('Pembelian_model');
+        $this->load->model('PelunasanPiutang_model');
         $this->load->helper('url_helper');
         $this->load->helper('form');
     	$this->load->library('form_validation');
@@ -45,8 +46,32 @@ class PelunasanPiutang extends CI_Controller {
 
 	public function detail_nota(){
 		$NotaJual = $this->NotaJual_model->get_nota($_POST['noNota']);
+
+		$totalBayar = $NotaJual['Total'] - ($NotaJual['Total'] * ($NotaJual['DiskonPelunasan']/100));
 		
-		echo json_encode(array('diskon'=>$NotaJual['DiskonPelunasan'], 'total'=>$NotaJual['Total']));
+		echo json_encode(array('diskon'=>$NotaJual['DiskonPelunasan'], 'total'=>$NotaJual['Total'], 'totalBayar' => $totalBayar, 'tgl'=>$NotaJual['TanggalBatasDiskon']));
+	}
+
+	public function simpan(){
+		$nota = $this->input->post('noNota');
+		$tgl = $this->input->post('tgl');
+		$jp = $this->input->post('jPembayaran');
+		$nominal = $this->input->post('nominal');
+		$disc = $this->input->post('discPelunasan');
+		$bayar = $this->input->post('totalBayar');
+
+		$dataSimpan = array(
+			'Tanggal' => $tgl,
+			'NominalSeharusnya' => $nominal,
+			'DiskonPelunasan' => $disc,
+			'Bayar' => $bayar,
+			'JenisPembayaran' => $jp,
+			'NoNotaJual' => $nota
+		);
+
+		if($this->PelunasanPiutang_model->add_pelunasan_piutang($dataSimpan)){
+			header("Location: ".site_url('PelunasanPiutang/index'));
+		}
 	}
 
 	public function create_nota(){

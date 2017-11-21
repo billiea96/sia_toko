@@ -25,6 +25,7 @@ class PelunasanHutang extends CI_Controller {
         $this->load->model('Bank_model');
         $this->load->model('NotaBeli_model');
         $this->load->model('Pembelian_model');
+        $this->load->model('PelunasanHutang_model');
         $this->load->helper('url_helper');
         $this->load->helper('form');
     	$this->load->library('form_validation');
@@ -33,7 +34,7 @@ class PelunasanHutang extends CI_Controller {
     }
 	public function index()
 	{
-		$data['NoNotaBeli'] = $this->NotaBeli_model->get_nota();
+		$data['NoNotaBeli'] = $this->NotaBeli_model->pembayaran_kredit();
 		$data['barang'] = $this->Barang_model->get_barang();
 		$data['supplier'] = $this->Supplier_model->get_supplier();
 		$data['bank'] = $this->Bank_model->get_bank();
@@ -45,8 +46,38 @@ class PelunasanHutang extends CI_Controller {
 
 	public function detail_nota(){
 		$NotaBeli = $this->NotaBeli_model->get_nota($_POST['noNota']);
+
+		$totalBayar = $NotaBeli['Total'] - ($NotaBeli['Total'] * ($NotaBeli['DiskonPelunasan']/100));
 		
-		echo json_encode(array('diskon'=>$NotaBeli['Diskon'], 'total'=>$NotaBeli['Total']));
+		echo json_encode(array('diskon'=>$NotaBeli['DiskonPelunasan'], 'total'=>$NotaBeli['Total'], 'totalBayar' => $totalBayar, 'tgl'=>$NotaBeli['TanggalBatasDiskon']));
+	}
+
+	public function simpan(){
+		$nota = $this->input->post('noNota');
+		$tgl = $this->input->post('tgl');
+		$jp = $this->input->post('jPembayaran');
+		$nominal = $this->input->post('nominal');
+		$disc = $this->input->post('discPelunasan');
+		$bayar = $this->input->post('totalBayar');
+		$idbank = $this->input->post('bank');
+		$norek = $this->input->post('noRek');
+		$pemelikBank = $this->input->post('namaPemilik');
+
+		$dataSimpan = array(
+			'Tanggal' => $tgl,
+			'NominalSeharusnya' => $nominal,
+			'DiskonPelunasan' => $disc,
+			'Bayar' => $bayar,
+			'JenisPembayaran' => $jp,
+			'NoNotaBeli' => $nota,
+			'IdBank' => $idbank,
+			'NoRekening' => $norek,
+			'PemilikRekening' => $pemilikBank
+		);
+
+		if($this->PelunasanHutang_model->add_pelunasan_hutang($dataSimpan)){
+			header("Location: ".site_url('PelunasanHutang/index'));
+		}
 	}
 
 	public function create_nota(){

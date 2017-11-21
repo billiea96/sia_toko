@@ -21,7 +21,7 @@
         </div>
         <div class="box-body">
           <?php echo validation_errors(); ?>
-          <form class="form-horizontal" id="form_pelunasanJual" action="<?php echo site_url('Penjualan/create_nota'); ?>" method="POST">
+          <form class="form-horizontal" id="form_pelunasanJual" action="<?php echo site_url('PelunasanPiutang/simpan'); ?>" method="POST">
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
@@ -68,7 +68,8 @@
               		<div class="col-xs-3">
                 		<div class="input-group">
                   		<span class="input-group-addon">Rp.</span>
-                  		<input form="form_pelunasanJual" type="number" min="0" class="form-control" id="idDisplayNominal" name="nominal"  disabled="">
+                  		<input form="form_pelunasanJual" type="number" min="0" class="form-control" id="idDisplayNominal" disabled="">
+                      <input type="hidden" id="nominal" name="nominal">
                 		</div>
               		</div>
             	</div>
@@ -78,7 +79,8 @@
               
               		<div class="col-xs-2">
                 		<div class="input-group">
-                  		<input form="form_pelunasanJual" type="number" min="0" class="form-control" id="idDiscPelunasan" name="discPelunasan" disabled="" placeholder="">
+                  		<input form="form_pelunasanJual" type="number" min="0" class="form-control" id="idDiscPelunasan" disabled="" placeholder="">
+                      <input type="hidden" id="discPelunasan" name="discPelunasan">
                   		<span class="input-group-addon">%</span>
                 		</div>
               		</div>
@@ -90,7 +92,8 @@
               		<div class="col-xs-3">
                 		<div class="input-group">
                   		<span class="input-group-addon">Rp.</span>
-                  		<input form="form_pelunasanJual" type="number" min="0" class="form-control" id="idDisplayTotalBayar" name="totalBayar" disabled="">
+                  		<input form="form_pelunasanJual" type="number" min="0" class="form-control" id="idDisplayTotalBayar" disabled="">
+                      <input type="hidden" id="totalBayar" name="totalBayar">
                 		</div>
               		</div>
             	</div>
@@ -124,6 +127,32 @@
 <!-- /.content -->
 
 <script>
+$('#idTgl').change(function(){
+  var sekarang = $(this).val();
+  $.ajax({
+    url: '<?php echo site_url('PelunasanPiutang/detail_nota'); ?>',
+    method: 'POST',
+    dataType: 'json',
+    data: {'noNota': $('#idNoNota').val()},
+    success:function(data){
+      if(new Date(sekarang) <= new Date(data.tgl)){
+        $('#idDiscPelunasan').val(data.diskon);
+        $('#idDisplayTotalBayar').val(data.totalBayar);
+        
+        $('#discPelunasan').val(data.diskon);
+        $('#totalBayar').val(data.totalBayar);
+        $('#idBayar').val(data.totalBayar);
+      }else{
+        $('#idDiscPelunasan').val(0);
+        $('#idDisplayTotalBayar').val(data.total);
+
+        $('#discPelunasan').val(0);
+        $('#totalBayar').val(data.total);
+        $('#idBayar').val(data.total);
+      }
+    }
+  })
+});
 $('#idNoNota').change(function(){
   $.ajax({
     url: '<?php echo site_url('PelunasanPiutang/detail_nota'); ?>',
@@ -131,9 +160,14 @@ $('#idNoNota').change(function(){
     dataType: 'json',
     data: {'noNota': $(this).val()},
     success:function(data){
-      alert(data.total)
       $('#idDisplayNominal').val(data.total);
       $('#idDiscPelunasan').val(data.diskon);
+      $('#idDisplayTotalBayar').val(data.totalBayar);
+
+      $('#nominal').val(data.total);
+      $('#discPelunasan').val(data.diskon);
+      $('#totalBayar').val(data.totalBayar);
+      $('#idBayar').val(data.totalBayar);
     }
   })
 })
