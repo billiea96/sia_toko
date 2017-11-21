@@ -102,7 +102,7 @@ class Pembelian extends CI_Controller {
 		if($this->input->post('bank')!=''){
 			$bank = $this->input->post('bank');
 
-			$dataNotaBeli['bank'] = $bank;
+			$dataNotaBeli['IdBank'] = $bank;
 		}
 
 		$total = $this->input->post('total');
