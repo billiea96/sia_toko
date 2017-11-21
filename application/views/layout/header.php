@@ -182,6 +182,8 @@
         <li class="active treeview menu-open">
           <li><a href="<?php echo site_url('Penjualan') ?>"><i class="fa fa-circle-o text-aqua"></i> <span>Penjualan</span></a></li>
           <li><a href="<?php echo site_url('Pembelian') ?>"><i class="fa fa-circle-o text-aqua"></i> <span>Pembelian</span></a></li>
+          <li><a href="<?php echo site_url('PelunasanPiutang') ?>"><i class="fa fa-circle-o text-red"></i> <span>Pelunasan Piutang</span></a></li>
+          <li><a href="<?php echo site_url('PelunasanHutang') ?>"><i class="fa fa-circle-o text-yellow"></i> <span>Pelunasan Hutang</span></a></li>
         </li>
       </ul>
     </section>
