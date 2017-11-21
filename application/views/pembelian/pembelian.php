@@ -177,7 +177,7 @@
               <label for="fob" class="col-xs-4 control-label">Jenis Pengiriman</label>
 
               <div class="col-xs-6">
-                <select form="form_pembelian" class="form-control select2" id="idFOB" name="fob">
+                <select form="form_pembelian" class="form-control select2" id="idFOB" name="fob" disabled="">
                   <option value=""></option>
                   <option value="FOB Shipping Point">FOB Shipping Point</option>
                   <option value="FOB Destination Point">FOB Destination Point</option>
@@ -362,13 +362,14 @@
     if($("#idKirim").is(':checked')){
       document.getElementById('idStatusKirim').value = 'false';
       $('#idBiayaKirim').removeAttr('disabled');
-      /*$('#idFOB').removeAttr('disabled');*/
+      $('#idFOB').removeAttr('disabled');
     }
-    else
-      $('#idBiayaKirim').attr('disabled', 'disabled');
+    else{
+       $('#idBiayaKirim').attr('disabled', 'disabled');
       document.getElementById('idStatusKirim').value = 'true';
-      /*$('#idFOB').attr('disabled', 'disabled');*/
-    });
+      $('#idFOB').attr('disabled', 'disabled');
+    }
+  });
 
   function add_cart(){
     var id_barang = document.getElementById('idBarang').value;
