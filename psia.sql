@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2017 at 02:31 PM
+-- Generation Time: Nov 21, 2017 at 03:17 PM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 7.0.4
 
@@ -150,10 +150,10 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`KodeBarang`, `Nama`, `HargaJual`, `HargaBeliRata2`, `Stok`, `NoJenisBarang`) VALUES
-(1, 'Buku Gambar ''Disney''', 40000, 20000, 100, 1),
-(2, 'Map ''Rainbow''', 70000, 50000, 200, 2),
-(3, 'Sapu ''Cleany Sweep''', 150000, 100000, 100, 2),
-(4, 'Ember ''Tiger Star''', 70000, 50000, 200, 2);
+(1, 'Buku Gambar DISNEY', 40000, 20000, 100, 1),
+(2, 'Map RAINBOW', 70000, 50000, 200, 1),
+(3, 'Sapu CLEANY SWEAP', 150000, 100000, 100, 2),
+(4, 'Ember Tiger Star', 70000, 50000, 200, 2);
 
 -- --------------------------------------------------------
 
@@ -289,19 +289,27 @@ INSERT INTO `laporan` (`IDLaporan`, `Nama`) VALUES
 
 CREATE TABLE `nota_beli` (
   `NoNotaBeli` varchar(45) NOT NULL,
-  `Tanggal` date NOT NULL,
-  `Total` float NOT NULL,
-  `Bayar` float NOT NULL,
-  `JenisPembayaran` enum('T','TR','K','C') NOT NULL,
-  `Diskon` decimal(10,0) NOT NULL,
-  `DiskonPelunasan` decimal(10,0) NOT NULL,
-  `TanggalBatasDiskon` date NOT NULL,
-  `TanggalJatuhTempo` date NOT NULL,
-  `FOB` varchar(45) NOT NULL,
-  `OngkosKirim` int(11) NOT NULL,
-  `StatusKirim` tinyint(1) NOT NULL,
-  `KodeSupplier` int(11) NOT NULL
+  `Tanggal` date DEFAULT NULL,
+  `Total` float DEFAULT NULL,
+  `Bayar` float DEFAULT NULL,
+  `JenisPembayaran` enum('T','TR','K','C') DEFAULT NULL,
+  `Diskon` decimal(10,0) DEFAULT NULL,
+  `DiskonPelunasan` decimal(10,0) DEFAULT NULL,
+  `TanggalBatasDiskon` date DEFAULT NULL,
+  `TanggalJatuhTempo` date DEFAULT NULL,
+  `FOB` varchar(45) DEFAULT NULL,
+  `OngkosKirim` int(11) DEFAULT NULL,
+  `StatusKirim` tinyint(1) DEFAULT NULL,
+  `KodeSupplier` int(11) NOT NULL,
+  `IdBank` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `nota_beli`
+--
+
+INSERT INTO `nota_beli` (`NoNotaBeli`, `Tanggal`, `Total`, `Bayar`, `JenisPembayaran`, `Diskon`, `DiskonPelunasan`, `TanggalBatasDiskon`, `TanggalJatuhTempo`, `FOB`, `OngkosKirim`, `StatusKirim`, `KodeSupplier`, `IdBank`) VALUES
+('2017/NB0001', '2017-01-01', 12000000, 1200000, 'T', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -311,20 +319,27 @@ CREATE TABLE `nota_beli` (
 
 CREATE TABLE `nota_jual` (
   `NoNotaJual` varchar(45) NOT NULL,
-  `Tanggal` date NOT NULL,
-  `Total` float NOT NULL,
-  `Bayar` float NOT NULL,
-  `JenisPembayaran` enum('T','K','TF','C') NOT NULL,
-  `Diskon` decimal(10,0) NOT NULL,
+  `Tanggal` date DEFAULT NULL,
+  `Total` float DEFAULT NULL,
+  `Bayar` float DEFAULT NULL,
+  `JenisPembayaran` enum('T','K','TF','C') DEFAULT NULL,
+  `Diskon` decimal(10,0) DEFAULT NULL,
   `DiskonPelunasan` decimal(10,0) DEFAULT NULL,
-  `TanggalBatasDiskon` date NOT NULL,
-  `PPN` decimal(10,0) NOT NULL,
-  `TanggalJatuhTempo` date NOT NULL,
-  `FOB` varchar(45) NOT NULL,
-  `OngkosKirin` int(11) DEFAULT NULL,
+  `TanggalBatasDiskon` date DEFAULT NULL,
+  `PPN` decimal(10,0) DEFAULT NULL,
+  `TanggalJatuhTempo` date DEFAULT NULL,
+  `FOB` varchar(45) DEFAULT NULL,
+  `OngkosKirim` int(11) DEFAULT NULL,
   `StatusKirim` tinyint(1) DEFAULT NULL,
   `KodePelanggan` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `nota_jual`
+--
+
+INSERT INTO `nota_jual` (`NoNotaJual`, `Tanggal`, `Total`, `Bayar`, `JenisPembayaran`, `Diskon`, `DiskonPelunasan`, `TanggalBatasDiskon`, `PPN`, `TanggalJatuhTempo`, `FOB`, `OngkosKirim`, `StatusKirim`, `KodePelanggan`) VALUES
+('2017/NJ0001', '2017-01-02', 800000, 800000, 'T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -411,11 +426,20 @@ CREATE TABLE `pelunasan_piutang` (
 --
 
 CREATE TABLE `pembelian` (
+  `NoPembelian` int(11) NOT NULL,
   `NoNotaBeli` varchar(45) NOT NULL,
   `KodeBarang` int(11) NOT NULL,
   `Harga` float NOT NULL,
   `Jumlah` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `pembelian`
+--
+
+INSERT INTO `pembelian` (`NoPembelian`, `NoNotaBeli`, `KodeBarang`, `Harga`, `Jumlah`) VALUES
+(3, '2017/NB0001', 1, 20000, 100),
+(4, '2017/NB0001', 2, 50000, 200);
 
 -- --------------------------------------------------------
 
@@ -424,11 +448,19 @@ CREATE TABLE `pembelian` (
 --
 
 CREATE TABLE `penjualan` (
+  `NoPenjualan` int(11) NOT NULL,
   `NoNotaJual` varchar(45) NOT NULL,
   `KodeBarang` int(11) NOT NULL,
   `Harga` float NOT NULL,
   `Jumlah` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `penjualan`
+--
+
+INSERT INTO `penjualan` (`NoPenjualan`, `NoNotaJual`, `KodeBarang`, `Harga`, `Jumlah`) VALUES
+(1, '2017/NJ0001', 1, 40000, 20);
 
 -- --------------------------------------------------------
 
@@ -516,112 +548,6 @@ INSERT INTO `supplier` (`KodeSupplier`, `Nama`) VALUES
 (3, 'UD ''MAKMUR BAHAGIA'''),
 (4, 'UD ''SUKSES SEJATI''');
 
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `vbukubesar`
---
-CREATE TABLE `vbukubesar` (
-`NoAkun` char(3)
-,`NamaAkun` varchar(100)
-,`Tanggal` date
-,`Keterangan` text
-,`NominalDebet` mediumtext
-,`NominalKredit` mediumtext
-,`NoBukti` varchar(45)
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `vlabarugi`
---
-CREATE TABLE `vlabarugi` (
-`NoAkun` char(3)
-,`NamaAkun` varchar(100)
-,`SaldoAkhir` double
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `vlaporanjurnal`
---
-CREATE TABLE `vlaporanjurnal` (
-`Tanggal` date
-,`Keterangan` text
-,`NamaAkun` varchar(100)
-,`Debet` mediumtext
-,`Kredit` mediumtext
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `vperubahanekuitas`
---
-CREATE TABLE `vperubahanekuitas` (
-`NoAkun` char(3)
-,`NamaAkun` varchar(100)
-,`SaldoAkhir` mediumtext
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `vsaldoakhir`
---
-CREATE TABLE `vsaldoakhir` (
-`NoAkun` char(3)
-,`NamaAkun` varchar(100)
-,`SaldoAkhir` double
-);
-
--- --------------------------------------------------------
-
---
--- Structure for view `vbukubesar`
---
-DROP TABLE IF EXISTS `vbukubesar`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vbukubesar`  AS  select `ja`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `NamaAkun`,`j`.`Tanggal` AS `Tanggal`,`j`.`Keterangan` AS `Keterangan`,`ja`.`NominalDebet` AS `NominalDebet`,`ja`.`NominalKredit` AS `NominalKredit`,`j`.`NoBukti` AS `NoBukti` from (((`jurnal_has_akun` `ja` join `akun` `a` on((`ja`.`NoAkun` = `a`.`NoAkun`))) join `periode_has_akun` `p` on((`p`.`NoAkun` = `a`.`NoAkun`))) join `jurnal` `j` on((`ja`.`IDJurnal` = `j`.`IDJurnal`))) order by `ja`.`NoAkun` ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `vlabarugi`
---
-DROP TABLE IF EXISTS `vlabarugi`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vlabarugi`  AS  select `v`.`NoAkun` AS `NoAkun`,`v`.`NamaAkun` AS `NamaAkun`,`v`.`SaldoAkhir` AS `SaldoAkhir` from (`vsaldoakhir` `v` join `akun_has_laporan` `l` on((`v`.`NoAkun` = `l`.`NoAkun`))) where (`l`.`IDLaporan` = 'LR') ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `vlaporanjurnal`
---
-DROP TABLE IF EXISTS `vlaporanjurnal`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vlaporanjurnal`  AS  select `j`.`Tanggal` AS `Tanggal`,`j`.`Keterangan` AS `Keterangan`,`a`.`Nama` AS `NamaAkun`,`ja`.`NominalDebet` AS `Debet`,`ja`.`NominalKredit` AS `Kredit` from ((`jurnal` `j` join `jurnal_has_akun` `ja` on((`j`.`IDJurnal` = `ja`.`IDJurnal`))) join `akun` `a` on((`ja`.`NoAkun` = `a`.`NoAkun`))) order by `j`.`IDJurnal`,`ja`.`Urutan` ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `vperubahanekuitas`
---
-DROP TABLE IF EXISTS `vperubahanekuitas`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vperubahanekuitas`  AS  select `v`.`NoAkun` AS `NoAkun`,`v`.`NamaAkun` AS `NamaAkun`,`v`.`SaldoAkhir` AS `SaldoAkhir` from (`vsaldoakhir` `v` join `akun_has_laporan` `l` on((`v`.`NoAkun` = `l`.`NoAkun`))) where (`l`.`IDLaporan` = 'PE') union (select `a`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `Nama`,`p`.`SaldoAwal` AS `SaldoAkhir` from (`akun` `a` join `periode_has_akun` `p` on((`a`.`NoAkun` = `p`.`NoAkun`))) where (`a`.`NoAkun` = '000')) ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `vsaldoakhir`
---
-DROP TABLE IF EXISTS `vsaldoakhir`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vsaldoakhir`  AS  select `a`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `NamaAkun`,(`p`.`SaldoAwal` + ifnull(((sum(`ja`.`NominalDebet`) - sum(`ja`.`NominalKredit`)) * `a`.`SaldoNormal`),0)) AS `SaldoAkhir` from ((`akun` `a` left join `jurnal_has_akun` `ja` on((`ja`.`NoAkun` = `a`.`NoAkun`))) join `periode_has_akun` `p` on((`p`.`NoAkun` = `a`.`NoAkun`))) group by `ja`.`NoAkun`,`a`.`Nama`,`p`.`SaldoAwal` order by `a`.`NoAkun` ;
-
 --
 -- Indexes for dumped tables
 --
@@ -685,7 +611,8 @@ ALTER TABLE `laporan`
 --
 ALTER TABLE `nota_beli`
   ADD PRIMARY KEY (`NoNotaBeli`),
-  ADD KEY `fk_Nota_Beli_Supplier1_idx` (`KodeSupplier`);
+  ADD KEY `fk_Nota_Beli_Supplier1_idx` (`KodeSupplier`),
+  ADD KEY `fk_Nota_Beli_Bank1_idx` (`IdBank`);
 
 --
 -- Indexes for table `nota_jual`
@@ -733,7 +660,7 @@ ALTER TABLE `pelunasan_piutang`
 -- Indexes for table `pembelian`
 --
 ALTER TABLE `pembelian`
-  ADD PRIMARY KEY (`NoNotaBeli`,`KodeBarang`),
+  ADD PRIMARY KEY (`NoPembelian`),
   ADD KEY `fk_Nota_Beli_has_Barang_Barang1_idx` (`KodeBarang`),
   ADD KEY `fk_Nota_Beli_has_Barang_Nota_Beli_idx` (`NoNotaBeli`);
 
@@ -741,7 +668,7 @@ ALTER TABLE `pembelian`
 -- Indexes for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  ADD PRIMARY KEY (`NoNotaJual`,`KodeBarang`),
+  ADD PRIMARY KEY (`NoPenjualan`),
   ADD KEY `fk_Nota_Jual_has_Barang_Barang1_idx` (`KodeBarang`),
   ADD KEY `fk_Nota_Jual_has_Barang_Nota_Jual1_idx` (`NoNotaJual`);
 
@@ -790,6 +717,16 @@ ALTER TABLE `jenis_barang`
 ALTER TABLE `pelanggan`
   MODIFY `KodePelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT for table `pembelian`
+--
+ALTER TABLE `pembelian`
+  MODIFY `NoPembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `penjualan`
+--
+ALTER TABLE `penjualan`
+  MODIFY `NoPenjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
@@ -828,6 +765,7 @@ ALTER TABLE `jurnal_has_akun`
 -- Constraints for table `nota_beli`
 --
 ALTER TABLE `nota_beli`
+  ADD CONSTRAINT `fk_Nota_Beli_Bank1` FOREIGN KEY (`IdBank`) REFERENCES `bank` (`IdBank`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Nota_Beli_Supplier1` FOREIGN KEY (`KodeSupplier`) REFERENCES `supplier` (`KodeSupplier`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
