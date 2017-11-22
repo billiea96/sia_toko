@@ -47,9 +47,11 @@ class PelunasanPiutang extends CI_Controller {
 	public function detail_nota(){
 		$NotaJual = $this->NotaJual_model->get_nota($_POST['noNota']);
 
-		$totalBayar = $NotaJual['Total'] - ($NotaJual['Total'] * ($NotaJual['DiskonPelunasan']/100));
+		$sisaBayar = $NotaJual['Total'] - $NotaJual['Bayar'];
+		//$totalBayar = $NotaJual['Total'] - ($NotaJual['Total'] * ($NotaJual['DiskonPelunasan']/100));
+		$totalBayar = $sisaBayar - (($sisaBayar) * ($NotaJual['DiskonPelunasan']/100));
 		
-		echo json_encode(array('diskon'=>$NotaJual['DiskonPelunasan'], 'total'=>$NotaJual['Total'], 'totalBayar' => $totalBayar, 'tgl'=>$NotaJual['TanggalBatasDiskon']));
+		echo json_encode(array('sisaBayar' => $sisaBayar,'diskon'=>$NotaJual['DiskonPelunasan'], 'total'=>$NotaJual['Total'], 'totalBayar' => $totalBayar, 'tgl'=>$NotaJual['TanggalBatasDiskon']));
 	}
 
 	public function simpan(){

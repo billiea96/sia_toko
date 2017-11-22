@@ -47,9 +47,11 @@ class PelunasanHutang extends CI_Controller {
 	public function detail_nota(){
 		$NotaBeli = $this->NotaBeli_model->get_nota($_POST['noNota']);
 
-		$totalBayar = $NotaBeli['Total'] - ($NotaBeli['Total'] * ($NotaBeli['DiskonPelunasan']/100));
+		$sisaBayar = $NotaBeli['Total'] - $NotaBeli['Bayar'];
+		//$totalBayar = $NotaBeli['Total'] - ($NotaBeli['Total'] * ($NotaBeli['DiskonPelunasan']/100));
+		$totalBayar = $sisaBayar - (($sisaBayar) * ($NotaBeli['DiskonPelunasan']/100));
 		
-		echo json_encode(array('diskon'=>$NotaBeli['DiskonPelunasan'], 'total'=>$NotaBeli['Total'], 'totalBayar' => $totalBayar, 'tgl'=>$NotaBeli['TanggalBatasDiskon']));
+		echo json_encode(array('sisaBayar' => $sisaBayar,'diskon'=>$NotaBeli['DiskonPelunasan'], 'total'=>$NotaBeli['Total'], 'totalBayar' => $totalBayar, 'tgl'=>$NotaBeli['TanggalBatasDiskon']));
 	}
 
 	public function simpan(){

@@ -144,11 +144,11 @@ $('#idTgl').change(function(){
         $('#idBayar').val(data.totalBayar);
       }else{
         $('#idDiscPelunasan').val(0);
-        $('#idDisplayTotalBayar').val(data.total);
+        $('#idDisplayTotalBayar').val(data.sisaBayar);
 
         $('#discPelunasan').val(0);
-        $('#totalBayar').val(data.total);
-        $('#idBayar').val(data.total);
+        $('#totalBayar').val(data.sisaBayar);
+        $('#idBayar').val(data.sisaBayar);
       }
     }
   })
