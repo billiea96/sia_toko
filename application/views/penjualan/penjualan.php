@@ -298,6 +298,16 @@
                 </div>
               </div>
             </div>
+
+            <div class="form-group">
+              <label for="totalBayar" class="col-xs-4 control-label">Total Bayar</label>
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon">Rp.</span>
+                  <input form="form_pembelian" type="text" min="0" class="form-control" id="idTotalBayar"  disabled="">
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -403,6 +413,7 @@
       success:function(data){
         alert('Barang ditambahkan dalam keranjang');
         $('#tbody').html(data);
+        $('#idTotalBayar').val($('#idTotal').val());
       },
       error:function(){
         alert('Gagal tambah barang ke keranjang');

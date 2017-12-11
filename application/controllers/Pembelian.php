@@ -23,6 +23,9 @@ class Pembelian extends CI_Controller {
         $this->load->model('Barang_model');
         $this->load->model('Supplier_model');
         $this->load->model('Bank_model');
+        $this->load->model('Jurnal_model');
+        $this->load->model('JurnalHasAkun_model');
+        $this->load->model('Periode_model');
         $this->load->model('NotaBeli_model');
         $this->load->model('Pembelian_model');
         $this->load->helper('url_helper');
@@ -58,13 +61,16 @@ class Pembelian extends CI_Controller {
 		$this->load->view('layout/footer');
 	}
 	public function create_nota(){
+
+		$keterangan = "";
 		$NoNotaBeli = $this->input->post('NoNotaBeli');
 		$tgl = $this->input->post('tgl');
-		$customer = $this->input->post('supplier');		
-
+		$customer = $this->input->post('supplier');	
+		$temp = $this->Jurnal_model->get_last_jurnal();
+		$IDJurnal = $temp['IDJurnal']+1; 
 		$dataNotaBeli = array(
 			'NoNotaBeli' => $NoNotaBeli,
-			'Tanggal' => $tgl,
+			'Tanggal' => date('Y-m-d'),
 			'KodeSupplier' => $customer,
 			'StatusKirim' => 1,
 		);
@@ -77,6 +83,7 @@ class Pembelian extends CI_Controller {
 			$dataNotaBeli['OngkosKirim'] = $biayaKirim;
 			$dataNotaBeli['FOB'] = $fob;
 		}
+		
 
 		if($this->input->post('jPembayaran')=='K'){
 			$jenisPembayaran = $this->input->post('jPembayaran');
@@ -88,21 +95,40 @@ class Pembelian extends CI_Controller {
 			$dataNotaBeli['DiskonPelunasan'] = $discPelunasan;
 			$dataNotaBeli['TanggalBatasDiskon'] = $batasPelunasan;
 			$dataNotaBeli['TanggalJatuhTempo'] = $tanggalJatuhTempo;
+			$keterangan .= 'Transaksi pembelian kredit ';
 		}
 		else{
 			$jenisPembayaran = $this->input->post('jPembayaran');
 
 			$dataNotaBeli['JenisPembayaran'] = $jenisPembayaran;
+			
 		}
-		if($this->input->post('disc')!=''){
+
+		if($this->input->post('jPembayaran')=='TR')
+		{
+			$keterangan .= 'Transaksi pembelian transfer ';
+		}
+		else if ($this->input->post('jPembayaran')=='T')
+		{
+			$keterangan .= 'Transaksi pembelian tunai ';
+		}
+		else if ($this->input->post('jPembayaran')=='C')
+		{
+			$keterangan .= 'Transaksi pembelian cek ';
+		}
+
+		if($this->input->post('disc')>0){
 			$disc = $this->input->post('disc');
 
 			$dataNotaBeli['Diskon'] = $disc;
+			
+			$keterangan .= 'dengan diskon pembayaran ';
 		}
 		if($this->input->post('bank')!=''){
 			$bank = $this->input->post('bank');
 
 			$dataNotaBeli['IdBank'] = $bank;
+			$keterangan .= 'ke bank '.$this->input->post('bank')." ";
 		}
 
 		$total = $this->input->post('total');
@@ -110,11 +136,17 @@ class Pembelian extends CI_Controller {
 
 		$dataNotaBeli['Total'] = $total;
 		$dataNotaBeli['Bayar'] = $bayar;
-
-
+		
+		$totalJenis1=0;
+		$totalJenis2=0;
 		if($this->NotaBeli_model->add_nota_beli($dataNotaBeli)){
 			//Untuk mengisi data pada table pembelian
 			foreach($this->cart->contents() as $item){
+				if($item['NoJenis']==1){
+					$totalJenis1+=$item['price']*$item['qty'];
+				}else{
+					$totalJenis2+=$item['price']*$item['qty'];
+				}
 				$datapembelian = array(
 					'NoNotaBeli' => $NoNotaBeli,
 					'KodeBarang' => $item['id'],
@@ -124,8 +156,267 @@ class Pembelian extends CI_Controller {
 
 				$this->Pembelian_model->add_pembelian($datapembelian);
 			}
+			$dataJurnal = array(
+				'IDJurnal' =>$IDJurnal,
+				'Tanggal' => date('Y-m-d'),
+				'Keterangan'=> $keterangan,
+				'NoBukti'=> $NoNotaBeli,
+				'JenisJurnal' => 'JU',
+				'IDPeriode' => '20172');
+
+			//insert jurnal 
+
+			if($this->Jurnal_model->add_jurnal($dataJurnal))
+			{
+				//sediaan barang 1
+				if($totalJenis1>0){
+					$akun = "106";
+					$data = array(
+						'IDJurnal' =>$IDJurnal,
+						'NoAkun' => $akun,
+						'Urutan' =>1,
+						'NominalDebet' => $totalJenis1,
+						'NominalKredit' =>0, 
+					);
+
+					$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+
+					if($this->input->post('jPembayaran')=='TR')
+					{
+						if($this->input->post('bank')==1)
+							$akun='102';
+						else
+							$akun='103';
+					}
+					else if ($this->input->post('jPembayaran')=='T')
+					{
+						$akun='101';
+					}
+					else if ($this->input->post('jPembayaran')=='C')
+					{
+						$akun='203';
+					}
+					else{
+						$akun='201';
+					}
+
+					$data = array(
+						'IDJurnal' =>$IDJurnal,
+						'NoAkun' => $akun,
+						'Urutan' =>2,
+						'NominalDebet' => 0,
+						'NominalKredit' =>$totalJenis1, 
+					);
+
+					$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+
+					if($totalJenis2>0){
+						$akun = "107";
+						$data = array(
+							'IDJurnal' =>$IDJurnal,
+							'NoAkun' => $akun,
+							'Urutan' =>3,
+							'NominalDebet' => $totalJenis2,
+							'NominalKredit' =>0, 
+						);
+
+						$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+
+
+						if($this->input->post('jPembayaran')=='TR')
+						{
+							if($this->input->post('bank')==1)
+								$akun='102';
+							else
+								$akun='103';
+						}
+						else if ($this->input->post('jPembayaran')=='T')
+						{
+							$akun='101';
+						}
+						else if ($this->input->post('jPembayaran')=='C')
+						{
+							$akun='203';
+						}
+						else{
+							$akun='201';
+						}
+
+						$data = array(
+							'IDJurnal' =>$IDJurnal,
+							'NoAkun' => $akun,
+							'Urutan' =>4,
+							'NominalDebet' => 0,
+							'NominalKredit' =>$totalJenis2, 
+						);
+
+						$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+
+						if($this->input->post('kirim')=='true'){
+							
+							$fob = $this->input->post('fob');
+							$biayaKirim = 0;
+							if($fob == "FOB Shipping Point")
+							{
+								$biayaKirim = $this->input->post('biayaKirim');
+								$data = array(
+									'IDJurnal' =>$IDJurnal,
+									'NoAkun' => 106,
+									'Urutan' =>5,
+									'NominalDebet' => $biayaKirim,
+									'NominalKredit' =>0, 
+								);
+								$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+
+								if($this->input->post('jPembayaranKirim')=='TR')
+								{
+									if($this->input->post('bank')==1)
+										$akun='102';
+									else
+										$akun='103';
+								}
+								else if ($this->input->post('jPembayaranKirim')=='T')
+								{
+									$akun='101';
+								}
+
+								$data = array(
+									'IDJurnal' =>$IDJurnal,
+									'NoAkun' => $akun,
+									'Urutan' =>6,
+									'NominalDebet' => 0,
+									'NominalKredit' =>$biayaKirim, 
+								);
+								$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+							}
+						}
+					}
+					else{
+						if($this->input->post('kirim')=='true'){
+							
+							$fob = $this->input->post('fob');
+							$biayaKirim = 0;
+							if($fob == "FOB Shipping Point")
+							{
+								$biayaKirim = $this->input->post('biayaKirim');
+								$data = array(
+									'IDJurnal' =>$IDJurnal,
+									'NoAkun' => 106,
+									'Urutan' =>3,
+									'NominalDebet' => $biayaKirim,
+									'NominalKredit' =>0, 
+								);
+								$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+
+								if($this->input->post('jPembayaranKirim')=='TR')
+								{
+									if($this->input->post('bank')==1)
+										$akun='102';
+									else
+										$akun='103';
+								}
+								else if ($this->input->post('jPembayaranKirim')=='T')
+								{
+									$akun='101';
+								}
+
+								$data = array(
+									'IDJurnal' =>$IDJurnal,
+									'NoAkun' => $akun,
+									'Urutan' =>4,
+									'NominalDebet' => 0,
+									'NominalKredit' =>$biayaKirim, 
+								);
+								$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+							}
+						}
+					}
+
+				}else{
+					$akun = "107";
+					$data = array(
+						'IDJurnal' =>$IDJurnal,
+						'NoAkun' => $akun,
+						'Urutan' =>1,
+						'NominalDebet' => $totalJenis2,
+						'NominalKredit' =>0, 
+					);
+
+					$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+
+					if($this->input->post('jPembayaran')=='TR')
+					{
+						if($this->input->post('bank')==1)
+							$akun='102';
+						else
+							$akun='103';
+					}
+					else if ($this->input->post('jPembayaran')=='T')
+					{
+						$akun='101';
+					}
+					else if ($this->input->post('jPembayaran')=='C')
+					{
+						$akun='203';
+					}
+					else{
+						$akun='201';
+					}
+
+					$data = array(
+						'IDJurnal' =>$IDJurnal,
+						'NoAkun' => $akun,
+						'Urutan' =>2,
+						'NominalDebet' => 0,
+						'NominalKredit' =>$totalJenis2, 
+					);
+
+					$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+
+					if($this->input->post('kirim')=='true'){
+							
+							$fob = $this->input->post('fob');
+							$biayaKirim = 0;
+							if($fob == "FOB Shipping Point")
+							{
+								$biayaKirim = $this->input->post('biayaKirim');
+								$data = array(
+									'IDJurnal' =>$IDJurnal,
+									'NoAkun' => 106,
+									'Urutan' =>3,
+									'NominalDebet' => $biayaKirim,
+									'NominalKredit' =>0, 
+								);
+								$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+
+								if($this->input->post('jPembayaranKirim')=='TR')
+								{
+									if($this->input->post('bank')==1)
+										$akun='102';
+									else
+										$akun='103';
+								}
+								else if ($this->input->post('jPembayaranKirim')=='T')
+								{
+									$akun='101';
+								}
+
+								$data = array(
+									'IDJurnal' =>$IDJurnal,
+									'NoAkun' => $akun,
+									'Urutan' =>4,
+									'NominalDebet' => 0,
+									'NominalKredit' =>$biayaKirim, 
+								);
+								$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
+							}
+						}
+				}
+
+			}
 			header("Location: ".site_url('Pembelian/index'));
 		}
+		
 		echo $dataNotaBeli['Tanggal'];
 
 	}
@@ -137,7 +428,8 @@ class Pembelian extends CI_Controller {
 			'id' => $barang['KodeBarang'],
 			'qty' => $_POST['jumlah'],
 			'price' => $_POST['harga'],
-			'name' => $barang['Nama']
+			'name' => $barang['Nama'],
+			'NoJenis' => $barang['NoJenisBarang'],
 		);
 
 		$this->cart->insert($data);

@@ -311,7 +311,7 @@
               
               <div class="col-xs-4">
                 <div class="input-group">
-                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idDisc" name="disc" placeholder="">
+                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idDisc" name="disc" placeholder="" value="0">
                   <span class="input-group-addon">%</span>
                 </div>
               </div>
@@ -426,13 +426,26 @@
     var d = $('#idDisc').val();
     var t = $('#idTotal').val();
     var h = t - (t*d/100);
-    $('#idTotalBayar').val(h);
+     if($("#idKirim").is(':checked')){
+      $('#idTotalBayar').val(parseInt(h)+parseInt($('#idBiayaKirim').val()));
+    }
+    else
+    {
+      $('#idTotalBayar').val(h);
+    }
+    
+  });
+
+  $("#idFOB").change(function() {
+     if($(this).val() == "FOB Destination Point"){
+      $( "#idBiayaKirim").val(0);
+    }
   });
 
 
   $('#idKirim').click(function(){
     if($("#idKirim").is(':checked')){
-      document.getElementById('idStatusKirim').value = 'false';
+      document.getElementById('idStatusKirim').value = 'true';
       $('#idBiayaKirim').removeAttr('disabled');
       $('#idFOB').removeAttr('disabled');
       $('#idKurir').removeAttr('disabled');
@@ -440,11 +453,18 @@
     }
     else{
        $('#idBiayaKirim').attr('disabled', 'disabled');
-      document.getElementById('idStatusKirim').value = 'true';
+      document.getElementById('idStatusKirim').value = 'false';
       $('#idFOB').attr('disabled', 'disabled');
       $('#idKurir').attr('disabled', 'disabled');
       $('#idJPembayaranKirim').attr('disabled', 'disabled');
     }
+  });
+
+  $( "#idBiayaKirim" ).change(function() {
+      var d = $('#idDisc').val();
+      var t = $('#idTotal').val();
+      var h = t - (t*d/100);
+    $('#idTotalBayar').val( parseInt(h)+parseInt($('#idBiayaKirim').val()));
   });
 
   function add_cart(){
