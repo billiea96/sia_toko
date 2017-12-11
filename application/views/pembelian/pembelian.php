@@ -38,7 +38,7 @@
 
                   <div class="col-xs-6">
                     <div class="input-group date">
-                      <input type="text" class="form-control pull-right" id="idTgl" name="tgl">
+                      <input type="text" class="form-control pull-right" id="idTgl" name="tgl" value="<?php echo date('Y-m-d'); ?>" disabled>
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
@@ -174,16 +174,48 @@
             </div>
 
             <div class="form-group">
-              <label for="fob" class="col-xs-4 control-label">Jenis Pengiriman</label>
+              <label for="fob" class="col-xs-4 control-label">Ditanggung Oleh</label>
 
               <div class="col-xs-6">
                 <select form="form_pembelian" class="form-control select2" id="idFOB" name="fob" disabled="">
                   <option value=""></option>
-                  <option value="FOB Shipping Point">FOB Shipping Point</option>
-                  <option value="FOB Destination Point">FOB Destination Point</option>
+                  <!-- <option value="FOB Shipping Point">FOB Shipping Point</option>
+                  <option value="FOB Destination Point">FOB Destination Point</option> -->
+                  <option value="FOB Shipping Point">Perusahaan</option>
+                  <option value="FOB Destination Point">Suplier</option>
                 </select>
               </div>
             </div>
+
+            <div class="form-group">
+              <label for="kurir" class="col-xs-4 control-label">Jasa Pengiriman</label>
+
+              <div class="col-xs-6">
+                <select form="form_pembelian" class="form-control select2" id="idKurir" name="kurir" disabled="">
+                  <option value=""></option>
+                  <!-- <option value="FOB Shipping Point">FOB Shipping Point</option>
+                  <option value="FOB Destination Point">FOB Destination Point</option> -->
+                  <option value="JNE">JNE</option>
+                  <option value="TIKI">TIKI</option>
+                  <option value="POS">Pos Indonesia</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="jPembayaranKirim" class="col-xs-4 control-label">Jenis Pembayaran Pengiriman</label>
+
+              <div class="col-xs-6">
+                <select form="form_pembelian" class="form-control select2" id="idJPembayaranKirim" name="jPembayaranKirim" disabled="">
+                  <option value="T">Tunai</option>
+                  <option value="TR">Transfer</option>
+                </select>
+              </div>
+            </div>
+
+
+
+
+
           </form>
         </div>
       </div>
@@ -206,6 +238,16 @@
                   <option value="K">Kredit</option>
                   <option value="C">Cek</option>
                 </select>
+              </div>
+            </div>
+
+            <div class="form-group" id="idNomorCek" hidden="">
+              <label for="nomorCek" class="col-xs-4 control-label">Nomor Cek</label>
+
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idNomorCek" >
+                </div>
               </div>
             </div>
 
@@ -287,6 +329,19 @@
                 </select>
               </div>
             </div>
+
+            <div class="form-group">
+              <label for="totalBayar" class="col-xs-4 control-label">Total Bayar</label>
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon">Rp.</span>
+                  <input form="form_pembelian" type="text" min="0" class="form-control" id="idTotalBayar"  disabled="">
+                </div>
+              </div>
+            </div>
+
+
+
           </form>
         </div>
       </div>
@@ -339,22 +394,39 @@
 <!-- /.content -->
 <script>
   $('#idJPembayaran').change(function(){
+
+       
     if($(this).val() == "K"){
       $('#idJT').removeAttr('disabled');
       $('#idDiscPelunasan').removeAttr('disabled');
       $('#idBatasPelunasan').removeAttr('disabled');
+      $('#idNomorCek').attr('hidden', 'hidden');
     }else{
       $('#idJT').attr('disabled', 'disabled');  
       $('#idDiscPelunasan').attr('disabled', 'disabled');
       $('#idBatasPelunasan').attr('disabled', 'disabled');
+      $('#idNomorCek').attr('hidden', 'hidden');
+
     }
     if($(this).val() == "TR"){
       $('#idNoRek').removeAttr('disabled');
       $('#idNamaBank').removeAttr('disabled');
+      $('#idNomorCek').attr('hidden', 'hidden');
+
     }else{
       $('#idNoRek').attr('disabled', 'disabled');
       $('#idNamaBank').attr('disabled', 'disabled');
     }
+    if($(this).val() == "C"){
+     $('#idNomorCek').removeAttr('hidden');
+   }
+  });
+
+  $( "#idDisc" ).change(function() {
+    var d = $('#idDisc').val();
+    var t = $('#idTotal').val();
+    var h = t - (t*d/100);
+    $('#idTotalBayar').val(h);
   });
 
 
@@ -363,11 +435,15 @@
       document.getElementById('idStatusKirim').value = 'false';
       $('#idBiayaKirim').removeAttr('disabled');
       $('#idFOB').removeAttr('disabled');
+      $('#idKurir').removeAttr('disabled');
+      $('#idJPembayaranKirim').removeAttr('disabled');
     }
     else{
        $('#idBiayaKirim').attr('disabled', 'disabled');
       document.getElementById('idStatusKirim').value = 'true';
       $('#idFOB').attr('disabled', 'disabled');
+      $('#idKurir').attr('disabled', 'disabled');
+      $('#idJPembayaranKirim').attr('disabled', 'disabled');
     }
   });
 
@@ -383,6 +459,7 @@
       success:function(data){
         alert('Barang ditambahkan dalam keranjang');
         $('#tbody').html(data);
+        $('#idTotalBayar').val($('#idTotal').val());
       },
       error:function(){
         alert('Gagal tambah barang ke keranjang');
@@ -403,6 +480,7 @@
         success:function(data){
           alert('Barang berhasil dihapus');
           $('#tbody').html(data);
+          
         },
         error:function(){
           alert('Gagal menghapus barang');

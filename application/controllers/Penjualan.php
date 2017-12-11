@@ -24,6 +24,7 @@ class Penjualan extends CI_Controller {
         $this->load->model('Pelanggan_model');
         $this->load->model('NotaJual_model');
         $this->load->model('Penjualan_model');
+        $this->load->model('Bank_model');
         $this->load->helper('url_helper');
         $this->load->helper('form');
     	$this->load->library('form_validation');
@@ -48,6 +49,7 @@ class Penjualan extends CI_Controller {
         $data['NoNotaJual'] = date('Y').'/NJ'.$angka;
 		$data['barang'] = $this->Barang_model->get_barang();
 		$data['pelanggan'] = $this->Pelanggan_model->get_pelanggan();
+		$data['bank'] = $this->Bank_model->get_bank();
 
 		$this->cart->destroy();
 
@@ -101,6 +103,11 @@ class Penjualan extends CI_Controller {
 			$ppn = $this->input->post('ppn');
 
 			$dataNotaJual['PPN'] = $ppn;
+		}
+		if($this->input->post('bank')!=''){
+			$bank = $this->input->post('bank');
+
+			$dataNotaJual['IdBank'] = $bank;
 		}
 
 		$total = $this->input->post('total');

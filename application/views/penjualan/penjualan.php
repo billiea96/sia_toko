@@ -38,7 +38,7 @@
 
                   <div class="col-xs-6">
                     <div class="input-group date">
-                      <input type="text" class="form-control pull-right" id="idTgl" name="tgl">
+                      <input type="text" class="form-control pull-right" id="idTgl" name="tgl" value="<?php echo date('Y-m-d'); ?>" disabled>
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
@@ -163,13 +163,15 @@
             </div>
 
             <div class="form-group">
-              <label for="fob" class="col-xs-4 control-label">Jenis Pengiriman</label>
+              <label for="fob" class="col-xs-4 control-label">Ditanggung Oleh</label>
 
               <div class="col-xs-6">
                 <select form="form_penjualan" class="form-control select2" id="idFOB" name="fob" disabled="">
                   <option value=""></option>
-                  <option value="FOB Shipping Point">FOB Shipping Point</option>
-                  <option value="FOB Destination Point">FOB Destination Point</option>
+                 <!--  <option value="FOB Shipping Point">FOB Shipping Point</option>
+                  <option value="FOB Destination Point">FOB Destination Point</option> -->
+                  <option value="FOB Shipping Point">Pembeli</option>
+                  <option value="FOB Destination Point">Perusahaan</option>
                 </select>
               </div>
             </div>
@@ -197,6 +199,28 @@
                 </select>
               </div>
             </div>
+            <div class="form-group" id="idNomorCek" hidden="">
+              <label for="nomorCek" class="col-xs-4 control-label">Nomor Cek</label>
+
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idNomorCek" >
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="bank" class="col-xs-4 control-label">Bank</label>
+
+              <div class="col-xs-6">
+                <select form="form_pembelian" class="form-control select2" id="idBank" name="bank" disabled>
+                  <option value=""></option>
+                  <?php foreach ($bank as $key => $value) { ?>
+                    <option value="<?php echo $value['IdBank']; ?>"><?php echo $value['Nama']; ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+            </div>
+
 
             <div class="form-group">
               <label for="jt" class="col-xs-4 control-label">Tanggal Jatuh Tempo</label>
@@ -330,18 +354,28 @@
       $('#idJT').removeAttr('disabled');
       $('#idDiscPelunasan').removeAttr('disabled');
       $('#idBatasPelunasan').removeAttr('disabled');
+      $('#idBank').removeAttr('disabled');
+      $('#idNomorCek').attr('hidden', ' hidden');
     }else{
       $('#idJT').attr('disabled', 'disabled');  
       $('#idDiscPelunasan').attr('disabled', 'disabled');
       $('#idBatasPelunasan').attr('disabled', 'disabled');
+      $('#idBank').attr('disabled', 'disabled');
+      $('#idNomorCek').attr('hidden', ' hidden');
     }
     if($(this).val() == "TR"){
       $('#idNoRek').removeAttr('disabled');
       $('#idNamaBank').removeAttr('disabled');
+      $('#idBank').removeAttr('disabled');
+      $('#idNomorCek').attr('hidden', ' hidden');
     }else{
       $('#idNoRek').attr('disabled', 'disabled');
       $('#idNamaBank').attr('disabled', 'disabled');
+      
     }
+    if($(this).val() == "C"){
+     $('#idNomorCek').removeAttr('hidden');
+   }
   });
 
 

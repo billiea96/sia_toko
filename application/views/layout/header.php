@@ -95,6 +95,7 @@
       </a>
       <div class="navbar-custom-menu">
         <label class="margin" for="date" name="date" style="font-size: 20px;"><?php echo date('D, d M Y'); ?></label>
+
       </div>
       <!-- Navbar Right Menu -->
       <!-- <div class="navbar-custom-menu">
