@@ -181,11 +181,28 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
         <li class="active treeview menu-open">
-          <li><a href="<?php echo site_url('Penjualan') ?>"><i class="fa fa-circle-o text-aqua"></i> <span>Penjualan</span></a></li>
+          <li><a href="<?php echo site_url('Penjualan') ?>"><i class="fa fa-circle-o text-success"></i> <span>Penjualan</span></a></li>
           <li><a href="<?php echo site_url('Pembelian') ?>"><i class="fa fa-circle-o text-aqua"></i> <span>Pembelian</span></a></li>
           <li><a href="<?php echo site_url('PelunasanPiutang') ?>"><i class="fa fa-circle-o text-red"></i> <span>Pelunasan Piutang</span></a></li>
           <li><a href="<?php echo site_url('PelunasanHutang') ?>"><i class="fa fa-circle-o text-yellow"></i> <span>Pelunasan Hutang</span></a></li>
+        
         </li>
+        <li class="active treeview menu-open">
+          <a href="#">
+            <i class="fa fa-circle-o"></i> <span>Laporan</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="">
+            <li><a href="<?php echo site_url('LaporanJurnal') ?>"><i class="fa fa-circle-o text-yellow"></i>Laporan Jurnal</a></li>
+            <li ><a href="<?php echo site_url('LaporanBukuBesar') ?>"><i class="fa fa-circle-o text-red"></i>Laporan Buku Besar</a></li>
+             <li><a href="<?php echo site_url('LaporanArusKas') ?>"><i class="fa fa-circle-o text-aqua"></i>Laporan Arus Kas</a></li>
+            <li ><a href="<?php echo site_url('LaporanLabaRugi') ?>"><i class="fa fa-circle-o text-red"></i>Laporan Laba Rugi</a></li>
+             <li><a href="<?php echo site_url('LaporanNeraca') ?>"><i class="fa fa-circle-o text-yellow"></i>Laporan Neraca</a></li>
+            <li ><a href="<?php echo site_url('LaporanPerubahanEkuitas') ?>"><i class="fa fa-circle-o text-aqua"></i>Laporan Perubahan Ekuitas</a></li>
+          </ul>
+        </li>s
       </ul>
     </section>
     <!-- /.sidebar -->
