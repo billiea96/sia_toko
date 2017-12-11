@@ -175,6 +175,31 @@
                 </select>
               </div>
             </div>
+
+            <div class="form-group">
+              <label for="kurir" class="col-xs-4 control-label">Jasa Pengiriman</label>
+
+              <div class="col-xs-6">
+                <select form="form_penjualan" class="form-control select2" id="idKurir" name="kurir" disabled="">
+                  <option value=""></option>
+                  <!-- <option value="FOB Shipping Point">FOB Shipping Point</option>
+                  <option value="FOB Destination Point">FOB Destination Point</option> -->
+                  <option value="JNE">JNE</option>
+                  <option value="TIKI">TIKI</option>
+                  <option value="POS">Pos Indonesia</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="jPembayaranKirim" class="col-xs-4 control-label">Jenis Pembayaran Pengiriman</label>
+
+              <div class="col-xs-6">
+                <select form="form_penjualan" class="form-control select2" id="idJPembayaranKirim" name="jPembayaranKirim" disabled="">
+                  <option value="T">Tunai</option>
+                  <option value="TR">Transfer</option>
+                </select>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -204,7 +229,7 @@
 
               <div class="col-xs-6">
                 <div class="input-group">
-                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idNomorCek" >
+                  <input form="form_penjualan" type="text" class="form-control" id="idNomorCek" >
                 </div>
               </div>
             </div>
@@ -212,7 +237,7 @@
               <label for="bank" class="col-xs-4 control-label">Bank</label>
 
               <div class="col-xs-6">
-                <select form="form_pembelian" class="form-control select2" id="idBank" name="bank" disabled>
+                <select form="form_penjualan" class="form-control select2" id="idBank" name="bank" disabled>
                   <option value=""></option>
                   <?php foreach ($bank as $key => $value) { ?>
                     <option value="<?php echo $value['IdBank']; ?>"><?php echo $value['Nama']; ?></option>
@@ -388,17 +413,20 @@
    }
   });
 
-
   $('#idKirim').click(function(){
     if($("#idKirim").is(':checked')){
       document.getElementById('idStatusKirim').value = 'true';
       $('#idBiayaKirim').removeAttr('disabled');
       $('#idFOB').removeAttr('disabled');
+      $('#idKurir').removeAttr('disabled');
+      $('#idJPembayaranKirim').removeAttr('disabled');
     }
     else{
       $('#idBiayaKirim').attr('disabled', 'disabled');
       document.getElementById('idStatusKirim').value = 'false';
       $('#idFOB').attr('disabled', 'disabled');
+      $('#idKurir').attr('disabled', 'disabled');
+      $('#idJPembayaranKirim').attr('disabled', 'disabled');
       }     
     });
 

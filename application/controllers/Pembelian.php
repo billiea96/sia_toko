@@ -65,7 +65,7 @@ class Pembelian extends CI_Controller {
 		$keterangan = "";
 		$NoNotaBeli = $this->input->post('NoNotaBeli');
 		$tgl = $this->input->post('tgl');
-		$customer = $this->input->post('supplier');	
+		$customer = $this->input->post('supplier');		
 		$temp = $this->Jurnal_model->get_last_jurnal();
 		$IDJurnal = $temp['IDJurnal']+1; 
 		$dataNotaBeli = array(
@@ -73,6 +73,8 @@ class Pembelian extends CI_Controller {
 			'Tanggal' => date('Y-m-d'),
 			'KodeSupplier' => $customer,
 			'StatusKirim' => 1,
+			'JasaPengiriman' =>$this->input->post('kurir'),
+			'JenisPembayaranKirim' => $this->input->post('jPembayaranKirim')
 		);
 
 		//Jika ada pengiriman

@@ -67,6 +67,8 @@ class Penjualan extends CI_Controller {
 			'Tanggal' => $tgl,
 			'KodePelanggan' => $customer,
 			'StatusKirim' => 1,
+			'JasaPengiriman' =>$this->input->post('kurir'),
+			'JenisPembayaranKirim' => $this->input->post('jPembayaranKirim')
 		);
 
 		//Jika ada pengiriman

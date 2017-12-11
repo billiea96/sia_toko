@@ -246,7 +246,7 @@
 
               <div class="col-xs-6">
                 <div class="input-group">
-                  <input form="form_pembelian" type="number" min="0" class="form-control" id="idNomorCek" >
+                  <input form="form_pembelian" type="text" class="form-control" id="idNomorCek" >
                 </div>
               </div>
             </div>
