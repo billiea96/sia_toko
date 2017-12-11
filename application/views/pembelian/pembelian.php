@@ -49,7 +49,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="supplier" class="col-xs-4 control-label">supplier</label>
+                  <label for="supplier" class="col-xs-4 control-label">Supplier</label>
 
                   <div class="col-xs-6">
                     <select class="form-control select2" id="idSupplier" name="supplier">
