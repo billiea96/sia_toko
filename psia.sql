@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2017 at 03:17 PM
--- Server version: 10.1.10-MariaDB
--- PHP Version: 7.0.4
+-- Generation Time: Dec 11, 2017 at 03:12 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -293,23 +293,29 @@ CREATE TABLE `nota_beli` (
   `Total` float DEFAULT NULL,
   `Bayar` float DEFAULT NULL,
   `JenisPembayaran` enum('T','TR','K','C') DEFAULT NULL,
-  `Diskon` decimal(10,0) DEFAULT NULL,
-  `DiskonPelunasan` decimal(10,0) DEFAULT NULL,
+  `Diskon` decimal(10,0) DEFAULT '0',
+  `DiskonPelunasan` decimal(10,0) DEFAULT '0',
   `TanggalBatasDiskon` date DEFAULT NULL,
   `TanggalJatuhTempo` date DEFAULT NULL,
   `FOB` varchar(45) DEFAULT NULL,
-  `OngkosKirim` int(11) DEFAULT NULL,
+  `OngkosKirim` int(11) DEFAULT '0',
   `StatusKirim` tinyint(1) DEFAULT NULL,
   `KodeSupplier` int(11) NOT NULL,
-  `IdBank` int(11) DEFAULT NULL
+  `IdBank` int(11) DEFAULT NULL,
+  `Lunaskah` tinyint(1) DEFAULT '0',
+  `JasaPengiriman` varchar(45) DEFAULT NULL,
+  `JenisPembayaranPengiriman` varchar(45) DEFAULT NULL,
+  `NoCek` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `nota_beli`
 --
 
-INSERT INTO `nota_beli` (`NoNotaBeli`, `Tanggal`, `Total`, `Bayar`, `JenisPembayaran`, `Diskon`, `DiskonPelunasan`, `TanggalBatasDiskon`, `TanggalJatuhTempo`, `FOB`, `OngkosKirim`, `StatusKirim`, `KodeSupplier`, `IdBank`) VALUES
-('2017/NB0001', '2017-01-01', 12000000, 1200000, 'T', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL);
+INSERT INTO `nota_beli` (`NoNotaBeli`, `Tanggal`, `Total`, `Bayar`, `JenisPembayaran`, `Diskon`, `DiskonPelunasan`, `TanggalBatasDiskon`, `TanggalJatuhTempo`, `FOB`, `OngkosKirim`, `StatusKirim`, `KodeSupplier`, `IdBank`, `Lunaskah`, `JasaPengiriman`, `JenisPembayaranPengiriman`, `NoCek`) VALUES
+('2017/NB0001', '2017-01-01', 12000000, 1200000, 'T', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, 0, NULL, NULL, NULL),
+('2017/NB0002', '2017-11-22', 300000, 100000, 'K', '2', '5', '2017-11-27', '2017-12-22', NULL, NULL, 1, 1, 1, 0, NULL, NULL, NULL),
+('2017/NB0003', '2017-11-22', 1200000, 20000000, 'TR', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -323,23 +329,27 @@ CREATE TABLE `nota_jual` (
   `Total` float DEFAULT NULL,
   `Bayar` float DEFAULT NULL,
   `JenisPembayaran` enum('T','K','TF','C') DEFAULT NULL,
-  `Diskon` decimal(10,0) DEFAULT NULL,
-  `DiskonPelunasan` decimal(10,0) DEFAULT NULL,
+  `Diskon` decimal(10,0) DEFAULT '0',
+  `DiskonPelunasan` decimal(10,0) DEFAULT '0',
   `TanggalBatasDiskon` date DEFAULT NULL,
-  `PPN` decimal(10,0) DEFAULT NULL,
+  `PPN` decimal(10,0) DEFAULT '0',
   `TanggalJatuhTempo` date DEFAULT NULL,
   `FOB` varchar(45) DEFAULT NULL,
-  `OngkosKirim` int(11) DEFAULT NULL,
+  `OngkosKirim` int(11) DEFAULT '0',
   `StatusKirim` tinyint(1) DEFAULT NULL,
-  `KodePelanggan` int(11) NOT NULL
+  `KodePelanggan` int(11) NOT NULL,
+  `Lunaskah` tinyint(1) DEFAULT '0',
+  `NoCek` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `nota_jual`
 --
 
-INSERT INTO `nota_jual` (`NoNotaJual`, `Tanggal`, `Total`, `Bayar`, `JenisPembayaran`, `Diskon`, `DiskonPelunasan`, `TanggalBatasDiskon`, `PPN`, `TanggalJatuhTempo`, `FOB`, `OngkosKirim`, `StatusKirim`, `KodePelanggan`) VALUES
-('2017/NJ0001', '2017-01-02', 800000, 800000, 'T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1);
+INSERT INTO `nota_jual` (`NoNotaJual`, `Tanggal`, `Total`, `Bayar`, `JenisPembayaran`, `Diskon`, `DiskonPelunasan`, `TanggalBatasDiskon`, `PPN`, `TanggalJatuhTempo`, `FOB`, `OngkosKirim`, `StatusKirim`, `KodePelanggan`, `Lunaskah`, `NoCek`) VALUES
+('2017/NJ0001', '2017-01-02', 800000, 800000, 'T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL),
+('2017/NJ0002', '2017-11-22', 340000, 170000, 'K', '0', '5', '2017-11-27', '0', '2017-12-22', NULL, NULL, 1, 1, 0, NULL),
+('2017/NJ0003', '2017-11-22', 1100000, 0, 'K', NULL, '2', '2017-11-28', '10', '2017-11-30', NULL, NULL, 1, 2, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -382,7 +392,7 @@ CREATE TABLE `pelanggan` (
 
 INSERT INTO `pelanggan` (`KodePelanggan`, `Nama`) VALUES
 (1, 'Pelanggan Umum'),
-(2, 'PT ''KERJA TERUS''');
+(2, 'PT \'KERJA TERUS\'');
 
 -- --------------------------------------------------------
 
@@ -403,6 +413,13 @@ CREATE TABLE `pelunasan_hutang` (
   `PemilikRekening` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `pelunasan_hutang`
+--
+
+INSERT INTO `pelunasan_hutang` (`NoPelunasan`, `Tanggal`, `NominalSeharusnya`, `DiskonPelunasan`, `Bayar`, `JenisPembayaran`, `NoNotaBeli`, `IdBank`, `NoRekening`, `PemilikRekening`) VALUES
+(1, '2017-11-14', 300000, 5, 190000, 'TR', '2017/NB0002', 1, '02382838208', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -418,6 +435,13 @@ CREATE TABLE `pelunasan_piutang` (
   `JenisPembayaran` enum('T','K') DEFAULT NULL,
   `NoNotaJual` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `pelunasan_piutang`
+--
+
+INSERT INTO `pelunasan_piutang` (`NoPelunasan`, `Tanggal`, `NominalSeharusnya`, `DiskonPelunasan`, `Bayar`, `JenisPembayaran`, `NoNotaJual`) VALUES
+(1, '2017-11-30', 1100000, 0, 1100000, 'T', '2017/NJ0003');
 
 -- --------------------------------------------------------
 
@@ -439,7 +463,9 @@ CREATE TABLE `pembelian` (
 
 INSERT INTO `pembelian` (`NoPembelian`, `NoNotaBeli`, `KodeBarang`, `Harga`, `Jumlah`) VALUES
 (3, '2017/NB0001', 1, 20000, 100),
-(4, '2017/NB0001', 2, 50000, 200);
+(4, '2017/NB0001', 2, 50000, 200),
+(5, '2017/NB0003', 1, 30000, 20),
+(6, '2017/NB0003', 2, 30000, 20);
 
 -- --------------------------------------------------------
 
@@ -460,7 +486,11 @@ CREATE TABLE `penjualan` (
 --
 
 INSERT INTO `penjualan` (`NoPenjualan`, `NoNotaJual`, `KodeBarang`, `Harga`, `Jumlah`) VALUES
-(1, '2017/NJ0001', 1, 40000, 20);
+(1, '2017/NJ0001', 1, 40000, 20),
+(2, '2017/NJ0002', 1, 40000, 1),
+(3, '2017/NJ0002', 3, 150000, 2),
+(4, '2017/NJ0003', 1, 40000, 10),
+(5, '2017/NJ0003', 2, 70000, 10);
 
 -- --------------------------------------------------------
 
@@ -543,10 +573,10 @@ CREATE TABLE `supplier` (
 --
 
 INSERT INTO `supplier` (`KodeSupplier`, `Nama`) VALUES
-(1, 'UD ''SUKA TULIS'''),
-(2, 'UD ''BERSIH SELALU'''),
-(3, 'UD ''MAKMUR BAHAGIA'''),
-(4, 'UD ''SUKSES SEJATI''');
+(1, 'UD \'SUKA TULIS\''),
+(2, 'UD \'BERSIH SELALU\''),
+(3, 'UD \'MAKMUR BAHAGIA\''),
+(4, 'UD \'SUKSES SEJATI\'');
 
 --
 -- Indexes for dumped tables
@@ -717,15 +747,25 @@ ALTER TABLE `jenis_barang`
 ALTER TABLE `pelanggan`
   MODIFY `KodePelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT for table `pelunasan_hutang`
+--
+ALTER TABLE `pelunasan_hutang`
+  MODIFY `NoPelunasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `pelunasan_piutang`
+--
+ALTER TABLE `pelunasan_piutang`
+  MODIFY `NoPelunasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `pembelian`
 --
 ALTER TABLE `pembelian`
-  MODIFY `NoPembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `NoPembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `NoPenjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `NoPenjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `supplier`
 --
