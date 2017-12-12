@@ -187,7 +187,7 @@
           <li><a href="<?php echo site_url('PelunasanHutang') ?>"><i class="fa fa-circle-o text-yellow"></i> <span>Pelunasan Hutang</span></a></li>
         
         </li>
-        <li class="active treeview menu-open">
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-circle-o"></i> <span>Laporan</span>
             <span class="pull-right-container">
@@ -202,7 +202,7 @@
              <li><a href="<?php echo site_url('LaporanNeraca') ?>"><i class="fa fa-circle-o text-yellow"></i>Laporan Neraca</a></li>
             <li ><a href="<?php echo site_url('LaporanPerubahanEkuitas') ?>"><i class="fa fa-circle-o text-aqua"></i>Laporan Perubahan Ekuitas</a></li>
           </ul>
-        </li>s
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
