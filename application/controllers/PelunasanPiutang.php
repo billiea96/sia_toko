@@ -47,7 +47,7 @@ class PelunasanPiutang extends CI_Controller {
 	public function detail_nota(){
 		$NotaJual = $this->NotaJual_model->get_nota($_POST['noNota']);
 
-		$sisaBayar = ($NotaJual['Total']-($NotaJual['Total']*($NotaJual['Diskon']/100))) - $NotaJual['Bayar'];
+		$sisaBayar = ($NotaJual['Total']-(($NotaJual['Total']*$NotaJual['Diskon'])/100)) - $NotaJual['Bayar'];
 		//$totalBayar = $NotaJual['Total'] - ($NotaJual['Total'] * ($NotaJual['DiskonPelunasan']/100));
 		$totalBayar = $sisaBayar - (($sisaBayar) * ($NotaJual['DiskonPelunasan']/100));
 		

@@ -74,7 +74,7 @@ class Pembelian extends CI_Controller {
 			'KodeSupplier' => $customer,
 			'StatusKirim' => 1,
 			'JasaPengiriman' =>$this->input->post('kurir'),
-			'JenisPembayaranKirim' => $this->input->post('jPembayaranKirim')
+			'JenisPembayaranPengiriman' => $this->input->post('jPembayaranKirim')
 		);
 
 		//Jika ada pengiriman
@@ -157,6 +157,21 @@ class Pembelian extends CI_Controller {
 				);
 
 				$this->Pembelian_model->add_pembelian($datapembelian);
+
+				//untuk mengupdate stok barang dan harga beli rata rata
+				//mengambil data barang
+				$barang = $this->Barang_model->get_barang($item['id']);
+				$stokBaru = $barang['Stok']+$item['qty'];
+				//menghitung harga beli rata rata terbaru
+				$hargaBeliBaru = (($barang['Stok']*$barang['HargaBeli'])+($item['qty']*$item['price']))/($barang['Stok']+$item['qty']);
+
+				$dataUpdate = array(
+					'KodeBarang' =>$item['id'],
+					'Stok' => $stokBaru,
+					'HargaBeliRata2' => $hargaBeliBaru,
+				);
+
+				$this->Barang_model->update_barang($dataUpdate);
 			}
 			$dataJurnal = array(
 				'IDJurnal' =>$IDJurnal,

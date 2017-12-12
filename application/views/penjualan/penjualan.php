@@ -229,7 +229,7 @@
 
               <div class="col-xs-6">
                 <div class="input-group">
-                  <input form="form_penjualan" type="text" class="form-control" id="idNomorCek" >
+                  <input form="form_penjualan" type="text" class="form-control" name="nomorCek" id="idNomorCek">
                 </div>
               </div>
             </div>
@@ -389,7 +389,8 @@
       $('#idJT').removeAttr('disabled');
       $('#idDiscPelunasan').removeAttr('disabled');
       $('#idBatasPelunasan').removeAttr('disabled');
-      $('#idBank').removeAttr('disabled');
+      /*$('#idBank').removeAttr('disabled');*/
+      $('#idBank').attr('disabled', 'disabled');
       $('#idNomorCek').attr('hidden', ' hidden');
     }else{
       $('#idJT').attr('disabled', 'disabled');  
@@ -410,6 +411,7 @@
     }
     if($(this).val() == "C"){
      $('#idNomorCek').removeAttr('hidden');
+     $('#idBank').attr('disabled', 'disabled');
    }
   });
 
@@ -429,6 +431,35 @@
       $('#idJPembayaranKirim').attr('disabled', 'disabled');
       }     
     });
+
+  $( "#idDisc" ).change(function() {
+    var d = $('#idDisc').val();
+    var t = $('#idTotal').val();
+    var h = t - (t*d/100);
+     if($("#idKirim").is(':checked')){
+      $('#idTotalBayar').val(parseInt(h)+parseInt($('#idBiayaKirim').val()));
+    }
+    else
+    {
+      $('#idTotalBayar').val(h);
+    }
+    
+  });
+  $( "#idPPN" ).change(function() {
+    var d = $('#idDisc').val();
+    var p = $('#idPPN').val();
+    var t = $('#idTotal').val();
+    var h = t - (t*d/100);
+    h = h+(h*p/100);
+     if($("#idKirim").is(':checked')){
+      $('#idTotalBayar').val(parseInt(h)+parseInt($('#idBiayaKirim').val()));
+    }
+    else
+    {
+      $('#idTotalBayar').val(h);
+    }
+    
+  });
 
   function add_cart(){
     var id_barang = document.getElementById('idBarang').value;

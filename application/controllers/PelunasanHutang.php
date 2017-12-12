@@ -79,7 +79,7 @@ class PelunasanHutang extends CI_Controller {
 	public function detail_nota(){
 		$NotaBeli = $this->NotaBeli_model->get_nota($_POST['noNota']);
 
-		$sisaBayar = $NotaBeli['Total']-($NotaBeli['Total']*($NotaBeli['Diskon']/100))- $NotaBeli['Bayar'];
+		$sisaBayar = $NotaBeli['Total']-(($NotaBeli['Total']*$NotaBeli['Diskon'])/100)- $NotaBeli['Bayar'];
 		//$totalBayar = $NotaBeli['Total'] - ($NotaBeli['Total'] * ($NotaBeli['DiskonPelunasan']/100));
 		$totalBayar = $sisaBayar - (($sisaBayar) * ($NotaBeli['DiskonPelunasan']/100));
 		

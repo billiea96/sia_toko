@@ -5,7 +5,7 @@ class Barang_model extends CI_Model {
         $this->load->database();
     }
     public function get_barang($slug = FALSE) {
-        $this->db->select("barang.KodeBarang, barang.Nama, barang.HargaJual, barang.HargaBeliRata2 as HargaBeli ,jenis_barang.NoJenisBarang, jenis_barang.Nama as NamaJenis");
+        $this->db->select("barang.KodeBarang, barang.Nama, barang.Stok ,barang.HargaJual, barang.HargaBeliRata2 as HargaBeli ,jenis_barang.NoJenisBarang, jenis_barang.Nama as NamaJenis");
         $this->db->from('barang');
         $this->db->join('jenis_barang', 'barang.NoJenisBarang = jenis_barang.NoJenisBarang');
         $this->db->order_by('barang.KodeBarang');
@@ -17,4 +17,8 @@ class Barang_model extends CI_Model {
         $query = $this->db->get();
         return $query->row_array();
 	}
+    public function update_barang($arr_data){
+        $this->db->where('KodeBarang', $arr_data['KodeBarang']);
+        return $this->db->update('barang', $arr_data);
+    }
 }
