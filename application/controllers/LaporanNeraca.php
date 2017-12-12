@@ -31,7 +31,8 @@ class LaporanNeraca extends CI_Controller {
     	$this->load->library('form_validation');
     	$this->load->library('cart');
         $this->load->library('session');
-    }
+       $this->load->library('pdf');
+   }
 	public function index()
 	{
  		$this->load->view('layout/header');
@@ -39,10 +40,5 @@ class LaporanNeraca extends CI_Controller {
 		$this->load->view('layout/footer');
 	}
 	
-	public function mypdf(){
-		$this->load->library('pdf');
-		$this->pdf->load_view('laporanNeraca');
-		$this->pdf->render();
-		$this->pdf->stream("welcome.pdf");
-   }
+
 }

@@ -19,16 +19,26 @@ class LaporanArusKas extends CI_Controller {
 	 */
 	public function __construct() {
         parent::__construct();
-      
+        $this->load->model('Barang_model');
+        $this->load->model('Supplier_model');
+        $this->load->model('Bank_model');
+        $this->load->model('NotaJual_model');
+        $this->load->model('Pembelian_model');
+        $this->load->model('PelunasanPiutang_model');
+        $this->load->helper('url_helper');
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+        $this->load->library('cart');
+        $this->load->library('session');
         $this->load->library('pdf');
 
     }
 	public function index()
 	{
- 	// 	$this->load->view('layout/header');
-		// $this->load->view('laporan/laporanArusKas');
-		// $this->load->view('layout/footer');
-		
+ 		$this->load->view('layout/header');
+		$this->load->view('laporan/laporanArusKas');
+		$this->load->view('layout/footer');
+
 
 	}
 	
