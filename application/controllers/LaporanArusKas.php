@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class LaporanArusKas extends CI_Controller {
 
@@ -20,197 +19,101 @@ class LaporanArusKas extends CI_Controller {
 	 */
 	public function __construct() {
         parent::__construct();
-        $this->load->model('Barang_model');
-        $this->load->model('Supplier_model');
-        $this->load->model('Bank_model');
-        $this->load->model('NotaJual_model');
-        $this->load->model('Pembelian_model');
-        $this->load->model('PelunasanPiutang_model');
-        $this->load->helper('url_helper');
-        $this->load->helper('form');
-    	$this->load->library('form_validation');
-    	$this->load->library('cart');
-        $this->load->library('session');
+      
+        $this->load->library('pdf');
+
     }
 	public function index()
 	{
-        $data['NoNotaJual'] = $this->NotaJual_model->pembayaran_kredit();
-		$data['barang'] = $this->Barang_model->get_barang();
-		$data['supplier'] = $this->Supplier_model->get_supplier();
-		$data['bank'] = $this->Bank_model->get_bank();
-
-		// $this->load->view('layout/header');
-		// $this->load->view('laporan/laporanArusKas', $data);
+ 	// 	$this->load->view('layout/header');
+		// $this->load->view('laporan/laporanArusKas');
 		// $this->load->view('layout/footer');
-
 		
-	}
-
-	public function detail_nota(){
-		$NotaJual = $this->NotaJual_model->get_nota($_POST['noNota']);
-
-		$sisaBayar = $NotaJual['Total'] - $NotaJual['Bayar'];
-		//$totalBayar = $NotaJual['Total'] - ($NotaJual['Total'] * ($NotaJual['DiskonPelunasan']/100));
-		$totalBayar = $sisaBayar - (($sisaBayar) * ($NotaJual['DiskonPelunasan']/100));
-		
-		echo json_encode(array('sisaBayar' => $sisaBayar,'diskon'=>$NotaJual['DiskonPelunasan'], 'total'=>$NotaJual['Total'], 'totalBayar' => $totalBayar, 'tgl'=>$NotaJual['TanggalBatasDiskon']));
-	}
-
-	public function simpan(){
-		$nota = $this->input->post('noNota');
-		$tgl = $this->input->post('tgl');
-		$jp = $this->input->post('jPembayaran');
-		$nominal = $this->input->post('nominal');
-		$disc = $this->input->post('discPelunasan');
-		$bayar = $this->input->post('totalBayar');
-
-		$dataSimpan = array(
-			'Tanggal' => $tgl,
-			'NominalSeharusnya' => $nominal,
-			'DiskonPelunasan' => $disc,
-			'Bayar' => $bayar,
-			'JenisPembayaran' => $jp,
-			'NoNotaJual' => $nota
-		);
-
-		if($this->PelunasanPiutang_model->add_pelunasan_piutang($dataSimpan)){
-			header("Location: ".site_url('PelunasanPiutang/index'));
-		}
-	}
-
-	public function create_nota(){
-		$NoNotaBeli = $this->input->post('NoNotaBeli');
-		$tgl = $this->input->post('tgl');
-		$customer = $this->input->post('supplier');		
-
-		$dataNotaBeli = array(
-			'NoNotaBeli' => $NoNotaBeli,
-			'Tanggal' => $tgl,
-			'KodeSupplier' => $customer,
-			'StatusKirim' => 1,
-		);
-
-		//Jika ada pengiriman
-		if($this->input->post('kirim')=='true'){
-			$biayaKirim = $this->input->post('biayaKirim');
-			$fob = $this->input->post('fob');
-
-			$dataNotaBeli['OngkosKirim'] = $biayaKirim;
-			$dataNotaBeli['FOB'] = $fob;
-		}
-
-		if($this->input->post('jPembayaran')=='K'){
-			$jenisPembayaran = $this->input->post('jPembayaran');
-			$tanggalJatuhTempo = $this->input->post('jt');
-			$discPelunasan = $this->input->post('discPelunasan');
-			$batasPelunasan = $this->input->post('batasPelunasan');
-
-			$dataNotaBeli['JenisPembayaran'] = $jenisPembayaran;
-			$dataNotaBeli['DiskonPelunasan'] = $discPelunasan;
-			$dataNotaBeli['TanggalBatasDiskon'] = $batasPelunasan;
-			$dataNotaBeli['TanggalJatuhTempo'] = $tanggalJatuhTempo;
-		}
-		else{
-			$jenisPembayaran = $this->input->post('jPembayaran');
-
-			$dataNotaBeli['JenisPembayaran'] = $jenisPembayaran;
-		}
-		if($this->input->post('disc')!=''){
-			$disc = $this->input->post('disc');
-
-			$dataNotaBeli['Diskon'] = $disc;
-		}
-		if($this->input->post('bank')!=''){
-			$bank = $this->input->post('bank');
-
-			$dataNotaBeli['IdBank'] = $bank;
-		}
-
-		$total = $this->input->post('total');
-		$bayar = $this->input->post('bayar');
-
-		$dataNotaBeli['Total'] = $total;
-		$dataNotaBeli['Bayar'] = $bayar;
-
-
-		if($this->NotaBeli_model->add_nota_beli($dataNotaBeli)){
-			//Untuk mengisi data pada table pembelian
-			foreach($this->cart->contents() as $item){
-				$datapembelian = array(
-					'NoNotaBeli' => $NoNotaBeli,
-					'KodeBarang' => $item['id'],
-					'Harga' => $item['price'],
-					'Jumlah' => $item['qty'],
-				);
-
-				$this->Pembelian_model->add_pembelian($datapembelian);
-			}
-			header("Location: ".site_url('Pembelian/index'));
-		}
-		echo $dataNotaBeli['Tanggal'];
 
 	}
+	
+	
+	public function create_pdf() {
+     
+  
+    // create new PDF document
+    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);    
+  
+    // set document information
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('Muhammad Saqlain Arif');
+    $pdf->SetTitle('TCPDF Example 001');
+    $pdf->SetSubject('TCPDF Tutorial');
+    $pdf->SetKeywords('TCPDF, PDF, example, test, guide');   
+  
+    // set default header data
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
+    $pdf->setFooterData(array(0,64,0), array(0,64,128)); 
+  
+    // set header and footer fonts
+    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));  
+  
+    // set default monospaced font
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED); 
+  
+    // set margins
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);    
+  
+    // set auto page breaks
+    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM); 
+  
+    // set image scale factor
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);  
+  
+    // set some language-dependent strings (optional)
+    if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+        require_once(dirname(__FILE__).'/lang/eng.php');
+        $pdf->setLanguageArray($l);
+    }   
+  
+    // ---------------------------------------------------------    
+  
+    // set default font subsetting mode
+    $pdf->setFontSubsetting(true);   
+  
+    // Set font
+    // dejavusans is a UTF-8 Unicode font, if you only need to
+    // print standard ASCII chars, you can use core fonts like
+    // helvetica or times to reduce file size.
+    $pdf->SetFont('dejavusans', '', 14, '', true);   
+  
+    // Add a page
+    // This method has several options, check the source code documentation for more information.
+    $pdf->AddPage(); 
+  
+    // set text shadow effect
+    $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));    
+  
+    // Set some content to print
+    $html = <<<EOD
+    <h1>Welcome to <a href="http://www.tcpdf.org" style="text-decoration:none;background-color:#CC0000;color:black;">&nbsp;<span style="color:black;">TC</span><span style="color:white;">PDF</span>&nbsp;</a>!</h1>
+    <i>This is the first example of TCPDF library.</i>
+    <p>This text is printed using the <i>writeHTMLCell()</i> method but you can also use: <i>Multicell(), writeHTML(), Write(), Cell() and Text()</i>.</p>
+    <p>Please check the source code documentation and other examples for further information.</p>
+     
+EOD;
+  
+    // Print text using writeHTMLCell()
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);   
+  
+    // ---------------------------------------------------------    
+  
+    // Close and output PDF document
+    // This method has several options, check the source code documentation for more information.
+    $pdf->Output('example_001.pdf', 'I');    
+  
+    //============================================================+
+    // END OF FILE
+    //============================================================+
+    }
 
-	//untuk mengisi keranjang belanja
-	public function add_cart(){
-		$barang = $this->Barang_model->get_barang($_POST['id_barang']);
-		$data = array(
-			'id' => $barang['KodeBarang'],
-			'qty' => $_POST['jumlah'],
-			'price' => $_POST['harga'],
-			'name' => $barang['Nama']
-		);
-
-		$this->cart->insert($data);
-
-		echo $this->view();
-	}
-	public function view(){
-		$output="";
-		$count =0;
-		foreach ($this->cart->contents() as $value){
-			$count++;
-			$output.='
-				<tr>
-					<td>'.$count.'</td>
-					<td>'.$value['name'].'</td>
-					<td>'.$value['qty'].'</td>
-					<td>Rp. '.$value['price'].'</td>
-					<td>Rp. '.$value['subtotal'].'</td>
-					<td align="center ">
-						<button type="button" class="btn btn-danger btn-xs hapus-barang" name="hapus" id="'.$value['rowid'].'">hapus</button>
-					</td>
-				</tr>
-			';
-		}
-
-		$output.='
-			<tr>
-				<td colspan="4">Total</td>
-				<td colspan="2" align="center">Rp. '.$this->cart->total().'</td>
-			</tr>
-			<input type="hidden" form="form_pembelian" id="idTotal" name="total" value="'.$this->cart->total().'">
-		';
-
-		if($count==0)
-			$output='';
-
-		return $output;
-	}
-	public function load(){
-		echo $this->view();
-	}
-	public function remove(){
-		$rowid = $_POST['row_id'];
-		$data = array(
-			'rowid' => $rowid,
-			'qty' =>0
-		);
-		$this->cart->update($data);
-		echo $this->view();
-	}
-	public function clear_cart(){
-		$this->cart->destroy();
-		echo $this->view();
-	}
+	
 }
