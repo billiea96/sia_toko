@@ -39,9 +39,11 @@ class LaporanArusKas extends CI_Controller {
 		$data['supplier'] = $this->Supplier_model->get_supplier();
 		$data['bank'] = $this->Bank_model->get_bank();
 
-		$this->load->view('layout/header');
-		$this->load->view('laporan/laporanArusKas', $data);
-		$this->load->view('layout/footer');
+		// $this->load->view('layout/header');
+		// $this->load->view('laporan/laporanArusKas', $data);
+		// $this->load->view('layout/footer');
+
+		
 	}
 
 	public function detail_nota(){
