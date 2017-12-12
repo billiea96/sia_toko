@@ -108,15 +108,15 @@ class Pembelian extends CI_Controller {
 
 		if($this->input->post('jPembayaran')=='TR')
 		{
-			$keterangan .= 'Transaksi pembelian transfer ';
+			$keterangan .= 'Transaksi Pembelian Transfer ';
 		}
 		else if ($this->input->post('jPembayaran')=='T')
 		{
-			$keterangan .= 'Transaksi pembelian tunai ';
+			$keterangan .= 'Transaksi Pembelian Tunai ';
 		}
 		else if ($this->input->post('jPembayaran')=='C')
 		{
-			$keterangan .= 'Transaksi pembelian cek ';
+			$keterangan .= 'Transaksi Pembelian Cek ';
 		}
 
 		if($this->input->post('disc')>0){
@@ -124,7 +124,7 @@ class Pembelian extends CI_Controller {
 
 			$dataNotaBeli['Diskon'] = $disc;
 			
-			$keterangan .= 'dengan diskon pembayaran ';
+			$keterangan .= 'dengan Diskon Pembayaran ';
 		}
 		if($this->input->post('bank')!=''){
 			$bank = $this->input->post('bank');
