@@ -25,6 +25,14 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
+                  <label for="noPelunasan" class="col-xs-5 control-label">No Pelunasan</label>
+
+                  <div class="col-xs-2">
+                    <input type="text" class="form-control" value="<?php echo $NoPelunasan; ?>" disabled>
+                    <input type="hidden" name="noPelunasan" value="<?php echo $NoPelunasan; ?>">
+                  </div>
+                </div>
+                <div class="form-group">
                   <label for="noNota" class="col-xs-5 control-label">No Nota</label>
 
                   <div class="col-xs-2">
@@ -58,10 +66,17 @@
                 		<select form="form_pelunasanJual" class="form-control select2" id="idJPembayaran" name="jPembayaran">
                   		<option value="T">Tunai</option>
                   		<option value="TR">Transfer</option>
+                      <option value="C">Cek</option>
                 		</select>
               		</div>
             	</div>
+              <div class="form-group">
+                  <label for="noCek" class="col-xs-5 control-label">No Cek</label>
 
+                  <div class="col-xs-2">
+                    <input type="text" class="form-control" id="idNoCek" name="noCek" disabled>
+                  </div>
+              </div>
               <div class="form-group">
                   <label for="bank" class="col-xs-5 control-label">Bank</label>
 
@@ -161,11 +176,18 @@ $('#idJPembayaran').change(function(){
       $('#idNoRek').removeAttr('disabled');
       $('#idNamaPemilik').removeAttr('disabled');
       $('#idBank').removeAttr('disabled');
+      $('#idNoCek').attr('disabled', 'disabled');
 
+    }else if($(this).val() == "T"){
+      $('#idNoCek').attr('disabled', 'disabled');
+      $('#idNoRek').attr('disabled', 'disabled');
+      $('#idNamaPemilik').attr('disabled', 'disabled');
+      $('#idBank').attr('disabled', 'disabled');
     }else{
       $('#idNoRek').attr('disabled', 'disabled');
       $('#idNamaPemilik').attr('disabled', 'disabled');
       $('#idBank').attr('disabled', 'disabled');
+      $('#idNoCek').removeAttr('disabled');
     }
 });
 
@@ -198,6 +220,7 @@ $('#idTgl').change(function(){
   })
 });
 $('#idNoNota').change(function(){
+  var sekarang = '<?php echo date('Y-m-d') ?>';
   $.ajax({
     url: '<?php echo site_url('PelunasanHutang/detail_nota'); ?>',
     method: 'POST',
@@ -205,13 +228,24 @@ $('#idNoNota').change(function(){
     data: {'noNota': $(this).val()},
     success:function(data){
       $('#idDisplayNominal').val(data.total);
-      $('#idDiscPelunasan').val(data.diskon);
-      $('#idDisplayTotalBayar').val(data.totalBayar);
-
       $('#nominal').val(data.total);
-      $('#discPelunasan').val(data.diskon);
-      $('#totalBayar').val(data.totalBayar);
-      $('#idBayar').val(data.totalBayar);
+      
+
+      if(new Date(sekarang) <= new Date(data.tgl)){
+        $('#idDiscPelunasan').val(data.diskon);
+        $('#idDisplayTotalBayar').val(data.totalBayar);
+        
+        $('#discPelunasan').val(data.diskon);
+        $('#totalBayar').val(data.totalBayar);
+        $('#idBayar').val(data.totalBayar);
+      }else{
+        $('#idDiscPelunasan').val(0);
+        $('#idDisplayTotalBayar').val(data.sisaBayar);
+
+        $('#discPelunasan').val(0);
+        $('#totalBayar').val(data.sisaBayar);
+        $('#idBayar').val(data.sisaBayar);
+      }
     }
   })
 })
