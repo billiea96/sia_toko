@@ -1,18 +1,18 @@
-<?php
+-<?php
     // create new PDF document
     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);    
   
     // set document information
     $pdf->SetCreator(PB-AOF);
     $pdf->SetAuthor('PB-AOF');
-    $pdf->SetTitle('Laporan Laba Rugi');
-    $pdf->SetSubject('Laporan Laba Rugi');
+    $pdf->SetTitle('Laporan Saldo Akhir');
+    $pdf->SetSubject('Laporan Saldo Akhir');
     $pdf->SetKeywords('');   
   
     // // set default header data
     // $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
     // $pdf->setFooterData(array(0,64,0), array(0,64,128)); 
-  	
+    
     // set header and footer fonts
     // $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
     // $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));  
@@ -47,45 +47,42 @@
   
     // Set some content to print
     $title = <<<EOD
-    <h3> Laporan Laba Rugi<h3>
+    <h3> Laporan Saldo Akhir<h3>
 EOD;
 // Print text using writeHTMLCell()
     $pdf->writeHTMLCell(0, 0, '', '', $title, 0, 1, 0, true, 'C', true); 
 
-	$table ='<table style="width:560px;">';
-	$table .='<tr >
-    		<th style="border:1px solid #000; width: 60px; ">No Akun</th>
-    		<th style="border:1px solid #000; width: 300px;">Nama Akun</th>
-    		<th style="border:1px solid #000; width: 120px;">Saldo Akhir</th>
-	<!-- Main content -->
-	<section class="content">
-	  <!-- Info boxes -->
-
-    		</tr>';
-    		foreach($vlabarugi as $value){
-    									
-				$table.='<tr style="margin-top:50px">
-					<td style="border:1px solid #000;">'.$value["NoAkun"].'</td>
-					<td style="border:1px solid #000;">'.$value["NamaAkun"].'</td>
-					<td style="border:1px solid #000;">'.$value["SaldoAkhir"].'</td>
-				</tr>';
-    		}
-    			
-    
-	$table .='</tbody></table>';
+    $table ='<table style="width:560px;">';
+    $table .='<tr>
+            <th style="border:1px solid #000; width: 50px; ">No Akun</th>
+            <th style="border:1px solid #000; width: 180px;">Nama Akun</th>
+            <th style="border:1px solid #000; width: 90px;">Saldo Akhir</th>
+            
+        
+            </tr>';
+            foreach($vsaldoakhir as $value){
+                                        
+                $table.='<tr style="margin-top:50px">
+                    <td style="border:1px solid #000;">'.$value["NoAkun"].'</td>
+                    <td style="border:1px solid #000;">'.$value["NamaAkun"].'</td>
+                    <td style="border:1px solid #000;">'.$value["SaldoAkhir"].'</td>
+                    
+                </tr>';
+            }
+                    
+    $table .='</table>';
       
     $pdf->writeHTMLCell(0, 0, '', '', $table, 0, 0, 0, true, 'C', true);   
- 	$pdf->LastPage();
+    $pdf->LastPage();
     // ---------------------------------------------------------    
   
     // Close and output PDF document
     // This method has several options, check the source code documentation for more information.
     ob_clean();
-    $pdf->Output('LaporanLabaRugi.pdf', 'I');    
+    $pdf->Output('LaporanSaldoAkhir.pdf', 'I');    
   
     //============================================================+
     // END OF FILE
     //============================================================+
-			
 
 ?>

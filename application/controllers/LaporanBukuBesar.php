@@ -25,6 +25,7 @@ class LaporanBukuBesar extends CI_Controller {
         $this->load->model('Bank_model');
         $this->load->model('NotaJual_model');
         $this->load->model('Pembelian_model');
+        $this->load->model('Laporan_model');
         $this->load->model('PelunasanPiutang_model');
         $this->load->helper('url_helper');
         $this->load->helper('form');
@@ -35,8 +36,9 @@ class LaporanBukuBesar extends CI_Controller {
     }
 	public function index()
 	{
+		$data['vbukubesar']=$this->Laporan_model->get_bukuBesar();
  		$this->load->view('layout/header');
-		$this->load->view('laporan/LaporanBukuBesar');
+		$this->load->view('laporan/LaporanBukuBesar', $data);
 		$this->load->view('layout/footer');
 	}
 	

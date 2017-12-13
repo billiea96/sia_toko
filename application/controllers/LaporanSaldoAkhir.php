@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class LaporanJurnal extends CI_Controller {
+class LaporanSAldoAkhir extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -27,21 +27,22 @@ class LaporanJurnal extends CI_Controller {
         $this->load->model('NotaJual_model');
         $this->load->model('Pembelian_model');
         $this->load->model('PelunasanPiutang_model');
+        $this->load->model('Laporan_model');
         $this->load->helper('url_helper');
         $this->load->helper('form');
     	$this->load->library('form_validation');
     	$this->load->library('cart');
         $this->load->library('session');
        $this->load->library('pdf');
+
     }
 	public function index()
 	{
-		$data['vlaporanjurnal']=$this->Laporan_model->get_laporanJurnal();
+		$data['vsaldoakhir']=$this->Laporan_model->get_saldoAkhir();
  		$this->load->view('layout/header');
-		$this->load->view('laporan/LaporanJurnal', $data);
+		$this->load->view('laporan/laporanSaldoAkhir', $data);
 		$this->load->view('layout/footer');
 	}
-	
 	
 	
 }

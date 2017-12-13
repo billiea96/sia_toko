@@ -200,6 +200,7 @@
              <li><a href="<?php echo site_url('LaporanArusKas') ?>"><i class="fa fa-circle-o text-aqua"></i>Laporan Arus Kas</a></li>
             <li ><a href="<?php echo site_url('LaporanLabaRugi') ?>"><i class="fa fa-circle-o text-red"></i>Laporan Laba Rugi</a></li>
              <li><a href="<?php echo site_url('LaporanNeraca') ?>"><i class="fa fa-circle-o text-yellow"></i>Laporan Neraca</a></li>
+             <li ><a href="<?php echo site_url('LaporanSaldoAkhir') ?>"><i class="fa fa-circle-o text-red"></i>Laporan Saldo Akhir</a></li>
             <li ><a href="<?php echo site_url('LaporanPerubahanEkuitas') ?>"><i class="fa fa-circle-o text-aqua"></i>Laporan Perubahan Ekuitas</a></li>
           </ul>
         </li>

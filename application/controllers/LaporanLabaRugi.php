@@ -23,6 +23,7 @@ class LaporanLabaRugi extends CI_Controller {
         $this->load->model('Barang_model');
         $this->load->model('Supplier_model');
         $this->load->model('Bank_model');
+        $this->load->model('Laporan_model');
         $this->load->model('NotaJual_model');
         $this->load->model('Pembelian_model');
         $this->load->model('PelunasanPiutang_model');
@@ -35,8 +36,9 @@ class LaporanLabaRugi extends CI_Controller {
    }
 	public function index()
 	{
+		$data['vlabarugi']=$this->Laporan_model->get_labaRugi();
  		$this->load->view('layout/header');
-		$this->load->view('laporan/LaporanLabaRugi');
+		$this->load->view('laporan/LaporanLabaRugi', $data);
 		$this->load->view('layout/footer');
 	}
 	
