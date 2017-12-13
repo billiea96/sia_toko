@@ -14,7 +14,33 @@ class Laporan_model extends CI_Model {
         return $query->row_array();
 	}
     public function get_laporanJurnal(){
-        $query = $this->db->get('vlaporajurnal');
+        $query = $this->db->get('vlaporanjurnal');
         return $query->result_array();
     }
+    public function get_bukuBesar(){
+        $query = $this->db->get('vbukubesar');
+        return $query->result_array();
+    }
+     public function get_saldoAkhir(){
+        $query = $this->db->get('vsaldoakhir');
+        return $query->result_array();
+    }
+     public function get_perubahanEkuitas(){
+        $query = $this->db->get('vperubahanekuitas');
+        return $query->result_array();
+    }
+    public function get_labaRugi(){
+        $query = $this->db->get('vlabarugi');
+        return $query->result_array();
+    }
+    public function get_neraca(){
+        $query = $this->db->get('vneraca');
+        return $query->result_array();
+    }
+    public function get_arusKas(){
+        $query = $this->db->get('varuskas');
+        return $query->result_array();
+    }
+
+
 }

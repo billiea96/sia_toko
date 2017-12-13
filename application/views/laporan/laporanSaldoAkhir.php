@@ -5,8 +5,8 @@
     // set document information
     $pdf->SetCreator(PB-AOF);
     $pdf->SetAuthor('PB-AOF');
-    $pdf->SetTitle('Laporan Perubahan Ekuitas');
-    $pdf->SetSubject('Laporan Perubahan Ekuitas');
+    $pdf->SetTitle('Laporan Saldo Akhir');
+    $pdf->SetSubject('Laporan Saldo Akhir');
     $pdf->SetKeywords('');   
   
     // // set default header data
@@ -47,20 +47,20 @@
   
     // Set some content to print
     $title = <<<EOD
-    <h3> Laporan Buku Besar<h3>
+    <h3> Laporan Saldo Akhir<h3>
 EOD;
 // Print text using writeHTMLCell()
     $pdf->writeHTMLCell(0, 0, '', '', $title, 0, 1, 0, true, 'C', true); 
 
 	$table ='<table style="width:560px;">';
-	$table .='<tr >
-    		<th style="border:1px solid #000; width: 30px; ">No Akun</th>
-    		<th style="border:1px solid #000; width: 60px;">Nama Akun</th>
-    		<th style="border:1px solid #000; width: 60px;">Saldo Akhir</th>
+	$table .='<tr>
+    		<th style="border:1px solid #000; width: 50px; ">No Akun</th>
+    		<th style="border:1px solid #000; width: 180px;">Nama Akun</th>
+    		<th style="border:1px solid #000; width: 90px;">Saldo Akhir</th>
     		
-
+    	
     		</tr>';
-    		foreach($vperubahanekuitas as $value){
+    		foreach($vsaldoakhir as $value){
     									
 				$table.='<tr style="margin-top:50px">
 					<td style="border:1px solid #000;">'.$value["NoAkun"].'</td>
@@ -70,7 +70,7 @@ EOD;
 				</tr>';
     		}
     			    
-	$table .='</tbody></table>';
+	$table .='</table>';
       
     $pdf->writeHTMLCell(0, 0, '', '', $table, 0, 0, 0, true, 'C', true);   
  	$pdf->LastPage();
@@ -79,7 +79,7 @@ EOD;
     // Close and output PDF document
     // This method has several options, check the source code documentation for more information.
     ob_clean();
-    $pdf->Output('LaporanPerubahanEkuitas.pdf', 'I');    
+    $pdf->Output('LaporanSaldoAkhir.pdf', 'I');    
   
     //============================================================+
     // END OF FILE

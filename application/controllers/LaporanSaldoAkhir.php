@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class LaporanNeraca extends CI_Controller {
+class LaporanSAldoAkhir extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -19,7 +19,7 @@ class LaporanNeraca extends CI_Controller {
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function __construct() {
-     	parent::__construct();
+        parent::__construct();
         $this->load->model('Barang_model');
         $this->load->model('Supplier_model');
         $this->load->model('Bank_model');
@@ -37,11 +37,11 @@ class LaporanNeraca extends CI_Controller {
     }
 	public function index()
 	{
-		$data['vneraca']=$this->Laporan_model->get_neraca();
+		$data['vsaldoakhir']=$this->Laporan_model->get_saldoAkhir();
  		$this->load->view('layout/header');
-		$this->load->view('laporan/laporanNeraca', $data);
+		$this->load->view('laporan/laporanSaldoAkhir', $data);
 		$this->load->view('layout/footer');
 	}
 	
-
+	
 }
