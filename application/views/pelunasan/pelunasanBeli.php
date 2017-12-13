@@ -42,7 +42,7 @@
 
                   <div class="col-xs-3">
                     <div class="input-group date">
-                      <input type="text" class="form-control pull-right" id="idTgl" name="tgl" value="<?php echo date('Y-m-d'); ?>">
+                      <input type="text" class="form-control pull-right" id="idTgl" name="tgl" value="<?php echo date('Y-m-d'); ?>" disabled>
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
