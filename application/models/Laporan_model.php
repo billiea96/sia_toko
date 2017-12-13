@@ -13,4 +13,8 @@ class Laporan_model extends CI_Model {
         $query = $this->db->get_where('laporan', array('IDLaporan' => $slug));
         return $query->row_array();
 	}
+    public function get_laporanJurnal(){
+        $query = $this->db->get('vlaporajurnal');
+        return $query->result_array();
+    }
 }

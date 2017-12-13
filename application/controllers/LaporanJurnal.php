@@ -39,6 +39,11 @@ class LaporanJurnal extends CI_Controller {
 		$this->load->view('laporan/LaporanJurnal');
 		$this->load->view('layout/footer');
 	}
+	public function create_pdf() {
+
+    
+
+    }
 	
 	
 }
