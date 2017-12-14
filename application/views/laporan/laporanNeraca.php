@@ -90,13 +90,24 @@
     		</tr>
             </thead>';
             $total=0;
+            $totalModal =0;
     		foreach($pasiva as  $value){
-    			$total+=($value["SaldoAkhir"]*-1);			
-				$table.='<tr tr style="width:560px;">
-		
-					<td style="border:1px solid #000; width: 200px;">'.$value["Nama"].'</td>
-					<td style="border:1px solid #000; width: 120px;">'.($value["SaldoAkhir"]*-1).'</td>
-				</tr>';
+                if($value['NoAkun']=='301'){
+                    $totalModal=-1*$value['SaldoAkhir']+($totalPendapatan['TotalPendapatan']-$totalBiaya['TotalBiaya']);
+                    $total+=$totalModal;          
+                    $table.='<tr tr style="width:560px;">
+            
+                        <td style="border:1px solid #000; width: 200px;">'.$value["Nama"].'</td>
+                        <td style="border:1px solid #000; width: 120px;">'.$totalModal.'</td>
+                    </tr>';
+                }else{
+        			$total+=($value["SaldoAkhir"]*-1);			
+    				$table.='<tr tr style="width:560px;">
+    		
+    					<td style="border:1px solid #000; width: 200px;">'.$value["Nama"].'</td>
+    					<td style="border:1px solid #000; width: 120px;">'.($value["SaldoAkhir"]*-1).'</td>
+    				</tr>';
+                }
     		}
     		$table .= '<tr> 
     					<td style="border:1px solid #000; font-weight:bold; width: 200px;"> Total Pasiva(Aset)</td>

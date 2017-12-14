@@ -23,6 +23,11 @@ class Laporan_model extends CI_Model {
         $query = $this->db->get('vbukubesar');
         return $query->result_array();
     }
+    public function get_saldoAkhirs($noAkun){
+        $this->db->where('NoAkun',$noAkun);
+        $query = $this->db->get('vsaldoakhir');
+        return $query->result_array();
+    }
      public function get_saldoAkhir(){
         $query = $this->db->get('vsaldoakhir');
         return $query->result_array();
@@ -47,7 +52,7 @@ class Laporan_model extends CI_Model {
         return $query->result_array();
     }
     public function get_neraca_pasiva(){
-        $query = $this->db->query("SELECT a.NoAkun,a.Nama, (vs.SaldoAkhir*a.SaldoNormal) as SaldoAkhir  from akun a inner join vsaldoakhir vs on a.NoAkun= vs.NoAkun INNER JOIN akun_has_laporan al on a.NoAkun =al.NoAkun where al.IDLaporan ='NR' AND a.NoAkun like '2%' OR a.NoAkun like '3%'");
+        $query = $this->db->query("SELECT a.NoAkun,a.Nama, (vs.SaldoAkhir*a.SaldoNormal) as SaldoAkhir  from akun a inner join vsaldoakhir vs on a.NoAkun= vs.NoAkun INNER JOIN akun_has_laporan al on a.NoAkun =al.NoAkun where al.IDLaporan ='NR' AND (a.NoAkun like '2%' OR a.NoAkun like '3%') ");
         return $query->result_array();
     }
     public function get_totalPendapatan()

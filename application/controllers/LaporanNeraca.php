@@ -38,6 +38,8 @@ class LaporanNeraca extends CI_Controller {
 	{
 		$data['aktiva']=$this->Laporan_model->get_neraca_aktiva();
 		$data['pasiva']=$this->Laporan_model->get_neraca_pasiva();
+		$data['totalPendapatan']=$this->Laporan_model->get_totalPendapatan();
+		$data['totalBiaya']=$this->Laporan_model->get_totalBiaya();
  		$this->load->view('layout/header');
 		$this->load->view('laporan/LaporanNeraca', $data);
 		$this->load->view('layout/footer');

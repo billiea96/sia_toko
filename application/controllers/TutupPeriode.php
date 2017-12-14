@@ -53,7 +53,8 @@ class TutupPeriode extends CI_Controller {
 		$temp = $this->Jurnal_model->get_last_jurnal();
 		$IDJurnal = $temp['IDJurnal']+1; 
 		$penjualan = $this->TutupPeriode_model->get_penjualan();
-
+		$totalTotalPendapatan = 0;
+		$totalTotalBiaya = 0;
 
 		$keterangan = "Penutupan-pendapatan";
 		$dataJurnal = array(
@@ -72,12 +73,12 @@ class TutupPeriode extends CI_Controller {
 					'IDJurnal' =>$IDJurnal,
 					'NoAkun' => '401',
 					'Urutan' =>1,
-					'NominalDebet' => $penjualan,
+					'NominalDebet' => $penjualan['NominalKredit'],
 					'NominalKredit' =>0, 
 				);
 				$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
 
-				$tempakun += $penjualan;
+				$tempakun += $penjualan['NominalKredit'];
 
 				$diskon = $this->TutupPeriode_model->get_diskonPenjualan();
 				$data = array(
@@ -85,23 +86,28 @@ class TutupPeriode extends CI_Controller {
 					'NoAkun' => '402',
 					'Urutan' =>2,
 					'NominalDebet' => 0,
-					'NominalKredit' =>$diskon, 
+					'NominalKredit' =>$diskon['NominalDebet'], 
 				);
 				$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
 
-				$tempakun -= $diskon;
+				$tempakun -= $diskon['NominalDebet'];
+				
+
+				$totalTotalPendapatan = $penjualan['NominalKredit'];
+				$totalTotalPendapatan -= $diskon['NominalDebet'];
 
 				$penjualan = $this->TutupPeriode_model->get_pendapatanLain();
+				$totalTotalPendapatan += $penjualan['NominalKredit'];
 				$data = array(
 					'IDJurnal' =>$IDJurnal,
 					'NoAkun' => '403',
 					'Urutan' =>3,
-					'NominalDebet' => $penjualan,
+					'NominalDebet' => $penjualan['NominalKredit'],
 					'NominalKredit' => 0, 
 				);
 				$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
 
-				$tempakun += $penjualan
+				$tempakun += $penjualan['NominalKredit'];
 
 				//akun temp
 				$data = array(
@@ -137,7 +143,9 @@ class TutupPeriode extends CI_Controller {
 			$biayaListrik = $this->TutupPeriode_model->get_biayaListrik();
 			$rugiPenj = $this->TutupPeriode_model->get_rugiPenjualan();
 
-			$tempakun = $hpp+$biayaGaji+$biayaSediaan+$biayaDep+$biayaListrik+$rugiPenj;
+			$tempakun = $hpp['NominalDebet']+$biayaGaji['NominalDebet']+$biayaSediaan['NominalDebet']+$biayaDep['NominalDebet']+$biayaListrik['NominalDebet']+$rugiPenj['NominalDebet'];
+
+			$totalTotalBiaya = $tempakun;
 			//akun temp
 			$data = array(
 				'IDJurnal' =>$IDJurnal,
@@ -154,7 +162,7 @@ class TutupPeriode extends CI_Controller {
 				'NoAkun' => '501',
 				'Urutan' =>2,
 				'NominalDebet' => 0,
-				'NominalKredit'=>$hpp, 
+				'NominalKredit'=>$hpp['NominalDebet'], 
 			);
 			$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
 
@@ -164,7 +172,7 @@ class TutupPeriode extends CI_Controller {
 				'NoAkun' => '506',
 				'Urutan' =>3,
 				'NominalDebet' => 0,
-				'NominalKredit'=>$biayaGaji, 
+				'NominalKredit'=>$biayaGaji['NominalDebet'], 
 			);
 			$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
 
@@ -174,7 +182,7 @@ class TutupPeriode extends CI_Controller {
 				'NoAkun' => '507',
 				'Urutan' =>4,
 				'NominalDebet' => 0,
-				'NominalKredit'=>$biayaSediaan, 
+				'NominalKredit'=>$biayaSediaan['NominalDebet'], 
 			);
 			$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
 
@@ -184,7 +192,7 @@ class TutupPeriode extends CI_Controller {
 				'NoAkun' => '508',
 				'Urutan' =>5,
 				'NominalDebet' => 0,
-				'NominalKredit'=>$biayaDep, 
+				'NominalKredit'=>$biayaDep['NominalDebet'], 
 			);
 			$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
 
@@ -194,7 +202,7 @@ class TutupPeriode extends CI_Controller {
 				'NoAkun' => '509',
 				'Urutan' =>6,
 				'NominalDebet' => 0,
-				'NominalKredit'=>$biayaListrik, 
+				'NominalKredit'=>$biayaListrik['NominalDebet'], 
 			);
 			$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
 
@@ -203,7 +211,7 @@ class TutupPeriode extends CI_Controller {
 				'NoAkun' => '515',
 				'Urutan' =>7,
 				'NominalDebet' => 0,
-				'NominalKredit'=>$rugiPenj, 
+				'NominalKredit'=>$rugiPenj['NominalDebet'], 
 			);
 			$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
 		}
@@ -226,7 +234,7 @@ class TutupPeriode extends CI_Controller {
 		{
 			$totalPend = $this->TutupPeriode_model->get_totalPendapatan();
 			$totalBiaya = $this->TutupPeriode_model->get_totalBiaya();
-			$labaRugi = $totalPend - $totalBiaya;
+			$labaRugi = $totalTotalPendapatan - $totalTotalBiaya;
 			
 			//akun temp
 			$data = array(
@@ -271,7 +279,7 @@ class TutupPeriode extends CI_Controller {
 				'IDJurnal' =>$IDJurnal,
 				'NoAkun' => '301',
 				'Urutan' =>1,
-				'NominalDebet' => $totalprive,
+				'NominalDebet' => $totalprive['NominalDebet'],
 				'NominalKredit'=> 0, 
 			);
 			$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
@@ -281,10 +289,11 @@ class TutupPeriode extends CI_Controller {
 				'NoAkun' => '302',
 				'Urutan' =>2,
 				'NominalDebet' => 0,
-				'NominalKredit'=> $totalprive, 
+				'NominalKredit'=> $totalprive['NominalDebet'], 
 			);
 			$this->JurnalHasAkun_model->add_jurnalHasAkun($data);
 		}
-
+		header("Location: ".site_url('TutupPeriode/index'));
+	}
 
 }

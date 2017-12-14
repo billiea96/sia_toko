@@ -83,6 +83,8 @@ class PelunasanPiutang extends CI_Controller {
 		);
 
 		if($this->PelunasanPiutang_model->add_pelunasan_piutang($dataSimpan)){
+			//untuk set lunas
+			$this->NotaJual_model->set_lunas($nota);
 			$notajual = $this->NotaJual_model->get_nota($nota);
 			$keterangan ='Pelunasan transaksi penjualan tanggal '.$notajual['Tanggal'];
 			$akun ="";
@@ -99,7 +101,7 @@ class PelunasanPiutang extends CI_Controller {
 			}
 			else{
 				$keterangan.=' dengan cek';		
-				$akun="203";
+				$akun="105";
 			}
 
 

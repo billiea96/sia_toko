@@ -54,8 +54,7 @@
 	$table ='<table style="width:560px;">';
 	$table .='<thead style="width:560px;">
             <tr>
-    		<th style="border:1px solid #000; width: 30px; text-align: center;">No Akun</th>
-    		<th style="border:1px solid #000; width: 60px; text-align: center;">Nama Akun</th>
+    		<th style="border:1px solid #000; width: 200px; text-align: center;">Nama Akun</th>
     		<th style="border:1px solid #000; width: 60px; text-align: center;">Saldo Akhir</th>
     		
 	<!-- Main content -->
@@ -64,15 +63,29 @@
 
     		</tr>
             </thead>';
-    		foreach($vperubahanekuitas as $value){
-    									
-				$table.='<tr style="width:560px;">
-					<td style="border:1px solid #000; width: 30px;">'.$value["NoAkun"].'</td>
-					<td style="border:1px solid #000; width: 60px;">'.$value["NamaAkun"].'</td>
-					<td style="border:1px solid #000; width: 60px;">'.$value["SaldoAkhir"].'</td>
-					
-				</tr>';
-    		}
+    		
+			$table.='<tr style="width:560px;">
+				<td style="border:1px solid #000; width: 200px;">Ekuitas Pemilik per Periode ini</td>
+				<td style="border:1px solid #000; width: 60px;">'.$vperubahanekuitas[0]["SaldoAkhir"].'</td>
+				
+			</tr>';
+                
+            $table.='<tr style="width:560px;">
+                    <td style="border:1px solid #000; width: 200px;">Laba Rugi Tahun Berjalan</td>
+                    <td style="border:1px solid #000; width: 60px;">'.$labarugi.'</td>
+                    
+                </tr>';
+
+            $table.='<tr style="width:560px;">
+                    <td style="border:1px solid #000; width: 200px;">'.$vperubahanekuitas[1]["NamaAkun"].'</td>
+                    <td style="border:1px solid #000; width: 60px;">'.$vperubahanekuitas[1]["SaldoAkhir"].'</td>
+                    
+                </tr>';
+            $table.='<tr style="width:560px;">
+                    <td style="border:1px solid #000; font-weight:bold; width: 200px;">Ekuitas Akhir Pemilik</td>
+                    <td style="border:1px solid #000; font-weight:bold; width: 60px;">'.($vperubahanekuitas[0]["SaldoAkhir"]+$labarugi).'</td>
+                    
+                </tr>';
     			    
 	$table .='</tbody></table>';
       

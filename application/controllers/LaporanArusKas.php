@@ -37,10 +37,13 @@ class LaporanArusKas extends CI_Controller {
 	public function index()
 	{
 		$data['kas']=$this->Laporan_model->get_bukuBesar('101');
+		$data['kasAkhir']=$this->Laporan_model->get_saldoAkhirs('101');
 		$data['rekeningBacaBaca']=$this->Laporan_model->get_bukuBesar('102');
+		$data['rekeningBacaBacaAkhir']=$this->Laporan_model->get_saldoAkhirs('102');
 		$data['rekeningSukaSendiri']=$this->Laporan_model->get_bukuBesar('103');
+		$data['rekeningSukaSendiriAkhir']=$this->Laporan_model->get_saldoAkhirs('103');
  		$this->load->view('layout/header');
-		$this->load->view('laporan/laporanArusKas' $data);
+		$this->load->view('laporan/laporanArusKas', $data);
 		$this->load->view('layout/footer');
         
 

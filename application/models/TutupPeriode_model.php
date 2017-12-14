@@ -46,43 +46,43 @@ class TutupPeriode_model extends CI_Model {
     public function get_penjualan() {
 
         $query = $this->db->query('SELECT SUM(NominalKredit) AS NominalKredit FROM jurnal_has_akun WHERE NoAkun = "401"');
-        return $query->result_array();
+        return $query->row_array();
 
     }
 
     public function get_pendapatanLain() {
         $query = $this->db->query('SELECT SUM(NominalKredit) AS NominalKredit FROM jurnal_has_akun WHERE NoAkun = "403"');
-        return $query->result_array();
+        return $query->row_array();
     }
 
     public function get_diskonPenjualan() {
         $query = $this->db->query('SELECT SUM(NominalDebet) AS NominalDebet FROM jurnal_has_akun WHERE NoAkun = "402"');
-        return $query->result_array();
+        return $query->row_array();
     }
 
     public function get_hpp() {
         $query = $this->db->query('SELECT SUM(NominalDebet) AS NominalDebet FROM jurnal_has_akun WHERE NoAkun = "501"');
-        return $query->result_array();
+        return $query->row_array();
     }
     public function get_biayaGaji() {
         $query = $this->db->query('SELECT SUM(NominalDebet) AS NominalDebet FROM jurnal_has_akun WHERE NoAkun = "506"');
-        return $query->result_array();
+        return $query->row_array();
     }
     public function get_biayaSediaan() {
         $query = $this->db->query('SELECT SUM(NominalDebet) AS NominalDebet FROM jurnal_has_akun WHERE NoAkun = "507"');
-        return $query->result_array();
+        return $query->row_array();
     }
     public function get_biayaDepresiasi() {
         $query = $this->db->query('SELECT SUM(NominalDebet) AS NominalDebet FROM jurnal_has_akun WHERE NoAkun = "508"');
-        return $query->result_array();
+        return $query->row_array();
     }
     public function get_biayaListrik() {
         $query = $this->db->query('SELECT SUM(NominalDebet) AS NominalDebet FROM jurnal_has_akun WHERE NoAkun = "509"');
-        return $query->result_array();
+        return $query->row_array();
     }
     public function get_rugiPenjualan() {
         $query = $this->db->query('SELECT SUM(NominalDebet) AS NominalDebet FROM jurnal_has_akun WHERE NoAkun = "515"');
-        return $query->result_array();
+        return $query->row_array();
     }
 
     public function get_totalPendapatan()
@@ -90,7 +90,7 @@ class TutupPeriode_model extends CI_Model {
         $query = $this->db->query('SELECT SUM(V.SaldoAkhir*A.SaldoNormal)*-1 AS TotalPendapatan
             FROM vlabarugi V INNER JOIN akun A ON V.NoAkun = A.NoAkun
             WHERE V.NoAkun LIKE "4%"');
-        return $query->result_array();
+        return $query->row_array();
         
     }
     public function get_totalBiaya()
@@ -98,11 +98,11 @@ class TutupPeriode_model extends CI_Model {
         $query = $this->db->query('SELECT SUM(V.SaldoAkhir*A.SaldoNormal) AS TotalBiaya
             FROM vlabarugi V INNER JOIN akun A ON V.NoAkun = A.NoAkun
             WHERE V.NoAkun LIKE "5%"');
-        return $query->result_array();
+        return $query->row_array();
     }
     public function get_prive()
     {
         $query = $this->db->query('SELECT SUM(NominalDebet) AS NominalDebet FROM jurnal_has_akun WHERE NoAkun = "302"');
-        return $query->result_array();
+        return $query->row_array();
     }
 }
