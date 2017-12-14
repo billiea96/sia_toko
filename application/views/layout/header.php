@@ -203,7 +203,9 @@
              <li ><a href="<?php echo site_url('LaporanSaldoAkhir') ?>"><i class="fa fa-circle-o text-red"></i>Laporan Saldo Akhir</a></li>
             <li ><a href="<?php echo site_url('LaporanPerubahanEkuitas') ?>"><i class="fa fa-circle-o text-aqua"></i>Laporan Perubahan Ekuitas</a></li>
           </ul>
+
         </li>
+        <li ><a href="<?php echo site_url('TutupPeriode') ?>"><i class="fa fa-circle-o text-aqua"></i>Tutup Periode</a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
