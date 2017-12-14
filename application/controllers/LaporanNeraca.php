@@ -36,7 +36,8 @@ class LaporanNeraca extends CI_Controller {
    }
 	public function index()
 	{
-		$data['vnneraca']=$this->Laporan_model->get_neraca();
+		$data['aktiva']=$this->Laporan_model->get_neraca_aktiva();
+		$data['pasiva']=$this->Laporan_model->get_neraca_pasiva();
  		$this->load->view('layout/header');
 		$this->load->view('laporan/LaporanNeraca', $data);
 		$this->load->view('layout/footer');

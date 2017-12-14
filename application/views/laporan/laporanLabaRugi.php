@@ -49,30 +49,65 @@
 // Print text using writeHTMLCell()
     $pdf->writeHTMLCell(0, 0, '', '', $title, 0, 1, 0, true, 'C', true); 
 
-	$table ='<table style="width:560px;">';
-	$table .='<thead style="width:560px; ">
+	$table .= '<h3 style="text-align:left;">Pendapatan</h3>';
+    $table .='<table style="width:560px;">';
+    $table .='<thead style="width:560px; ">
             <tr>
-    		<th style="border:1px solid #000; width: 60px; height: 20px; text-align: center">No Akun</th>
-    		<th style="border:1px solid #000; width: 300px; text-align: center">Nama Akun</th>
-    		<th style="border:1px solid #000; width: 120px; text-align: center">Saldo Akhir</th>
-	<!-- Main content -->
-	<section class="content">
-	  <!-- Info boxes -->
+            <th style="border:1px solid #000; width: 200px; text-align: center">Nama Akun</th>
+            <th style="border:1px solid #000; width: 120px; text-align: center">Saldo Akhir</th>
+    <!-- Main content -->
+    <section class="content">
+      <!-- Info boxes -->
 
-    		</tr>
+            </tr>
             </thead>';
-    		foreach($vlabarugi as $value){
-    									
-				$table.='<tr tr style="width:560px;">
-					<td style="border:1px solid #000; width: 60px; height: 15px;">'.$value["NoAkun"].'</td>
-					<td style="border:1px solid #000; width: 300px;">'.$value["NamaAkun"].'</td>
-					<td style="border:1px solid #000; width: 120px;">'.$value["SaldoAkhir"].'</td>
-				</tr>';
-    		}
-    			
+            $total=0;
+            foreach($labaRugiPendapatan as  $value){
+                $total+=$value["SaldoAkhir"]*$value["SaldoNormal"]*-1;           
+                $table.='<tr tr style="width:560px;">
+        
+                    <td style="border:1px solid #000; width: 200px;">'.$value["NamaAkun"].'</td>
+                    <td style="border:1px solid #000; width: 120px;">'.$value["SaldoAkhir"].'</td>
+                </tr>';
+            }
+            $table .= '<tr> 
+                        <td style="border:1px solid #000; font-weight:bold; width: 200px;"> Total Aktiva(Aset)</td>
+                        <td style="border:1px solid #000; font-weight:bold; width: 120px;"> '.$total.'</td>
+                       </tr>';
+                
     
-	$table .='</tbody></table>';
-      
+    $table .='</tbody></table>';
+    
+
+    $table .= '<h3 style="text-align:left;">Biaya</h3>';
+    $table .='<br><br><table style="width:560px;">';
+    $table .='<thead style="width:560px; ">
+            <tr>
+            <th style="border:1px solid #000; width: 200px; text-align: center">Nama Akun</th>
+            <th style="border:1px solid #000; width: 120px; text-align: center">Saldo Akhir</th>
+    <!-- Main content -->
+    <section class="content">
+      <!-- Info boxes -->
+
+            </tr>
+            </thead>';
+            $total=0;
+            foreach($labaRugiBiaya as  $value){
+                $total+=$value["SaldoAkhir"]*$value["SaldoNormal"];          
+                $table.='<tr tr style="width:560px;">
+        
+                    <td style="border:1px solid #000; width: 200px;">'.$value["NamaAkun"].'</td>
+                    <td style="border:1px solid #000; width: 120px;">'.$value["SaldoAkhir"].'</td>
+                </tr>';
+            }
+            $table .= '<tr> 
+                        <td style="border:1px solid #000; font-weight:bold; width: 200px;"> Total Pasiva(Aset)</td>
+                        <td style="border:1px solid #000; font-weight:bold; width: 120px;"> '.$total.'</td>
+                       </tr>';
+                
+            
+    $table .='</tbody></table>';
+    $table .= '<h3 style="text-align:left;">Total Laba Rugi : Rp. '.($totalPendapatan['TotalPendapatan']-$totalBiaya['TotalBiaya']).' </h3>';  
     $pdf->writeHTMLCell(0, 0, '', '', $table, 0, 0, 0, true, 'C', true);   
  	$pdf->LastPage();
     // ---------------------------------------------------------    

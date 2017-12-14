@@ -36,7 +36,10 @@ class LaporanLabaRugi extends CI_Controller {
    }
 	public function index()
 	{
-		$data['vlabarugi']=$this->Laporan_model->get_labaRugi();
+		$data['labaRugiBiaya']=$this->Laporan_model->get_labaRugiBiaya();
+		$data['labaRugiPendapatan']=$this->Laporan_model->get_labaRugiPendapatan();
+		$data['totalPendapatan']=$this->Laporan_model->get_totalPendapatan();
+		$data['totalBiaya']=$this->Laporan_model->get_totalBiaya();
  		$this->load->view('layout/header');
 		$this->load->view('laporan/LaporanLabaRugi', $data);
 		$this->load->view('layout/footer');

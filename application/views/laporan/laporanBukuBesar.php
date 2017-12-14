@@ -55,8 +55,8 @@
 	$table ='<table style="width:560px;">';
 	$table .='<thead style="width:560px; ">
             <tr>
-                <th  style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">'.$kas[0]["NamaAkun"].'</th>
-                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: '.$kas[0]["NoAkun"].'</th>
+                <th  style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">Kas Di Tangan</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: 101</th>
                 <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">Saldo</th>
                 <th rowspan="2" style="border:1px solid #000; font-weight:bold; width: 60px; text-align: center;">No Bukti</th>
             </tr>
@@ -118,8 +118,8 @@
     $table ='<table style="width:560px;">';
     $table .='<thead style="width:560px; ">
             <tr>
-                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">'.$rekeningBacaBaca[0]["NamaAkun"].'</th>
-                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: '.$rekeningBacaBaca[0]["NoAkun"].'</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">Rekening Baca-Baca</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: 102</th>
                 <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">Saldo</th>
                 <th rowspan="2" style="border:1px solid #000; font-weight:bold; width: 60px; text-align: center;">No Bukti</th>
             </tr>
@@ -181,8 +181,8 @@
     $table ='<table style="width:560px;">';
     $table .='<thead style="width:560px; ">
             <tr>
-                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">'.$rekeningSukaSendiri[0]["NamaAkun"].'</th>
-                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: '.$rekeningSukaSendiri[0]["NoAkun"].'</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">Rekening Suka Sendiri</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: 103</th>
                 <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">Saldo</th>
                 <th rowspan="2" style="border:1px solid #000; font-weight:bold; width: 60px; text-align: center;">No Bukti</th>
             </tr>
@@ -243,8 +243,8 @@
     $table ='<table style="width:560px;">';
     $table .='<thead style="width:560px; ">
             <tr>
-                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">'.$piutangDagang[0]["NamaAkun"].'</th>
-                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: '.$piutangDagang[0]["NoAkun"].'</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">Piutan Dagang</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: 104</th>
                 <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">Saldo</th>
                 <th rowspan="2" style="border:1px solid #000; font-weight:bold; width: 60px; text-align: center;">No Bukti</th>
             </tr>
@@ -305,8 +305,8 @@
     $table ='<table style="width:560px;">';
     $table .='<thead style="width:560px; ">
             <tr>
-                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">'.$piutangCek[0]["NamaAkun"].'</th>
-                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: '.$piutangCek[0]["NoAkun"].'</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">Piutang Cek</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: 105</th>
                 <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">Saldo</th>
                 <th rowspan="2" style="border:1px solid #000; font-weight:bold; width: 60px; text-align: center;">No Bukti</th>
             </tr>
@@ -367,8 +367,8 @@
     $table ='<table style="width:560px;">';
     $table .='<thead style="width:560px; ">
             <tr>
-                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">'.$sediaanBarangAlatTulis[0]["NamaAkun"].'</th>
-                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: '.$sediaanBarangAlatTulis[0]["NoAkun"].'</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">Sedian Barang Alat Tulis</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: 106</th>
                 <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">Saldo</th>
                 <th rowspan="2" style="border:1px solid #000; font-weight:bold; width: 60px; text-align: center;">No Bukti</th>
             </tr>
@@ -428,8 +428,8 @@
     $table ='<table style="width:560px;">';
     $table .='<thead style="width:560px; ">
             <tr>
-                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">'.$sediaanBarangRumahTangga[0]["NamaAkun"].'</th>
-                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: '.$sediaanBarangRumahTangga[0]["NoAkun"].'</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 185px; text-align: center;" colspan="2">Sedian Barang Rumah Tangga</th>
+                <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">No Akun: 106</th>
                 <th style="border:1px solid #000; font-weight:bold; width: 134px; text-align: center;" colspan="2">Saldo</th>
                 <th rowspan="2" style="border:1px solid #000; font-weight:bold; width: 60px; text-align: center;">No Bukti</th>
             </tr>
