@@ -10,7 +10,7 @@
     $pdf->SetKeywords('');   
   
     // // set default header data
-    // $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_JURNAL_POS, PDF_HEADER_JURNAL, PDF_HEADER_STRING);
     // $pdf->setFooterData(array(0,64,0), array(0,64,128)); 
    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
     $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
@@ -36,21 +36,19 @@
     // set text shadow effect
     $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));    
   
-    $title = <<<EOD
-     <h3> Laporan Jurnal<h3>
- 
-EOD;
 // Print text using writeHTMLCell()
     $pdf->writeHTMLCell(0, 0, '', '', $title, 0, 1, 0, true, 'C', true); 
 
     $table ='<table style="margin-left:300px;">';
-    $table .='<thead><tr>
-            <th style="border:1px solid #000; width: 60px; ">Tanggal</th>
-            <th style="border:1px solid #000; width: 170px; ">Keterangan</th>
-            <th style="border:1px solid #000; width: 120px; ">Nama Akun</th>
-            <th style="border:1px solid #000; width: 80px; ">Debet</th>
-            <th style="border:1px solid #000; width: 80px; ">Kredit</th>
-            </tr></thead>';
+    $table .='<thead style="width:560px;">
+            <tr>
+            <th style="border:1px solid #000; width: 60px; text-align: center">Tanggal</th>
+            <th style="border:1px solid #000; width: 170px; text-align: center">Keterangan</th>
+            <th style="border:1px solid #000; width: 120px; text-align: center">Nama Akun</th>
+            <th style="border:1px solid #000; width: 80px; text-align: center">Debet</th>
+            <th style="border:1px solid #000; width: 80px; text-align: center">Kredit</th>
+            </tr>
+            </thead>';
     $table .='<tbody>';
             $tampung = '';
             $hitung = sizeof($vlaporanjurnal)-1;
@@ -58,7 +56,7 @@ EOD;
                 if($tampung == $value['IDJurnal']){
                     
                         if($key == $hitung){
-                            $table.='<tr style="margin-top:50px">
+                            $table.='<tr style="width:560px;">
                                 <td style="border-right:1px solid #000; border-bottom:1px solid #000; border-left:1px solid #000; width:60px;"></td>
                                 <td style="border-right:1px solid #000; border-bottom:1px solid #000; width:170px"></td>
                                 <td style="border:1px solid #000; width:120px;">'.$value["NamaAkun"].'</td>
@@ -66,7 +64,7 @@ EOD;
                                 <td style="border:1px solid #000; width:80px;">'.$value["Kredit"].'</td>
                             </tr>';
                         }else{
-                            $table.='<tr style="margin-top:50px">
+                            $table.='<tr style="width:560px;">
                                 <td style="border-right:1px solid #000; border-left:1px solid #000; width:60px;"></td>
                                 <td style="border-right:1px solid #000; width:170px"></td>
                                 <td style="border:1px solid #000; width:120px;">'.$value["NamaAkun"].'</td>

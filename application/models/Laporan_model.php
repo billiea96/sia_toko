@@ -18,7 +18,8 @@ class Laporan_model extends CI_Model {
         $query = $this->db->get('vlaporanjurnal');
         return $query->result_array();
     }
-    public function get_bukuBesar(){
+    public function get_bukuBesar($noAkun){
+        $this->db->where('NoAkun',$noAkun);
         $query = $this->db->get('vbukubesar');
         return $query->result_array();
     }

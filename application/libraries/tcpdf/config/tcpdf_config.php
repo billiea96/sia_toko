@@ -69,12 +69,12 @@
  * Deafult image logo used be the default Header() method.
  * Please set here your own logo or an empty string to disable it.
  */
-//define ('PDF_HEADER_LOGO', '');
+define ('PDF_HEADER_LOGO', '');
 
 /**
  * Header logo image width in user units.
  */
-//define ('PDF_HEADER_LOGO_WIDTH', 0);
+define ('PDF_HEADER_LOGO_WIDTH', 57);
 
 /**
  * Cache directory for temporary files (full path).
@@ -99,22 +99,32 @@ define ('PDF_PAGE_ORIENTATION', 'P');
 /**
  * Document creator.
  */
-define ('PDF_CREATOR', 'TCPDF');
+define ('PDF_CREATOR', 'PB-AOF');
 
 /**
  * Document author.
  */
-define ('PDF_AUTHOR', 'TCPDF');
+define ('PDF_AUTHOR', 'PB-AOF');
 
 /**
  * Header title.
  */
-define ('PDF_HEADER_TITLE', 'TCPDF Example');
+define ('PDF_HEADER_LABA_RUGI', 'LAPORAN LABA RUGI');
+define ('PDF_HEADER_PERUBAHAN_EKUITAS', 'LAPORAN PERUBAHAN EKUITAS');
+define ('PDF_HEADER_ARUS_KAS', 'LAPORAN ARUS KAS');
+define ('PDF_HEADER_SALDO_AKHIR', 'LAPORAN SALDO AKHIR');
+define ('PDF_HEADER_BUKU_BESAR', 'LAPORAN BUKU BESAR');
+define ('PDF_HEADER_NERACA', 'LAPORAN NERACA');
+define ('PDF_HEADER_JURNAL', 'LAPORAN JURNAL');
 
+define ('PDF_HEADER_JURNAL_POS', 66);
+define ('PDF_HEADER_LABA_POS', 66);
+define ('PDF_HEADER_AKHIR_POS', 66);
+define ('PDF_HEADER_EKUITAS_POS', 55);
 /**
  * Header description string.
  */
-define ('PDF_HEADER_STRING', "by Nicola Asuni - Tecnick.com\nwww.tcpdf.org");
+define ('PDF_HEADER_STRING', "");
 
 /**
  * Document unit of measure [pt=point, mm=millimeter, cm=centimeter, in=inch].
@@ -124,7 +134,7 @@ define ('PDF_UNIT', 'mm');
 /**
  * Header margin.
  */
-define ('PDF_MARGIN_HEADER', 5);
+define ('PDF_MARGIN_HEADER', 10);
 
 /**
  * Footer margin.

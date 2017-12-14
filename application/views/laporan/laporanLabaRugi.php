@@ -10,7 +10,7 @@
     $pdf->SetKeywords('');   
   
     // // set default header data
-    // $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LABA_POS, PDF_HEADER_LABA_RUGI, PDF_HEADER_STRING);
     // $pdf->setFooterData(array(0,64,0), array(0,64,128)); 
   	
     // set header and footer fonts
@@ -46,28 +46,27 @@
     $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));    
   
     // Set some content to print
-    $title = <<<EOD
-    <h3> Laporan Laba Rugi<h3>
-EOD;
 // Print text using writeHTMLCell()
     $pdf->writeHTMLCell(0, 0, '', '', $title, 0, 1, 0, true, 'C', true); 
 
 	$table ='<table style="width:560px;">';
-	$table .='<tr >
-    		<th style="border:1px solid #000; width: 60px; ">No Akun</th>
-    		<th style="border:1px solid #000; width: 300px;">Nama Akun</th>
-    		<th style="border:1px solid #000; width: 120px;">Saldo Akhir</th>
+	$table .='<thead style="width:560px; ">
+            <tr>
+    		<th style="border:1px solid #000; width: 60px; height: 20px; text-align: center">No Akun</th>
+    		<th style="border:1px solid #000; width: 300px; text-align: center">Nama Akun</th>
+    		<th style="border:1px solid #000; width: 120px; text-align: center">Saldo Akhir</th>
 	<!-- Main content -->
 	<section class="content">
 	  <!-- Info boxes -->
 
-    		</tr>';
+    		</tr>
+            </thead>';
     		foreach($vlabarugi as $value){
     									
-				$table.='<tr style="margin-top:50px">
-					<td style="border:1px solid #000;">'.$value["NoAkun"].'</td>
-					<td style="border:1px solid #000;">'.$value["NamaAkun"].'</td>
-					<td style="border:1px solid #000;">'.$value["SaldoAkhir"].'</td>
+				$table.='<tr tr style="width:560px;">
+					<td style="border:1px solid #000; width: 60px; height: 15px;">'.$value["NoAkun"].'</td>
+					<td style="border:1px solid #000; width: 300px;">'.$value["NamaAkun"].'</td>
+					<td style="border:1px solid #000; width: 120px;">'.$value["SaldoAkhir"].'</td>
 				</tr>';
     		}
     			
