@@ -10,7 +10,7 @@
     $pdf->SetKeywords('');   
   
     // // set default header data
-    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LABA_POS, PDF_HEADER_NERACA, PDF_HEADER_STRING);
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LABA_POS, PDF_HEADER_ARUS_KAS, PDF_HEADER_STRING);
     // $pdf->setFooterData(array(0,64,0), array(0,64,128)); 
   	
     // set header and footer fonts
