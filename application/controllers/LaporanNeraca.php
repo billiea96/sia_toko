@@ -22,6 +22,7 @@ class LaporanNeraca extends CI_Controller {
         parent::__construct();
         $this->load->model('Barang_model');
         $this->load->model('Supplier_model');
+        $this->load->model('Laporan_model');
         $this->load->model('Bank_model');
         $this->load->model('NotaJual_model');
         $this->load->model('Pembelian_model');
@@ -35,8 +36,12 @@ class LaporanNeraca extends CI_Controller {
    }
 	public function index()
 	{
+		$data['aktiva']=$this->Laporan_model->get_neraca_aktiva();
+		$data['pasiva']=$this->Laporan_model->get_neraca_pasiva();
+		$data['totalPendapatan']=$this->Laporan_model->get_totalPendapatan();
+		$data['totalBiaya']=$this->Laporan_model->get_totalBiaya();
  		$this->load->view('layout/header');
-		$this->load->view('laporan/LaporanNeraca');
+		$this->load->view('laporan/LaporanNeraca', $data);
 		$this->load->view('layout/footer');
 	}
 	

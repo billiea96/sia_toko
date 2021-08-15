@@ -1,0 +1,8 @@
+SELECT        V.[Jenis Akun], V.[Nama Akun], V.[Saldo Akhir], A.saldoNormal_akun AS [Saldo Normal Akun]
+FROM            dbo.vBukuBesar AS V INNER JOIN
+                         dbo.Tab_AkunLaporan AS L ON V.[No Akun] = L.no_akun INNER JOIN
+                         dbo.Akun AS A ON L.no_akun = A.no_akun
+WHERE        (L.id_laporan = 'NR') AND (L.no_akun <> '301')
+
+
+5408077

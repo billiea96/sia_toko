@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2017 at 03:12 PM
+-- Generation Time: Dec 14, 2017 at 07:24 AM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -150,7 +150,7 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`KodeBarang`, `Nama`, `HargaJual`, `HargaBeliRata2`, `Stok`, `NoJenisBarang`) VALUES
-(1, 'Buku Gambar DISNEY', 40000, 20000, 100, 1),
+(1, 'Buku Gambar DISNEY', 40000, 20000, 88, 1),
 (2, 'Map RAINBOW', 70000, 50000, 200, 1),
 (3, 'Sapu CLEANY SWEAP', 150000, 100000, 100, 2),
 (4, 'Ember Tiger Star', 70000, 50000, 200, 2);
@@ -204,7 +204,8 @@ INSERT INTO `jurnal` (`IDJurnal`, `Tanggal`, `Keterangan`, `NoBukti`, `JenisJurn
 (8, '2017-01-14', 'Pelunasan transaksi 4 Jan', 'PP0001', 'JU', '20171'),
 (9, '2017-01-20', 'Transaksi pembelian Alat Tulis – harga beli berubah', 'NB0005', 'JU', '20171'),
 (10, '2017-01-22', 'Transaksi penjualan Alat Tulis  - Cek', 'NJ0003', 'JU', '20171'),
-(11, '2017-01-31', 'Jika cek yg diterima tanggal 22 jan dicairkan tunai', 'C0001', 'JU', '20171');
+(11, '2017-01-31', 'Jika cek yg diterima tanggal 22 jan dicairkan tunai', 'C0001', 'JU', '20171'),
+(12, '2017-12-13', 'Transaksi Penjualan tunai ', '2017/NJ0004', 'JU', '20172');
 
 -- --------------------------------------------------------
 
@@ -258,7 +259,11 @@ INSERT INTO `jurnal_has_akun` (`IDJurnal`, `NoAkun`, `Urutan`, `NominalDebet`, `
 (10, '401', 2, '0', '4950000'),
 (10, '501', 3, '1626923', '0'),
 (11, '101', 1, '4950000', '0'),
-(11, '105', 2, '0', '4950000');
+(11, '105', 2, '0', '4950000'),
+(12, '101', 1, '480000', '0'),
+(12, '106', 4, '0', '240000'),
+(12, '401', 2, '0', '480000'),
+(12, '501', 3, '240000', '0');
 
 -- --------------------------------------------------------
 
@@ -339,17 +344,20 @@ CREATE TABLE `nota_jual` (
   `StatusKirim` tinyint(1) DEFAULT NULL,
   `KodePelanggan` int(11) NOT NULL,
   `Lunaskah` tinyint(1) DEFAULT '0',
-  `NoCek` varchar(45) DEFAULT NULL
+  `NoCek` varchar(45) DEFAULT NULL,
+  `JasaPengiriman` varchar(45) DEFAULT NULL,
+  `JenisPembayaranPengiriman` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `nota_jual`
 --
 
-INSERT INTO `nota_jual` (`NoNotaJual`, `Tanggal`, `Total`, `Bayar`, `JenisPembayaran`, `Diskon`, `DiskonPelunasan`, `TanggalBatasDiskon`, `PPN`, `TanggalJatuhTempo`, `FOB`, `OngkosKirim`, `StatusKirim`, `KodePelanggan`, `Lunaskah`, `NoCek`) VALUES
-('2017/NJ0001', '2017-01-02', 800000, 800000, 'T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL),
-('2017/NJ0002', '2017-11-22', 340000, 170000, 'K', '0', '5', '2017-11-27', '0', '2017-12-22', NULL, NULL, 1, 1, 0, NULL),
-('2017/NJ0003', '2017-11-22', 1100000, 0, 'K', NULL, '2', '2017-11-28', '10', '2017-11-30', NULL, NULL, 1, 2, 0, NULL);
+INSERT INTO `nota_jual` (`NoNotaJual`, `Tanggal`, `Total`, `Bayar`, `JenisPembayaran`, `Diskon`, `DiskonPelunasan`, `TanggalBatasDiskon`, `PPN`, `TanggalJatuhTempo`, `FOB`, `OngkosKirim`, `StatusKirim`, `KodePelanggan`, `Lunaskah`, `NoCek`, `JasaPengiriman`, `JenisPembayaranPengiriman`) VALUES
+('2017/NJ0001', '2017-01-02', 800000, 800000, 'T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 0, NULL, NULL, NULL),
+('2017/NJ0002', '2017-11-22', 340000, 170000, 'K', '0', '5', '2017-11-27', '0', '2017-12-22', NULL, NULL, 1, 1, 0, NULL, NULL, NULL),
+('2017/NJ0003', '2017-11-22', 1100000, 0, 'K', NULL, '2', '2017-11-28', '10', '2017-11-30', NULL, NULL, 1, 2, 0, NULL, NULL, NULL),
+('2017/NJ0004', '2017-12-13', 480000, 480000, 'T', '0', '0', NULL, '0', NULL, NULL, 0, 1, 1, 0, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -441,7 +449,8 @@ CREATE TABLE `pelunasan_piutang` (
 --
 
 INSERT INTO `pelunasan_piutang` (`NoPelunasan`, `Tanggal`, `NominalSeharusnya`, `DiskonPelunasan`, `Bayar`, `JenisPembayaran`, `NoNotaJual`) VALUES
-(1, '2017-11-30', 1100000, 0, 1100000, 'T', '2017/NJ0003');
+(1, '2017-11-30', 1100000, 0, 1100000, 'T', '2017/NJ0003'),
+(2, '2017-12-15', 1100000, 0, 1100000, 'T', '2017/NJ0003');
 
 -- --------------------------------------------------------
 
@@ -490,7 +499,8 @@ INSERT INTO `penjualan` (`NoPenjualan`, `NoNotaJual`, `KodeBarang`, `Harga`, `Ju
 (2, '2017/NJ0002', 1, 40000, 1),
 (3, '2017/NJ0002', 3, 150000, 2),
 (4, '2017/NJ0003', 1, 40000, 10),
-(5, '2017/NJ0003', 2, 70000, 10);
+(5, '2017/NJ0003', 2, 70000, 10),
+(6, '2017/NJ0004', 1, 40000, 12);
 
 -- --------------------------------------------------------
 
@@ -577,6 +587,118 @@ INSERT INTO `supplier` (`KodeSupplier`, `Nama`) VALUES
 (2, 'UD \'BERSIH SELALU\''),
 (3, 'UD \'MAKMUR BAHAGIA\''),
 (4, 'UD \'SUKSES SEJATI\'');
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `vbukubesar`
+-- (See below for the actual view)
+--
+CREATE TABLE `vbukubesar` (
+`NoAkun` char(3)
+,`NamaAkun` varchar(100)
+,`Tanggal` date
+,`Keterangan` text
+,`NominalDebet` mediumtext
+,`NominalKredit` mediumtext
+,`NoBukti` varchar(45)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `vlabarugi`
+-- (See below for the actual view)
+--
+CREATE TABLE `vlabarugi` (
+`NoAkun` char(3)
+,`NamaAkun` varchar(100)
+,`SaldoAkhir` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `vlaporanjurnal`
+-- (See below for the actual view)
+--
+CREATE TABLE `vlaporanjurnal` (
+`IDJurnal` int(11)
+,`Tanggal` date
+,`Keterangan` text
+,`NamaAkun` varchar(100)
+,`Debet` mediumtext
+,`Kredit` mediumtext
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `vperubahanekuitas`
+-- (See below for the actual view)
+--
+CREATE TABLE `vperubahanekuitas` (
+`NoAkun` char(3)
+,`NamaAkun` varchar(100)
+,`SaldoAkhir` longtext
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `vsaldoakhir`
+-- (See below for the actual view)
+--
+CREATE TABLE `vsaldoakhir` (
+`NoAkun` char(3)
+,`NamaAkun` varchar(100)
+,`SaldoAkhir` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vbukubesar`
+--
+DROP TABLE IF EXISTS `vbukubesar`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vbukubesar`  AS  select `ja`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `NamaAkun`,`j`.`Tanggal` AS `Tanggal`,`j`.`Keterangan` AS `Keterangan`,`ja`.`NominalDebet` AS `NominalDebet`,`ja`.`NominalKredit` AS `NominalKredit`,`j`.`NoBukti` AS `NoBukti` from (((`jurnal_has_akun` `ja` join `akun` `a` on((`ja`.`NoAkun` = `a`.`NoAkun`))) join `periode_has_akun` `p` on((`p`.`NoAkun` = `a`.`NoAkun`))) join `jurnal` `j` on((`ja`.`IDJurnal` = `j`.`IDJurnal`))) order by `ja`.`NoAkun` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vlabarugi`
+--
+DROP TABLE IF EXISTS `vlabarugi`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vlabarugi`  AS  select `v`.`NoAkun` AS `NoAkun`,`v`.`NamaAkun` AS `NamaAkun`,`v`.`SaldoAkhir` AS `SaldoAkhir` from (`vsaldoakhir` `v` join `akun_has_laporan` `l` on((`v`.`NoAkun` = `l`.`NoAkun`))) where (`l`.`IDLaporan` = 'LR') ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vlaporanjurnal`
+--
+DROP TABLE IF EXISTS `vlaporanjurnal`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vlaporanjurnal`  AS  select `j`.`IDJurnal` AS `IDJurnal`,`j`.`Tanggal` AS `Tanggal`,`j`.`Keterangan` AS `Keterangan`,`a`.`Nama` AS `NamaAkun`,`ja`.`NominalDebet` AS `Debet`,`ja`.`NominalKredit` AS `Kredit` from ((`jurnal` `j` join `jurnal_has_akun` `ja` on((`j`.`IDJurnal` = `ja`.`IDJurnal`))) join `akun` `a` on((`ja`.`NoAkun` = `a`.`NoAkun`))) order by `j`.`IDJurnal`,`ja`.`Urutan` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vperubahanekuitas`
+--
+DROP TABLE IF EXISTS `vperubahanekuitas`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vperubahanekuitas`  AS  select `v`.`NoAkun` AS `NoAkun`,`v`.`NamaAkun` AS `NamaAkun`,`v`.`SaldoAkhir` AS `SaldoAkhir` from (`vsaldoakhir` `v` join `akun_has_laporan` `l` on((`v`.`NoAkun` = `l`.`NoAkun`))) where (`l`.`IDLaporan` = 'PE') union (select `a`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `Nama`,`p`.`SaldoAwal` AS `SaldoAkhir` from (`akun` `a` join `periode_has_akun` `p` on((`a`.`NoAkun` = `p`.`NoAkun`))) where (`a`.`NoAkun` = '000')) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vsaldoakhir`
+--
+DROP TABLE IF EXISTS `vsaldoakhir`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vsaldoakhir`  AS  select `a`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `NamaAkun`,(`p`.`SaldoAwal` + ifnull(((sum(`ja`.`NominalDebet`) - sum(`ja`.`NominalKredit`)) * `a`.`SaldoNormal`),0)) AS `SaldoAkhir` from ((`akun` `a` left join `jurnal_has_akun` `ja` on((`ja`.`NoAkun` = `a`.`NoAkun`))) join `periode_has_akun` `p` on((`p`.`NoAkun` = `a`.`NoAkun`))) group by `ja`.`NoAkun`,`a`.`Nama`,`p`.`SaldoAwal` order by `a`.`NoAkun` ;
 
 --
 -- Indexes for dumped tables
@@ -755,7 +877,7 @@ ALTER TABLE `pelunasan_hutang`
 -- AUTO_INCREMENT for table `pelunasan_piutang`
 --
 ALTER TABLE `pelunasan_piutang`
-  MODIFY `NoPelunasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `NoPelunasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `pembelian`
 --
@@ -765,7 +887,7 @@ ALTER TABLE `pembelian`
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `NoPenjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `NoPenjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `supplier`
 --

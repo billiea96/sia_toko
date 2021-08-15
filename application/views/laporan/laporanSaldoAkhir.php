@@ -1,18 +1,18 @@
-<?php
+-<?php
     // create new PDF document
     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);    
   
     // set document information
     $pdf->SetCreator(PB-AOF);
     $pdf->SetAuthor('PB-AOF');
-    $pdf->SetTitle('Laporan Perubahan Ekuitas');
-    $pdf->SetSubject('Laporan Perubahan Ekuitas');
+    $pdf->SetTitle('Laporan Saldo Akhir');
+    $pdf->SetSubject('Laporan Saldo Akhir');
     $pdf->SetKeywords('');   
   
     // // set default header data
-    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_EKUITAS_POS, PDF_HEADER_PERUBAHAN_EKUITAS, PDF_HEADER_STRING);
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_AKHIR_POS, PDF_HEADER_SALDO_AKHIR, PDF_HEADER_STRING);
     // $pdf->setFooterData(array(0,64,0), array(0,64,128)); 
-  	
+    
     // set header and footer fonts
     // $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
     // $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));  
@@ -50,53 +50,36 @@
 // Print text using writeHTMLCell()
     $pdf->writeHTMLCell(0, 0, '', '', $title, 0, 1, 0, true, 'C', true); 
 
-
-	$table ='<table style="width:560px;">';
-	$table .='<thead style="width:560px;">
+    $table ='<table style="width:560px;">';
+    $table .='<thead style="width:560px; ">
             <tr>
-    		<th style="border:1px solid #000; width: 200px; text-align: center;">Nama Akun</th>
-    		<th style="border:1px solid #000; width: 60px; text-align: center;">Saldo Akhir</th>
-    		
-	<!-- Main content -->
-	<section class="content">
-	  <!-- Info boxes -->
-
-    		</tr>
+            <th style="border:1px solid #000; width: 50px; height: 20px; text-align: center;">No Akun</th>
+            <th style="border:1px solid #000; width: 180px; text-align: center;">Nama Akun</th>
+            <th style="border:1px solid #000; width: 90px; text-align: center;">Saldo Akhir</th>
+            
+        
+            </tr>
             </thead>';
-    		
-			$table.='<tr style="width:560px;">
-				<td style="border:1px solid #000; width: 200px;">Ekuitas Pemilik per Periode ini</td>
-				<td style="border:1px solid #000; width: 60px;">'.$vperubahanekuitas[0]["SaldoAkhir"].'</td>
-				
-			</tr>';
-                
-            $table.='<tr style="width:560px;">
-                    <td style="border:1px solid #000; width: 200px;">Laba Rugi Tahun Berjalan</td>
-                    <td style="border:1px solid #000; width: 60px;">'.$labarugi.'</td>
+            foreach($vsaldoakhir as $value){
+                                        
+                $table.='<tr style="width:560px; ">
+                    <td style="border:1px solid #000; width: 50px; height: 15px">'.$value["NoAkun"].'</td>
+                    <td style="border:1px solid #000; width: 180px;">'.$value["NamaAkun"].'</td>
+                    <td style="border:1px solid #000; width: 90px;">'.$value["SaldoAkhir"].'</td>
                     
                 </tr>';
-
-            $table.='<tr style="width:560px;">
-                    <td style="border:1px solid #000; width: 200px;">'.$vperubahanekuitas[1]["NamaAkun"].'</td>
-                    <td style="border:1px solid #000; width: 60px;">'.$vperubahanekuitas[1]["SaldoAkhir"].'</td>
+            }
                     
-                </tr>';
-            $table.='<tr style="width:560px;">
-                    <td style="border:1px solid #000; font-weight:bold; width: 200px;">Ekuitas Akhir Pemilik</td>
-                    <td style="border:1px solid #000; font-weight:bold; width: 60px;">'.($vperubahanekuitas[0]["SaldoAkhir"]+$labarugi).'</td>
-                    
-                </tr>';
-    			    
-	$table .='</tbody></table>';
+    $table .='</table>';
       
     $pdf->writeHTMLCell(0, 0, '', '', $table, 0, 0, 0, true, 'C', true);   
- 	$pdf->LastPage();
+    $pdf->LastPage();
     // ---------------------------------------------------------    
   
     // Close and output PDF document
     // This method has several options, check the source code documentation for more information.
     ob_clean();
-    $pdf->Output('LaporanPerubahanEkuitas.pdf', 'I');    
+    $pdf->Output('LaporanSaldoAkhir.pdf', 'I');    
   
     //============================================================+
     // END OF FILE

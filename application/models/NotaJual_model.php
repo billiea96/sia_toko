@@ -13,7 +13,10 @@ class NotaJual_model extends CI_Model {
         $query = $this->db->get_where('nota_jual', array('NoNotaJual' => $slug));
         return $query->row_array();
 	}
-
+    public function set_lunas($no){
+        $this->db->where('NoNotaJual',$no);
+        $this->db->update('nota_jual',array('Lunaskah'=>1));
+    }
     public function add_nota_jual($arr_data) {
         return $this->db->insert('nota_jual', $arr_data);
     }
@@ -27,7 +30,7 @@ class NotaJual_model extends CI_Model {
     }
 
     public function pembayaran_kredit(){
-        $query = $this->db->query('SELECT * FROM nota_jual WHERE JenisPembayaran = "K"');
+        $query = $this->db->query('SELECT * FROM nota_jual WHERE JenisPembayaran = "K" AND Lunaskah=0');
         return $query->result_array();
     }
 }

@@ -22,6 +22,7 @@ class LaporanArusKas extends CI_Controller {
         $this->load->model('Barang_model');
         $this->load->model('Supplier_model');
         $this->load->model('Bank_model');
+        $this->load->model('Laporan_model');
         $this->load->model('NotaJual_model');
         $this->load->model('Pembelian_model');
         $this->load->model('PelunasanPiutang_model');
@@ -35,19 +36,20 @@ class LaporanArusKas extends CI_Controller {
     }
 	public function index()
 	{
- 	// 	$this->load->view('layout/header');
-		// $this->load->view('laporan/laporanArusKas');
-		// $this->load->view('layout/footer');
+		$data['kas']=$this->Laporan_model->get_bukuBesar('101');
+		$data['kasAkhir']=$this->Laporan_model->get_saldoAkhirs('101');
+		$data['rekeningBacaBaca']=$this->Laporan_model->get_bukuBesar('102');
+		$data['rekeningBacaBacaAkhir']=$this->Laporan_model->get_saldoAkhirs('102');
+		$data['rekeningSukaSendiri']=$this->Laporan_model->get_bukuBesar('103');
+		$data['rekeningSukaSendiriAkhir']=$this->Laporan_model->get_saldoAkhirs('103');
+ 		$this->load->view('layout/header');
+		$this->load->view('laporan/laporanArusKas', $data);
+		$this->load->view('layout/footer');
         
 
 
 	}
 	
 	
-	public function create_pdf() {
-     
-  
-    }
-
 	
 }

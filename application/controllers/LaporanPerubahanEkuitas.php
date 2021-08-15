@@ -21,6 +21,7 @@ class LaporanPerubahanEkuitas extends CI_Controller {
 	public function __construct() {
         parent::__construct();
         $this->load->model('Barang_model');
+        $this->load->model('Laporan_model');
         $this->load->model('Supplier_model');
         $this->load->model('Bank_model');
         $this->load->model('NotaJual_model');
@@ -35,8 +36,13 @@ class LaporanPerubahanEkuitas extends CI_Controller {
     }
 	public function index()
 	{
+		$data['vperubahanekuitas']=$this->Laporan_model->get_perubahanEkuitas();
+		$data['totalPendapatan']=$this->Laporan_model->get_totalPendapatan();
+		$data['totalBiaya']=$this->Laporan_model->get_totalBiaya();
+
+		$data['labarugi'] = $data['totalPendapatan']['TotalPendapatan']-$data['totalBiaya']['TotalBiaya'];
  		$this->load->view('layout/header');
-		$this->load->view('laporan/LaporanPerubahanEkuitas');
+		$this->load->view('laporan/LaporanPerubahanEkuitas', $data);
 		$this->load->view('layout/footer');
 	}
 	

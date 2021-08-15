@@ -58,9 +58,18 @@
                 		<select form="form_pelunasanJual" class="form-control select2" id="idJPembayaran" name="jPembayaran">
                   		<option value="T">Tunai</option>
                   		<option value="TR">Transfer</option>
+                      <option value="C">Cek</option>
                 		</select>
               		</div>
             	</div>
+
+              <div class="form-group">
+                  <label for="noCek" class="col-xs-5 control-label">No Cek</label>
+
+                  <div class="col-xs-2">
+                    <input type="text" class="form-control" id="idNoCek" name="noCek" disabled="">
+                  </div>
+              </div>
 
             	<div class="form-group">
               		<label for="nominal" class="col-xs-5 control-label">Nominal Seharusnya</label>
@@ -127,6 +136,16 @@
 <!-- /.content -->
 
 <script>
+
+$('#idJPembayaran').change(function(){
+    if($(this).val() == "C"){
+      $('#idNoCek').removeAttr('disabled');  
+    }
+    else{
+      $('#idNoCek').attr('disabled', 'disabled');
+    }
+});
+
 $('#idTgl').change(function(){
   var sekarang = $(this).val();
   $.ajax({
@@ -171,6 +190,8 @@ $('#idNoNota').change(function(){
     }
   })
 })
+
+
 $(function () {
     // Date picker
     $('#idTgl').datepicker({

@@ -321,7 +321,7 @@
               <label for="bank" class="col-xs-4 control-label">Bank</label>
 
               <div class="col-xs-6">
-                <select form="form_pembelian" class="form-control select2" id="idBank" name="bank">
+                <select form="form_pembelian" class="form-control select2" id="idBank" name="bank" disabled="">
                   <option value=""></option>
                   <?php foreach ($bank as $key => $value) { ?>
                     <option value="<?php echo $value['IdBank']; ?>"><?php echo $value['Nama']; ?></option>
@@ -401,16 +401,19 @@
       $('#idDiscPelunasan').removeAttr('disabled');
       $('#idBatasPelunasan').removeAttr('disabled');
       $('#idNomorCek').attr('hidden', 'hidden');
+      $('#idBank').attr('disabled', 'disabled');
     }else{
       $('#idJT').attr('disabled', 'disabled');  
       $('#idDiscPelunasan').attr('disabled', 'disabled');
       $('#idBatasPelunasan').attr('disabled', 'disabled');
       $('#idNomorCek').attr('hidden', 'hidden');
+      $('#idBank').attr('disabled', 'disabled');
 
     }
     if($(this).val() == "TR"){
       $('#idNoRek').removeAttr('disabled');
       $('#idNamaBank').removeAttr('disabled');
+      $('#idBank').removeAttr('disabled');
       $('#idNomorCek').attr('hidden', 'hidden');
 
     }else{
@@ -419,6 +422,7 @@
     }
     if($(this).val() == "C"){
      $('#idNomorCek').removeAttr('hidden');
+     $('#idBank').attr('disabled', 'disabled');
    }
   });
 

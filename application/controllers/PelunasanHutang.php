@@ -91,6 +91,8 @@ class PelunasanHutang extends CI_Controller {
 		);
 
 		if($this->PelunasanHutang_model->add_pelunasan_hutang($dataSimpan)){
+			//untuk set lunas
+			$this->NotaBeli_model->set_lunas($nota);
 
 			$notabeli = $this->NotaBeli_model->get_nota($nota);
 			$keterangan ='Pelunasan transaksi pembelian tanggal '.$notabeli['Tanggal'];
