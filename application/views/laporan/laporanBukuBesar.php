@@ -503,8 +503,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $sediaanHabisPakai[0]['SaldoAwal'];
+            
             foreach($sediaanHabisPakai as $key=>$value){
+                $saldoawal= $sediaanHabisPakai[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -564,8 +565,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $kendaraan[0]['SaldoAwal'];
+            
             foreach($kendaraan as $key=>$value){
+                $saldoawal= $kendaraan[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -625,8 +627,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $akumulasiDepresiasiKendaraan[0]['SaldoAwal'];
+            
             foreach($akumulasiDepresiasiKendaraan as $key=>$value){
+                $saldoawal= $akumulasiDepresiasiKendaraan[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -766,8 +769,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $hutangBank[0]['SaldoAwal'];
+            
             foreach($hutangBank as $key=>$value){
+                $saldoawal= $hutangBank[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -836,8 +840,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $hutangCek[0]['SaldoAwal'];
+            
             foreach($hutangCek as $key=>$value){
+                $saldoawal= $hutangCek[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -976,8 +981,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $modalPemilik[0]['SaldoAwal'];
+            
             foreach($modalPemilik as $key=>$value){
+                $saldoawal= $modalPemilik[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -1046,8 +1052,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $prive[0]['SaldoAwal'];
+            
             foreach($prive as $key=>$value){
+                $saldoawal= $prive[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -1256,8 +1263,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $pendapatanLain[0]['SaldoAwal'];
+            
             foreach($pendapatanLain as $key=>$value){
+                $saldoawal= $pendapatanLain[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -1396,8 +1404,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $biayaGaji[0]['SaldoAwal'];
+            
             foreach($biayaGaji as $key=>$value){
+                $saldoawal= $biayaGaji[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -1466,8 +1475,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $biayaSediaan[0]['SaldoAwal'];
+            
             foreach($biayaSediaan as $key=>$value){
+                $saldoawal= $biayaSediaan[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -1536,8 +1546,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $biayaDepresiasi[0]['SaldoAwal'];
+            
             foreach($biayaDepresiasi as $key=>$value){
+                $saldoawal= $biayaDepresiasi[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -1606,8 +1617,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $biayaListrikTelp[0]['SaldoAwal'];
+            
             foreach($biayaListrikTelp as $key=>$value){
+                $saldoawal= $biayaListrikTelp[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -1676,8 +1688,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $rugiPenjualanAsetTetap[0]['SaldoAwal'];
+            
             foreach($rugiPenjualanAsetTetap as $key=>$value){
+                $saldoawal= $rugiPenjualanAsetTetap[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -1746,8 +1759,9 @@
                 <th style="border:1px solid #000; width: 67px; text-align: center;">Kredit</th>
             </tr>
             </thead>';
-            $saldoawal= $biayaLain[0]['SaldoAwal'];
+            
             foreach($biayaLain as $key=>$value){
+                $saldoawal= $biayaLain[0]['SaldoAwal'];
                 if($key == 0){
                     $table.='<tr style="width:560px;">
                     <td style="border:1px solid #000; width: 55px; height: 30px;">01-'.date("m-Y",strtotime($value["Tanggal"])).'</td>
@@ -1789,7 +1803,10 @@
     // Close and output PDF document
     // This method has several options, check the source code documentation for more information.
     ob_clean();
-    $pdf->Output('LaporanBukuBesar.pdf', 'I');    
+    ob_flush();
+    $pdf->Output('LaporanBukuBesar.pdf', 'I');  
+    ob_end_flush();
+    ob_end_clean();   
   
     //============================================================+
     // END OF FILE

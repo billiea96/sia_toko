@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 14, 2017 at 07:24 AM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- Host: localhost
+-- Waktu pembuatan: 16 Agu 2021 pada 16.17
+-- Versi server: 10.4.20-MariaDB
+-- Versi PHP: 7.4.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `akun`
+-- Struktur dari tabel `akun`
 --
 
 CREATE TABLE `akun` (
@@ -33,7 +34,7 @@ CREATE TABLE `akun` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `akun`
+-- Dumping data untuk tabel `akun`
 --
 
 INSERT INTO `akun` (`NoAkun`, `Nama`, `SaldoNormal`) VALUES
@@ -67,7 +68,7 @@ INSERT INTO `akun` (`NoAkun`, `Nama`, `SaldoNormal`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `akun_has_laporan`
+-- Struktur dari tabel `akun_has_laporan`
 --
 
 CREATE TABLE `akun_has_laporan` (
@@ -76,7 +77,7 @@ CREATE TABLE `akun_has_laporan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `akun_has_laporan`
+-- Dumping data untuk tabel `akun_has_laporan`
 --
 
 INSERT INTO `akun_has_laporan` (`NoAkun`, `IDLaporan`) VALUES
@@ -114,7 +115,7 @@ INSERT INTO `akun_has_laporan` (`NoAkun`, `IDLaporan`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bank`
+-- Struktur dari tabel `bank`
 --
 
 CREATE TABLE `bank` (
@@ -123,7 +124,7 @@ CREATE TABLE `bank` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `bank`
+-- Dumping data untuk tabel `bank`
 --
 
 INSERT INTO `bank` (`IdBank`, `Nama`) VALUES
@@ -133,7 +134,7 @@ INSERT INTO `bank` (`IdBank`, `Nama`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `barang`
+-- Struktur dari tabel `barang`
 --
 
 CREATE TABLE `barang` (
@@ -146,7 +147,7 @@ CREATE TABLE `barang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `barang`
+-- Dumping data untuk tabel `barang`
 --
 
 INSERT INTO `barang` (`KodeBarang`, `Nama`, `HargaJual`, `HargaBeliRata2`, `Stok`, `NoJenisBarang`) VALUES
@@ -158,7 +159,7 @@ INSERT INTO `barang` (`KodeBarang`, `Nama`, `HargaJual`, `HargaBeliRata2`, `Stok
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jenis_barang`
+-- Struktur dari tabel `jenis_barang`
 --
 
 CREATE TABLE `jenis_barang` (
@@ -167,7 +168,7 @@ CREATE TABLE `jenis_barang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `jenis_barang`
+-- Dumping data untuk tabel `jenis_barang`
 --
 
 INSERT INTO `jenis_barang` (`NoJenisBarang`, `Nama`) VALUES
@@ -177,7 +178,7 @@ INSERT INTO `jenis_barang` (`NoJenisBarang`, `Nama`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jurnal`
+-- Struktur dari tabel `jurnal`
 --
 
 CREATE TABLE `jurnal` (
@@ -190,7 +191,7 @@ CREATE TABLE `jurnal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `jurnal`
+-- Dumping data untuk tabel `jurnal`
 --
 
 INSERT INTO `jurnal` (`IDJurnal`, `Tanggal`, `Keterangan`, `NoBukti`, `JenisJurnal`, `IDPeriode`) VALUES
@@ -210,19 +211,19 @@ INSERT INTO `jurnal` (`IDJurnal`, `Tanggal`, `Keterangan`, `NoBukti`, `JenisJurn
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jurnal_has_akun`
+-- Struktur dari tabel `jurnal_has_akun`
 --
 
 CREATE TABLE `jurnal_has_akun` (
   `IDJurnal` int(11) NOT NULL,
   `NoAkun` char(3) NOT NULL,
   `Urutan` smallint(6) NOT NULL,
-  `NominalDebet` mediumtext,
-  `NominalKredit` mediumtext
+  `NominalDebet` mediumtext DEFAULT NULL,
+  `NominalKredit` mediumtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `jurnal_has_akun`
+-- Dumping data untuk tabel `jurnal_has_akun`
 --
 
 INSERT INTO `jurnal_has_akun` (`IDJurnal`, `NoAkun`, `Urutan`, `NominalDebet`, `NominalKredit`) VALUES
@@ -268,7 +269,7 @@ INSERT INTO `jurnal_has_akun` (`IDJurnal`, `NoAkun`, `Urutan`, `NominalDebet`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `laporan`
+-- Struktur dari tabel `laporan`
 --
 
 CREATE TABLE `laporan` (
@@ -277,7 +278,7 @@ CREATE TABLE `laporan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `laporan`
+-- Dumping data untuk tabel `laporan`
 --
 
 INSERT INTO `laporan` (`IDLaporan`, `Nama`) VALUES
@@ -289,7 +290,7 @@ INSERT INTO `laporan` (`IDLaporan`, `Nama`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nota_beli`
+-- Struktur dari tabel `nota_beli`
 --
 
 CREATE TABLE `nota_beli` (
@@ -298,23 +299,23 @@ CREATE TABLE `nota_beli` (
   `Total` float DEFAULT NULL,
   `Bayar` float DEFAULT NULL,
   `JenisPembayaran` enum('T','TR','K','C') DEFAULT NULL,
-  `Diskon` decimal(10,0) DEFAULT '0',
-  `DiskonPelunasan` decimal(10,0) DEFAULT '0',
+  `Diskon` decimal(10,0) DEFAULT 0,
+  `DiskonPelunasan` decimal(10,0) DEFAULT 0,
   `TanggalBatasDiskon` date DEFAULT NULL,
   `TanggalJatuhTempo` date DEFAULT NULL,
   `FOB` varchar(45) DEFAULT NULL,
-  `OngkosKirim` int(11) DEFAULT '0',
+  `OngkosKirim` int(11) DEFAULT 0,
   `StatusKirim` tinyint(1) DEFAULT NULL,
   `KodeSupplier` int(11) NOT NULL,
   `IdBank` int(11) DEFAULT NULL,
-  `Lunaskah` tinyint(1) DEFAULT '0',
+  `Lunaskah` tinyint(1) DEFAULT 0,
   `JasaPengiriman` varchar(45) DEFAULT NULL,
   `JenisPembayaranPengiriman` varchar(45) DEFAULT NULL,
   `NoCek` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `nota_beli`
+-- Dumping data untuk tabel `nota_beli`
 --
 
 INSERT INTO `nota_beli` (`NoNotaBeli`, `Tanggal`, `Total`, `Bayar`, `JenisPembayaran`, `Diskon`, `DiskonPelunasan`, `TanggalBatasDiskon`, `TanggalJatuhTempo`, `FOB`, `OngkosKirim`, `StatusKirim`, `KodeSupplier`, `IdBank`, `Lunaskah`, `JasaPengiriman`, `JenisPembayaranPengiriman`, `NoCek`) VALUES
@@ -325,7 +326,7 @@ INSERT INTO `nota_beli` (`NoNotaBeli`, `Tanggal`, `Total`, `Bayar`, `JenisPembay
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nota_jual`
+-- Struktur dari tabel `nota_jual`
 --
 
 CREATE TABLE `nota_jual` (
@@ -334,23 +335,23 @@ CREATE TABLE `nota_jual` (
   `Total` float DEFAULT NULL,
   `Bayar` float DEFAULT NULL,
   `JenisPembayaran` enum('T','K','TF','C') DEFAULT NULL,
-  `Diskon` decimal(10,0) DEFAULT '0',
-  `DiskonPelunasan` decimal(10,0) DEFAULT '0',
+  `Diskon` decimal(10,0) DEFAULT 0,
+  `DiskonPelunasan` decimal(10,0) DEFAULT 0,
   `TanggalBatasDiskon` date DEFAULT NULL,
-  `PPN` decimal(10,0) DEFAULT '0',
+  `PPN` decimal(10,0) DEFAULT 0,
   `TanggalJatuhTempo` date DEFAULT NULL,
   `FOB` varchar(45) DEFAULT NULL,
-  `OngkosKirim` int(11) DEFAULT '0',
+  `OngkosKirim` int(11) DEFAULT 0,
   `StatusKirim` tinyint(1) DEFAULT NULL,
   `KodePelanggan` int(11) NOT NULL,
-  `Lunaskah` tinyint(1) DEFAULT '0',
+  `Lunaskah` tinyint(1) DEFAULT 0,
   `NoCek` varchar(45) DEFAULT NULL,
   `JasaPengiriman` varchar(45) DEFAULT NULL,
   `JenisPembayaranPengiriman` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `nota_jual`
+-- Dumping data untuk tabel `nota_jual`
 --
 
 INSERT INTO `nota_jual` (`NoNotaJual`, `Tanggal`, `Total`, `Bayar`, `JenisPembayaran`, `Diskon`, `DiskonPelunasan`, `TanggalBatasDiskon`, `PPN`, `TanggalJatuhTempo`, `FOB`, `OngkosKirim`, `StatusKirim`, `KodePelanggan`, `Lunaskah`, `NoCek`, `JasaPengiriman`, `JenisPembayaranPengiriman`) VALUES
@@ -362,7 +363,7 @@ INSERT INTO `nota_jual` (`NoNotaJual`, `Tanggal`, `Total`, `Bayar`, `JenisPembay
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nota_terima_beli`
+-- Struktur dari tabel `nota_terima_beli`
 --
 
 CREATE TABLE `nota_terima_beli` (
@@ -374,7 +375,7 @@ CREATE TABLE `nota_terima_beli` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nota_terima_jual`
+-- Struktur dari tabel `nota_terima_jual`
 --
 
 CREATE TABLE `nota_terima_jual` (
@@ -386,7 +387,7 @@ CREATE TABLE `nota_terima_jual` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pelanggan`
+-- Struktur dari tabel `pelanggan`
 --
 
 CREATE TABLE `pelanggan` (
@@ -395,7 +396,7 @@ CREATE TABLE `pelanggan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `pelanggan`
+-- Dumping data untuk tabel `pelanggan`
 --
 
 INSERT INTO `pelanggan` (`KodePelanggan`, `Nama`) VALUES
@@ -405,7 +406,7 @@ INSERT INTO `pelanggan` (`KodePelanggan`, `Nama`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pelunasan_hutang`
+-- Struktur dari tabel `pelunasan_hutang`
 --
 
 CREATE TABLE `pelunasan_hutang` (
@@ -422,7 +423,7 @@ CREATE TABLE `pelunasan_hutang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `pelunasan_hutang`
+-- Dumping data untuk tabel `pelunasan_hutang`
 --
 
 INSERT INTO `pelunasan_hutang` (`NoPelunasan`, `Tanggal`, `NominalSeharusnya`, `DiskonPelunasan`, `Bayar`, `JenisPembayaran`, `NoNotaBeli`, `IdBank`, `NoRekening`, `PemilikRekening`) VALUES
@@ -431,7 +432,7 @@ INSERT INTO `pelunasan_hutang` (`NoPelunasan`, `Tanggal`, `NominalSeharusnya`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pelunasan_piutang`
+-- Struktur dari tabel `pelunasan_piutang`
 --
 
 CREATE TABLE `pelunasan_piutang` (
@@ -445,7 +446,7 @@ CREATE TABLE `pelunasan_piutang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `pelunasan_piutang`
+-- Dumping data untuk tabel `pelunasan_piutang`
 --
 
 INSERT INTO `pelunasan_piutang` (`NoPelunasan`, `Tanggal`, `NominalSeharusnya`, `DiskonPelunasan`, `Bayar`, `JenisPembayaran`, `NoNotaJual`) VALUES
@@ -455,7 +456,7 @@ INSERT INTO `pelunasan_piutang` (`NoPelunasan`, `Tanggal`, `NominalSeharusnya`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pembelian`
+-- Struktur dari tabel `pembelian`
 --
 
 CREATE TABLE `pembelian` (
@@ -467,7 +468,7 @@ CREATE TABLE `pembelian` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `pembelian`
+-- Dumping data untuk tabel `pembelian`
 --
 
 INSERT INTO `pembelian` (`NoPembelian`, `NoNotaBeli`, `KodeBarang`, `Harga`, `Jumlah`) VALUES
@@ -479,7 +480,7 @@ INSERT INTO `pembelian` (`NoPembelian`, `NoNotaBeli`, `KodeBarang`, `Harga`, `Ju
 -- --------------------------------------------------------
 
 --
--- Table structure for table `penjualan`
+-- Struktur dari tabel `penjualan`
 --
 
 CREATE TABLE `penjualan` (
@@ -491,7 +492,7 @@ CREATE TABLE `penjualan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `penjualan`
+-- Dumping data untuk tabel `penjualan`
 --
 
 INSERT INTO `penjualan` (`NoPenjualan`, `NoNotaJual`, `KodeBarang`, `Harga`, `Jumlah`) VALUES
@@ -505,7 +506,7 @@ INSERT INTO `penjualan` (`NoPenjualan`, `NoNotaJual`, `KodeBarang`, `Harga`, `Ju
 -- --------------------------------------------------------
 
 --
--- Table structure for table `periode`
+-- Struktur dari tabel `periode`
 --
 
 CREATE TABLE `periode` (
@@ -515,7 +516,7 @@ CREATE TABLE `periode` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `periode`
+-- Dumping data untuk tabel `periode`
 --
 
 INSERT INTO `periode` (`IDPeriode`, `TglAwal`, `TglAkhir`) VALUES
@@ -525,18 +526,18 @@ INSERT INTO `periode` (`IDPeriode`, `TglAwal`, `TglAkhir`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `periode_has_akun`
+-- Struktur dari tabel `periode_has_akun`
 --
 
 CREATE TABLE `periode_has_akun` (
   `IDPeriode` char(5) NOT NULL,
   `NoAkun` char(3) NOT NULL,
-  `SaldoAwal` mediumtext,
-  `SaldoAkhir` mediumtext
+  `SaldoAwal` mediumtext DEFAULT NULL,
+  `SaldoAkhir` mediumtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `periode_has_akun`
+-- Dumping data untuk tabel `periode_has_akun`
 --
 
 INSERT INTO `periode_has_akun` (`IDPeriode`, `NoAkun`, `SaldoAwal`, `SaldoAkhir`) VALUES
@@ -570,7 +571,7 @@ INSERT INTO `periode_has_akun` (`IDPeriode`, `NoAkun`, `SaldoAwal`, `SaldoAkhir`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `supplier`
+-- Struktur dari tabel `supplier`
 --
 
 CREATE TABLE `supplier` (
@@ -579,7 +580,7 @@ CREATE TABLE `supplier` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `supplier`
+-- Dumping data untuk tabel `supplier`
 --
 
 INSERT INTO `supplier` (`KodeSupplier`, `Nama`) VALUES
@@ -591,8 +592,8 @@ INSERT INTO `supplier` (`KodeSupplier`, `Nama`) VALUES
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `vbukubesar`
--- (See below for the actual view)
+-- Stand-in struktur untuk tampilan `vbukubesar`
+-- (Lihat di bawah untuk tampilan aktual)
 --
 CREATE TABLE `vbukubesar` (
 `NoAkun` char(3)
@@ -602,13 +603,15 @@ CREATE TABLE `vbukubesar` (
 ,`NominalDebet` mediumtext
 ,`NominalKredit` mediumtext
 ,`NoBukti` varchar(45)
+,`SaldoAwal` mediumtext
+,`SaldoNormal` smallint(6)
 );
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `vlabarugi`
--- (See below for the actual view)
+-- Stand-in struktur untuk tampilan `vlabarugi`
+-- (Lihat di bawah untuk tampilan aktual)
 --
 CREATE TABLE `vlabarugi` (
 `NoAkun` char(3)
@@ -619,8 +622,8 @@ CREATE TABLE `vlabarugi` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `vlaporanjurnal`
--- (See below for the actual view)
+-- Stand-in struktur untuk tampilan `vlaporanjurnal`
+-- (Lihat di bawah untuk tampilan aktual)
 --
 CREATE TABLE `vlaporanjurnal` (
 `IDJurnal` int(11)
@@ -634,8 +637,8 @@ CREATE TABLE `vlaporanjurnal` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `vperubahanekuitas`
--- (See below for the actual view)
+-- Stand-in struktur untuk tampilan `vperubahanekuitas`
+-- (Lihat di bawah untuk tampilan aktual)
 --
 CREATE TABLE `vperubahanekuitas` (
 `NoAkun` char(3)
@@ -646,8 +649,8 @@ CREATE TABLE `vperubahanekuitas` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `vsaldoakhir`
--- (See below for the actual view)
+-- Stand-in struktur untuk tampilan `vsaldoakhir`
+-- (Lihat di bawah untuk tampilan aktual)
 --
 CREATE TABLE `vsaldoakhir` (
 `NoAkun` char(3)
@@ -658,60 +661,60 @@ CREATE TABLE `vsaldoakhir` (
 -- --------------------------------------------------------
 
 --
--- Structure for view `vbukubesar`
+-- Struktur untuk view `vbukubesar`
 --
 DROP TABLE IF EXISTS `vbukubesar`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vbukubesar`  AS  select `ja`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `NamaAkun`,`j`.`Tanggal` AS `Tanggal`,`j`.`Keterangan` AS `Keterangan`,`ja`.`NominalDebet` AS `NominalDebet`,`ja`.`NominalKredit` AS `NominalKredit`,`j`.`NoBukti` AS `NoBukti` from (((`jurnal_has_akun` `ja` join `akun` `a` on((`ja`.`NoAkun` = `a`.`NoAkun`))) join `periode_has_akun` `p` on((`p`.`NoAkun` = `a`.`NoAkun`))) join `jurnal` `j` on((`ja`.`IDJurnal` = `j`.`IDJurnal`))) order by `ja`.`NoAkun` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vbukubesar`  AS SELECT `ja`.`NoAkun` AS `NoAkun`, `a`.`Nama` AS `NamaAkun`, `j`.`Tanggal` AS `Tanggal`, `j`.`Keterangan` AS `Keterangan`, `ja`.`NominalDebet` AS `NominalDebet`, `ja`.`NominalKredit` AS `NominalKredit`, `j`.`NoBukti` AS `NoBukti`, `p`.`SaldoAwal` AS `SaldoAwal`, `a`.`SaldoNormal` AS `SaldoNormal` FROM (((`jurnal_has_akun` `ja` join `akun` `a` on(`ja`.`NoAkun` = `a`.`NoAkun`)) join `periode_has_akun` `p` on(`p`.`NoAkun` = `a`.`NoAkun`)) join `jurnal` `j` on(`ja`.`IDJurnal` = `j`.`IDJurnal`)) ORDER BY `ja`.`NoAkun` ASC ;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `vlabarugi`
+-- Struktur untuk view `vlabarugi`
 --
 DROP TABLE IF EXISTS `vlabarugi`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vlabarugi`  AS  select `v`.`NoAkun` AS `NoAkun`,`v`.`NamaAkun` AS `NamaAkun`,`v`.`SaldoAkhir` AS `SaldoAkhir` from (`vsaldoakhir` `v` join `akun_has_laporan` `l` on((`v`.`NoAkun` = `l`.`NoAkun`))) where (`l`.`IDLaporan` = 'LR') ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vlabarugi`  AS SELECT `v`.`NoAkun` AS `NoAkun`, `v`.`NamaAkun` AS `NamaAkun`, `v`.`SaldoAkhir` AS `SaldoAkhir` FROM (`vsaldoakhir` `v` join `akun_has_laporan` `l` on(`v`.`NoAkun` = `l`.`NoAkun`)) WHERE `l`.`IDLaporan` = 'LR' ;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `vlaporanjurnal`
+-- Struktur untuk view `vlaporanjurnal`
 --
 DROP TABLE IF EXISTS `vlaporanjurnal`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vlaporanjurnal`  AS  select `j`.`IDJurnal` AS `IDJurnal`,`j`.`Tanggal` AS `Tanggal`,`j`.`Keterangan` AS `Keterangan`,`a`.`Nama` AS `NamaAkun`,`ja`.`NominalDebet` AS `Debet`,`ja`.`NominalKredit` AS `Kredit` from ((`jurnal` `j` join `jurnal_has_akun` `ja` on((`j`.`IDJurnal` = `ja`.`IDJurnal`))) join `akun` `a` on((`ja`.`NoAkun` = `a`.`NoAkun`))) order by `j`.`IDJurnal`,`ja`.`Urutan` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vlaporanjurnal`  AS SELECT `j`.`IDJurnal` AS `IDJurnal`, `j`.`Tanggal` AS `Tanggal`, `j`.`Keterangan` AS `Keterangan`, `a`.`Nama` AS `NamaAkun`, `ja`.`NominalDebet` AS `Debet`, `ja`.`NominalKredit` AS `Kredit` FROM ((`jurnal` `j` join `jurnal_has_akun` `ja` on(`j`.`IDJurnal` = `ja`.`IDJurnal`)) join `akun` `a` on(`ja`.`NoAkun` = `a`.`NoAkun`)) ORDER BY `j`.`IDJurnal` ASC, `ja`.`Urutan` ASC ;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `vperubahanekuitas`
+-- Struktur untuk view `vperubahanekuitas`
 --
 DROP TABLE IF EXISTS `vperubahanekuitas`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vperubahanekuitas`  AS  select `v`.`NoAkun` AS `NoAkun`,`v`.`NamaAkun` AS `NamaAkun`,`v`.`SaldoAkhir` AS `SaldoAkhir` from (`vsaldoakhir` `v` join `akun_has_laporan` `l` on((`v`.`NoAkun` = `l`.`NoAkun`))) where (`l`.`IDLaporan` = 'PE') union (select `a`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `Nama`,`p`.`SaldoAwal` AS `SaldoAkhir` from (`akun` `a` join `periode_has_akun` `p` on((`a`.`NoAkun` = `p`.`NoAkun`))) where (`a`.`NoAkun` = '000')) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vperubahanekuitas`  AS SELECT `v`.`NoAkun` AS `NoAkun`, `v`.`NamaAkun` AS `NamaAkun`, `v`.`SaldoAkhir` AS `SaldoAkhir` FROM (`vsaldoakhir` `v` join `akun_has_laporan` `l` on(`v`.`NoAkun` = `l`.`NoAkun`)) WHERE `l`.`IDLaporan` = 'PE' ;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `vsaldoakhir`
+-- Struktur untuk view `vsaldoakhir`
 --
 DROP TABLE IF EXISTS `vsaldoakhir`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vsaldoakhir`  AS  select `a`.`NoAkun` AS `NoAkun`,`a`.`Nama` AS `NamaAkun`,(`p`.`SaldoAwal` + ifnull(((sum(`ja`.`NominalDebet`) - sum(`ja`.`NominalKredit`)) * `a`.`SaldoNormal`),0)) AS `SaldoAkhir` from ((`akun` `a` left join `jurnal_has_akun` `ja` on((`ja`.`NoAkun` = `a`.`NoAkun`))) join `periode_has_akun` `p` on((`p`.`NoAkun` = `a`.`NoAkun`))) group by `ja`.`NoAkun`,`a`.`Nama`,`p`.`SaldoAwal` order by `a`.`NoAkun` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vsaldoakhir`  AS SELECT `a`.`NoAkun` AS `NoAkun`, `a`.`Nama` AS `NamaAkun`, `p`.`SaldoAwal`+ ifnull((sum(`ja`.`NominalDebet`) - sum(`ja`.`NominalKredit`)) * `a`.`SaldoNormal`,0) AS `SaldoAkhir` FROM ((`akun` `a` left join `jurnal_has_akun` `ja` on(`ja`.`NoAkun` = `a`.`NoAkun`)) join `periode_has_akun` `p` on(`p`.`NoAkun` = `a`.`NoAkun`)) GROUP BY `ja`.`NoAkun`, `a`.`Nama`, `p`.`SaldoAwal` ORDER BY `a`.`NoAkun` ASC ;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `akun`
+-- Indeks untuk tabel `akun`
 --
 ALTER TABLE `akun`
   ADD PRIMARY KEY (`NoAkun`);
 
 --
--- Indexes for table `akun_has_laporan`
+-- Indeks untuk tabel `akun_has_laporan`
 --
 ALTER TABLE `akun_has_laporan`
   ADD PRIMARY KEY (`NoAkun`,`IDLaporan`),
@@ -719,33 +722,33 @@ ALTER TABLE `akun_has_laporan`
   ADD KEY `fk_Akun_has_Laporan_Akun1_idx` (`NoAkun`);
 
 --
--- Indexes for table `bank`
+-- Indeks untuk tabel `bank`
 --
 ALTER TABLE `bank`
   ADD PRIMARY KEY (`IdBank`);
 
 --
--- Indexes for table `barang`
+-- Indeks untuk tabel `barang`
 --
 ALTER TABLE `barang`
   ADD PRIMARY KEY (`KodeBarang`),
   ADD KEY `fk_Barang_Jenis_Barang1_idx` (`NoJenisBarang`);
 
 --
--- Indexes for table `jenis_barang`
+-- Indeks untuk tabel `jenis_barang`
 --
 ALTER TABLE `jenis_barang`
   ADD PRIMARY KEY (`NoJenisBarang`);
 
 --
--- Indexes for table `jurnal`
+-- Indeks untuk tabel `jurnal`
 --
 ALTER TABLE `jurnal`
   ADD PRIMARY KEY (`IDJurnal`),
   ADD KEY `fk_Jurnal_Periode1_idx` (`IDPeriode`);
 
 --
--- Indexes for table `jurnal_has_akun`
+-- Indeks untuk tabel `jurnal_has_akun`
 --
 ALTER TABLE `jurnal_has_akun`
   ADD PRIMARY KEY (`IDJurnal`,`NoAkun`,`Urutan`),
@@ -753,13 +756,13 @@ ALTER TABLE `jurnal_has_akun`
   ADD KEY `fk_Jurnal_has_Akun_Jurnal1_idx` (`IDJurnal`);
 
 --
--- Indexes for table `laporan`
+-- Indeks untuk tabel `laporan`
 --
 ALTER TABLE `laporan`
   ADD PRIMARY KEY (`IDLaporan`);
 
 --
--- Indexes for table `nota_beli`
+-- Indeks untuk tabel `nota_beli`
 --
 ALTER TABLE `nota_beli`
   ADD PRIMARY KEY (`NoNotaBeli`),
@@ -767,34 +770,34 @@ ALTER TABLE `nota_beli`
   ADD KEY `fk_Nota_Beli_Bank1_idx` (`IdBank`);
 
 --
--- Indexes for table `nota_jual`
+-- Indeks untuk tabel `nota_jual`
 --
 ALTER TABLE `nota_jual`
   ADD PRIMARY KEY (`NoNotaJual`),
   ADD KEY `fk_Nota_Jual_Pelanggan1_idx` (`KodePelanggan`);
 
 --
--- Indexes for table `nota_terima_beli`
+-- Indeks untuk tabel `nota_terima_beli`
 --
 ALTER TABLE `nota_terima_beli`
   ADD PRIMARY KEY (`NoNotaTerima`),
   ADD KEY `fk_Nota_Terima_Nota_Beli1_idx` (`NoNotaBeli`);
 
 --
--- Indexes for table `nota_terima_jual`
+-- Indeks untuk tabel `nota_terima_jual`
 --
 ALTER TABLE `nota_terima_jual`
   ADD PRIMARY KEY (`NoNotaTerima`),
   ADD KEY `fk_Nota_Terima_Jual_Nota_Jual1_idx` (`NoNotaJual`);
 
 --
--- Indexes for table `pelanggan`
+-- Indeks untuk tabel `pelanggan`
 --
 ALTER TABLE `pelanggan`
   ADD PRIMARY KEY (`KodePelanggan`);
 
 --
--- Indexes for table `pelunasan_hutang`
+-- Indeks untuk tabel `pelunasan_hutang`
 --
 ALTER TABLE `pelunasan_hutang`
   ADD PRIMARY KEY (`NoPelunasan`),
@@ -802,14 +805,14 @@ ALTER TABLE `pelunasan_hutang`
   ADD KEY `fk_Pelunasan_Hutang_Bank1_idx` (`IdBank`);
 
 --
--- Indexes for table `pelunasan_piutang`
+-- Indeks untuk tabel `pelunasan_piutang`
 --
 ALTER TABLE `pelunasan_piutang`
   ADD PRIMARY KEY (`NoPelunasan`),
   ADD KEY `fk_Pelunasan_Piutang_Nota_Jual1_idx` (`NoNotaJual`);
 
 --
--- Indexes for table `pembelian`
+-- Indeks untuk tabel `pembelian`
 --
 ALTER TABLE `pembelian`
   ADD PRIMARY KEY (`NoPembelian`),
@@ -817,7 +820,7 @@ ALTER TABLE `pembelian`
   ADD KEY `fk_Nota_Beli_has_Barang_Nota_Beli_idx` (`NoNotaBeli`);
 
 --
--- Indexes for table `penjualan`
+-- Indeks untuk tabel `penjualan`
 --
 ALTER TABLE `penjualan`
   ADD PRIMARY KEY (`NoPenjualan`),
@@ -825,13 +828,13 @@ ALTER TABLE `penjualan`
   ADD KEY `fk_Nota_Jual_has_Barang_Nota_Jual1_idx` (`NoNotaJual`);
 
 --
--- Indexes for table `periode`
+-- Indeks untuk tabel `periode`
 --
 ALTER TABLE `periode`
   ADD PRIMARY KEY (`IDPeriode`);
 
 --
--- Indexes for table `periode_has_akun`
+-- Indeks untuk tabel `periode_has_akun`
 --
 ALTER TABLE `periode_has_akun`
   ADD PRIMARY KEY (`IDPeriode`,`NoAkun`),
@@ -839,148 +842,158 @@ ALTER TABLE `periode_has_akun`
   ADD KEY `fk_Periode_has_Akun_Periode1_idx` (`IDPeriode`);
 
 --
--- Indexes for table `supplier`
+-- Indeks untuk tabel `supplier`
 --
 ALTER TABLE `supplier`
   ADD PRIMARY KEY (`KodeSupplier`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `bank`
+-- AUTO_INCREMENT untuk tabel `bank`
 --
 ALTER TABLE `bank`
   MODIFY `IdBank` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
--- AUTO_INCREMENT for table `barang`
+-- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
   MODIFY `KodeBarang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
--- AUTO_INCREMENT for table `jenis_barang`
+-- AUTO_INCREMENT untuk tabel `jenis_barang`
 --
 ALTER TABLE `jenis_barang`
   MODIFY `NoJenisBarang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
--- AUTO_INCREMENT for table `pelanggan`
+-- AUTO_INCREMENT untuk tabel `pelanggan`
 --
 ALTER TABLE `pelanggan`
   MODIFY `KodePelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
--- AUTO_INCREMENT for table `pelunasan_hutang`
+-- AUTO_INCREMENT untuk tabel `pelunasan_hutang`
 --
 ALTER TABLE `pelunasan_hutang`
   MODIFY `NoPelunasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
--- AUTO_INCREMENT for table `pelunasan_piutang`
+-- AUTO_INCREMENT untuk tabel `pelunasan_piutang`
 --
 ALTER TABLE `pelunasan_piutang`
   MODIFY `NoPelunasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
--- AUTO_INCREMENT for table `pembelian`
+-- AUTO_INCREMENT untuk tabel `pembelian`
 --
 ALTER TABLE `pembelian`
   MODIFY `NoPembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
--- AUTO_INCREMENT for table `penjualan`
+-- AUTO_INCREMENT untuk tabel `penjualan`
 --
 ALTER TABLE `penjualan`
   MODIFY `NoPenjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
--- AUTO_INCREMENT for table `supplier`
+-- AUTO_INCREMENT untuk tabel `supplier`
 --
 ALTER TABLE `supplier`
   MODIFY `KodeSupplier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `akun_has_laporan`
+-- Ketidakleluasaan untuk tabel `akun_has_laporan`
 --
 ALTER TABLE `akun_has_laporan`
   ADD CONSTRAINT `fk_Akun_has_Laporan_Akun1` FOREIGN KEY (`NoAkun`) REFERENCES `akun` (`NoAkun`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Akun_has_Laporan_Laporan1` FOREIGN KEY (`IDLaporan`) REFERENCES `laporan` (`IDLaporan`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `barang`
+-- Ketidakleluasaan untuk tabel `barang`
 --
 ALTER TABLE `barang`
   ADD CONSTRAINT `fk_Barang_Jenis_Barang1` FOREIGN KEY (`NoJenisBarang`) REFERENCES `jenis_barang` (`NoJenisBarang`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `jurnal`
+-- Ketidakleluasaan untuk tabel `jurnal`
 --
 ALTER TABLE `jurnal`
   ADD CONSTRAINT `fk_Jurnal_Periode1` FOREIGN KEY (`IDPeriode`) REFERENCES `periode` (`IDPeriode`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `jurnal_has_akun`
+-- Ketidakleluasaan untuk tabel `jurnal_has_akun`
 --
 ALTER TABLE `jurnal_has_akun`
   ADD CONSTRAINT `fk_Jurnal_has_Akun_Akun1` FOREIGN KEY (`NoAkun`) REFERENCES `akun` (`NoAkun`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Jurnal_has_Akun_Jurnal1` FOREIGN KEY (`IDJurnal`) REFERENCES `jurnal` (`IDJurnal`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `nota_beli`
+-- Ketidakleluasaan untuk tabel `nota_beli`
 --
 ALTER TABLE `nota_beli`
   ADD CONSTRAINT `fk_Nota_Beli_Bank1` FOREIGN KEY (`IdBank`) REFERENCES `bank` (`IdBank`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Nota_Beli_Supplier1` FOREIGN KEY (`KodeSupplier`) REFERENCES `supplier` (`KodeSupplier`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `nota_jual`
+-- Ketidakleluasaan untuk tabel `nota_jual`
 --
 ALTER TABLE `nota_jual`
   ADD CONSTRAINT `fk_Nota_Jual_Pelanggan1` FOREIGN KEY (`KodePelanggan`) REFERENCES `pelanggan` (`KodePelanggan`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `nota_terima_beli`
+-- Ketidakleluasaan untuk tabel `nota_terima_beli`
 --
 ALTER TABLE `nota_terima_beli`
   ADD CONSTRAINT `fk_Nota_Terima_Nota_Beli1` FOREIGN KEY (`NoNotaBeli`) REFERENCES `nota_beli` (`NoNotaBeli`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `nota_terima_jual`
+-- Ketidakleluasaan untuk tabel `nota_terima_jual`
 --
 ALTER TABLE `nota_terima_jual`
   ADD CONSTRAINT `fk_Nota_Terima_Jual_Nota_Jual1` FOREIGN KEY (`NoNotaJual`) REFERENCES `nota_jual` (`NoNotaJual`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `pelunasan_hutang`
+-- Ketidakleluasaan untuk tabel `pelunasan_hutang`
 --
 ALTER TABLE `pelunasan_hutang`
   ADD CONSTRAINT `fk_Pelunasan_Hutang_Bank1` FOREIGN KEY (`IdBank`) REFERENCES `bank` (`IdBank`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Pelunasan_Hutang_Nota_Beli1` FOREIGN KEY (`NoNotaBeli`) REFERENCES `nota_beli` (`NoNotaBeli`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `pelunasan_piutang`
+-- Ketidakleluasaan untuk tabel `pelunasan_piutang`
 --
 ALTER TABLE `pelunasan_piutang`
   ADD CONSTRAINT `fk_Pelunasan_Piutang_Nota_Jual1` FOREIGN KEY (`NoNotaJual`) REFERENCES `nota_jual` (`NoNotaJual`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `pembelian`
+-- Ketidakleluasaan untuk tabel `pembelian`
 --
 ALTER TABLE `pembelian`
   ADD CONSTRAINT `fk_Nota_Beli_has_Barang_Barang1` FOREIGN KEY (`KodeBarang`) REFERENCES `barang` (`KodeBarang`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Nota_Beli_has_Barang_Nota_Beli` FOREIGN KEY (`NoNotaBeli`) REFERENCES `nota_beli` (`NoNotaBeli`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `penjualan`
+-- Ketidakleluasaan untuk tabel `penjualan`
 --
 ALTER TABLE `penjualan`
   ADD CONSTRAINT `fk_Nota_Jual_has_Barang_Barang1` FOREIGN KEY (`KodeBarang`) REFERENCES `barang` (`KodeBarang`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Nota_Jual_has_Barang_Nota_Jual1` FOREIGN KEY (`NoNotaJual`) REFERENCES `nota_jual` (`NoNotaJual`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `periode_has_akun`
+-- Ketidakleluasaan untuk tabel `periode_has_akun`
 --
 ALTER TABLE `periode_has_akun`
   ADD CONSTRAINT `fk_Periode_has_Akun_Akun1` FOREIGN KEY (`NoAkun`) REFERENCES `akun` (`NoAkun`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Periode_has_Akun_Periode1` FOREIGN KEY (`IDPeriode`) REFERENCES `periode` (`IDPeriode`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

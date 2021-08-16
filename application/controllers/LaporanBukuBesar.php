@@ -62,6 +62,11 @@ class LaporanBukuBesar extends CI_Controller {
 		$data['biayaListrikTelp']=$this->Laporan_model->get_bukuBesar('509');
 		$data['rugiPenjualanAsetTetap']=$this->Laporan_model->get_bukuBesar('515');
 		$data['biayaLain']=$this->Laporan_model->get_bukuBesar('520');
+		$data['title'] = "Laporang Buku Besar";
+		// echo "<pre>";
+		// print_r($data);
+		// echo "</pre>";
+		// die();
  		$this->load->view('layout/header');
 		$this->load->view('laporan/LaporanBukuBesar', $data);
 		$this->load->view('layout/footer');

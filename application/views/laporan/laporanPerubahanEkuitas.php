@@ -96,7 +96,10 @@
     // Close and output PDF document
     // This method has several options, check the source code documentation for more information.
     ob_clean();
-    $pdf->Output('LaporanPerubahanEkuitas.pdf', 'I');    
+    ob_flush();
+    $pdf->Output('LaporanPerubahanEkuitas.pdf', 'I');
+    ob_end_flush();
+    ob_end_clean();     
   
     //============================================================+
     // END OF FILE

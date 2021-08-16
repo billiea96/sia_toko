@@ -51,7 +51,7 @@
             </thead>';
     $table .='<tbody>';
             $tampung = '';
-            $hitung = sizeof($vlaporanjurnal)-1;
+            $hitung = count($vlaporanjurnal)-1;
             foreach($vlaporanjurnal as $key=>$value){
                 if($tampung == $value['IDJurnal']){
                     
@@ -97,8 +97,10 @@
     // Close and output PDF document
     // This method has several options, check the source code documentation for more information.
     ob_clean();
+    ob_flush();
     $pdf->Output('LaporanJurnal.pdf', 'I');    
-   
+    ob_end_flush();
+    ob_end_clean();
   
     //============================================================+
     // END OF FILE

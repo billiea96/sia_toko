@@ -1,4 +1,4 @@
--<?php
+<?php
     // create new PDF document
     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);    
   
@@ -79,8 +79,10 @@
     // Close and output PDF document
     // This method has several options, check the source code documentation for more information.
     ob_clean();
+    ob_flush();
     $pdf->Output('LaporanSaldoAkhir.pdf', 'I');    
-  
+    ob_end_flush();
+    ob_end_clean(); 
     //============================================================+
     // END OF FILE
     //============================================================+
